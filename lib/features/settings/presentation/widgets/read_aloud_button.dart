@@ -1,0 +1,55 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../core/theme/app_colors.dart';
+import '../../../../l10n/gen/app_localizations.dart';
+import '../../application/language_controller.dart';
+import '../../data/tts_service.dart';
+import '../../domain/app_language.dart';
+
+/// US66's "lecture vocale" — reads [text] aloud on tap, in whichever
+/// language the app is currently displayed in (US64), and turns into a
+/// stop button while speaking.
+class ReadAloudButton extends ConsumerStatefulWidget {
+  const ReadAloudButton({super.key, required this.text});
+
+  final String text;
+
+  @override
+  ConsumerState<ReadAloudButton> createState() => _ReadAloudButtonState();
+}
+
+class _ReadAloudButtonState extends ConsumerState<ReadAloudButton> {
+  bool _isSpeaking = false;
+
+  @override
+  void dispose() {
+    if (_isSpeaking) ref.read(ttsServiceProvider).stop();
+    super.dispose();
+  }
+
+  Future<void> _toggle() async {
+    final tts = ref.read(ttsServiceProvider);
+    if (_isSpeaking) {
+      await tts.stop();
+      if (mounted) setState(() => _isSpeaking = false);
+      return;
+    }
+    final language = ref.read(languageControllerProvider);
+    await tts.setLanguage(language == AppLanguage.english ? 'en-US' : 'fr-FR');
+    setState(() => _isSpeaking = true);
+    await tts.speak(widget.text, onComplete: () {
+      if (mounted) setState(() => _isSpeaking = false);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return IconButton(
+      tooltip: _isSpeaking ? l10n.accessibilityReadAloudStop : l10n.accessibilityReadAloudStart,
+      icon: Icon(_isSpeaking ? Icons.stop_circle_outlined : Icons.volume_up_outlined, color: AppColors.ink),
+      onPressed: _toggle,
+    );
+  }
+}

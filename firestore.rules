@@ -1,0 +1,118 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // EP12: whether the caller is a content admin. `admins/{uid}` is
+    // seeded manually from the Firebase console — there is no in-app way
+    // to create one, since this project has no backend to safely gate
+    // who else could write that collection (see `docs/FEATURES.md`).
+    function isAdmin() {
+      return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Each user's profile document — and everything nested under it
+    // (parental controls, learning progress, ...) — is readable/writable
+    // only by that same user. Single-account model: no separate parent
+    // login, so ownership is always keyed on the child's own uid (see
+    // `agent.md`: Firebase access always requires the user's own
+    // authenticated action).
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+
+      // A published project (EP07/US39) is also readable by someone else
+      // who already knows this uid (shared as a portfolio "code", US40),
+      // but only once the owner has switched their portfolio to public —
+      // checked by reading their own profile doc's `portfolioPublic` flag.
+      // Everything else stays owner-only via the recursive rule below.
+      // Admins can also read/write this subcollection specifically (not
+      // the whole `users/{uid}` doc) — needed to unpublish a reported
+      // project (EP12/US61) without opening up a learner's private data.
+      match /projects/{projectId} {
+        allow read: if request.auth != null && (
+          request.auth.uid == uid ||
+          (resource.data.isPublished == true &&
+           get(/databases/$(database)/documents/users/$(uid)).data.portfolioPublic == true) ||
+          isAdmin()
+        );
+        allow write: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      }
+
+      match /{document=**} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+      }
+    }
+
+    // The public leaderboard (EP08/US46): a flat, top-level collection —
+    // readable by every signed-in user, but each entry only writable by
+    // its own owner. A parent can remove their child's entry entirely via
+    // the leaderboard-visibility toggle (US48), which deletes this doc
+    // instead of merely hiding it.
+    match /leaderboard/{uid} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // A shared code snippet (EP10/US55): a flat, top-level collection with
+    // auto-generated ids — readable by any signed-in user who already
+    // knows the id (shared as a code, like the portfolio), writable only
+    // by its own owner, and never editable or deletable once created.
+    match /sharedSnippets/{snippetId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // Weekly-challenge self-reported completions (EP10/US56): one doc per
+    // learner per week (id `<weekKey>_<uid>`), readable by every signed-in
+    // user (it's a public leaderboard) but only the owner can write their
+    // own entry.
+    match /challengeParticipants/{docId} {
+      allow read: if request.auth != null;
+      allow create, update: if request.auth != null && request.resource.data.uid == request.auth.uid;
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+
+    // EP12: content-admin surfaces. `admins/{uid}` is read-only from the
+    // client (see `isAdmin()` above) — it can only be seeded/edited from
+    // the Firebase console.
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // A narrow, admin-only identity index (US63) — separate from the
+    // public `leaderboard` since it must list every account regardless of
+    // leaderboard opt-out. Each learner mirrors their own pseudo/avatar
+    // here (see `ProfileRepository`); only an admin can list the
+    // collection.
+    match /accountDirectory/{uid} {
+      allow read: if isAdmin();
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // The suspension flag (US63) is readable by the account's own owner
+    // (so the app can show the blocking screen) but only an admin can set
+    // it — this is the client-side stand-in for disabling a Firebase Auth
+    // account, which would otherwise need the Admin SDK.
+    match /accountStatus/{uid} {
+      allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    // Internal support notes (US63) — admin-only in both directions,
+    // unlike `accountStatus`, since these are never meant for the
+    // account's own owner to read.
+    match /supportNotes/{uid} {
+      allow read, write: if isAdmin();
+    }
+
+    // Reports against a shared portfolio project (US61): any signed-in
+    // learner can file one about themselves as the reporter; only an
+    // admin can read the queue or change a report's status.
+    match /moderationReports/{reportId} {
+      allow create: if request.auth != null && request.resource.data.reporterUid == request.auth.uid;
+      allow read, update: if isAdmin();
+      allow delete: if false;
+    }
+  }
+}

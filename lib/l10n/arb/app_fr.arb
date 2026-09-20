@@ -1,0 +1,426 @@
+{
+  "@@locale": "fr",
+
+  "appName": "LearningKids",
+
+  "welcomeTaglineLead": "Enfin, coder devient",
+  "welcomeTaglineHighlight": "VRAIMENT amusant",
+  "welcomeCta": "Commencer",
+
+  "commonOr": "ou",
+  "commonContinue": "Continuer",
+  "commonCancel": "Annuler",
+  "commonSave": "Enregistrer",
+  "commonBack": "Retour",
+  "commonSomethingWentWrong": "Un souci est survenu. Réessaie.",
+  "commonNoInternet": "Vérifie ta connexion internet et réessaie.",
+  "commonRetry": "Réessayer",
+  "onboardingErrorNetwork": "La connexion a été coupée. Vérifie ton internet puis réessaie.",
+  "onboardingErrorGeneric": "La sauvegarde a échoué. Réessaie dans un instant.",
+
+  "authContinueWithGoogle": "Continuer avec Google",
+  "authContinueWithApple": "Continuer avec Apple",
+
+  "signUpTitle": "Inscription",
+  "signUpEmailLabel": "Adresse e-mail",
+  "signUpPasswordLabel": "Mot de passe",
+  "signUpConfirmPasswordLabel": "Confirmer le mot de passe",
+  "signUpSubmit": "Créer mon compte",
+  "signUpAlreadyHaveAccount": "Tu as déjà un compte ?",
+  "signUpLoginLink": "Se connecter",
+  "signUpErrorEmailInUse": "Un compte existe déjà avec cet e-mail.",
+  "signUpErrorInvalidEmail": "Cette adresse e-mail n'est pas valide.",
+  "signUpErrorWeakPassword": "Choisis un mot de passe d'au moins 6 caractères.",
+  "signUpErrorPasswordMismatch": "Les mots de passe ne correspondent pas.",
+
+  "loginTitle": "Connexion",
+  "loginEmailLabel": "Adresse e-mail",
+  "loginPasswordLabel": "Mot de passe",
+  "loginSubmit": "Se connecter",
+  "loginForgotPassword": "Mot de passe oublié ?",
+  "loginNoAccount": "Pas encore de compte ?",
+  "loginSignUpLink": "S'inscrire",
+  "loginErrorInvalidCredentials": "E-mail ou mot de passe incorrect.",
+  "loginErrorTooManyRequests": "Trop de tentatives. Réessaie dans quelques minutes.",
+
+  "forgotPasswordTitle": "Mot de passe oublié",
+  "forgotPasswordSubtitle": "Entre ton e-mail, on t'envoie un lien pour le réinitialiser.",
+  "forgotPasswordEmailLabel": "Adresse e-mail",
+  "forgotPasswordSubmit": "Envoyer le lien",
+  "forgotPasswordBackToLogin": "Retour à la connexion",
+  "forgotPasswordSuccess": "E-mail envoyé ! Vérifie ta boîte de réception.",
+
+  "onboardingConsentMessage": "Avant de commencer, un mot pour le parent ou le tuteur qui accompagne cette inscription !",
+  "onboardingConsentBody": "LearningKids conserve uniquement le prénom, la tranche d'âge, les objectifs d'apprentissage et le temps d'utilisation quotidien (pour le contrôle parental). Aucune publicité, aucune revente de données. Le compte et toutes ses données peuvent être supprimés à tout moment depuis le profil.",
+  "onboardingConsentAccept": "J'accepte, je suis le parent ou le tuteur",
+
+  "onboardingMascotName": "Byte",
+  "onboardingAskName": "Salut ! Moi c'est Byte, ton copain de code.\nComment tu t'appelles ?",
+  "onboardingNameHint": "Ton prénom",
+  "onboardingAskAge": "Ravi de te rencontrer, {name} !\nQuel âge as-tu ?",
+  "@onboardingAskAge": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "onboardingAge4to6": "4-6 ans",
+  "onboardingAge7to9": "7-9 ans",
+  "onboardingAge10to12": "10-12 ans",
+  "onboardingAge13plus": "13 ans et +",
+
+  "onboardingLevelTitle": "As-tu déjà essayé de coder ?",
+  "onboardingLevelBeginner": "Jamais, je débute",
+  "onboardingLevelSomeBasics": "Un peu, je connais les bases",
+  "onboardingLevelComfortable": "Oui, je code déjà des projets",
+
+  "onboardingGoalsTitle": "Que veux-tu créer avec le code ?",
+  "onboardingGoalsSubtitle": "Tu peux choisir plusieurs réponses.",
+  "onboardingGoalWebsite": "Un site web",
+  "onboardingGoalGame": "Un jeu vidéo",
+  "onboardingGoalApp": "Une application mobile",
+  "onboardingGoalAi": "Comprendre l'intelligence artificielle",
+  "onboardingGoalsSubmit": "C'est parti !",
+  "onboardingGoalsErrorEmpty": "Choisis au moins un objectif pour continuer.",
+
+  "onboardingLoadingMessage": "Je prépare ton programme personnalisé...",
+
+  "homeGreeting": "Salut, {name} !",
+  "@homeGreeting": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "homeRecommendedPathLabel": "Ton parcours recommandé",
+  "homeProfileTooltip": "Profil",
+
+  "profileTitle": "Profil",
+  "profileEditProfile": "Modifier le profil",
+  "profileAccountSettings": "Paramètres du compte",
+  "profileNotificationSettings": "Notifications",
+  "profileLanguageSettings": "Langue",
+  "profileAccessibilitySettings": "Accessibilité",
+  "profileParentSpace": "Espace parent",
+  "profileLogOut": "Se déconnecter",
+  "profileDeleteAccount": "Supprimer mon compte",
+  "profileDeleteConfirmTitle": "Supprimer ton compte ?",
+  "profileDeleteConfirmBody": "Cette action est définitive. Toutes tes données seront supprimées.",
+  "profileDeleteConfirmCta": "Oui, supprimer",
+  "profileDeleteReauthRequired": "Reconnecte-toi pour confirmer la suppression de ton compte.",
+
+  "editProfileTitle": "Modifier le profil",
+  "editProfilePseudoLabel": "Pseudo",
+  "editProfileChooseAvatar": "Choisis ton avatar",
+  "editProfileSaved": "Profil mis à jour !",
+  "editProfileErrorEmpty": "Ton pseudo ne peut pas être vide.",
+
+  "parentGateTitle": "Espace parent",
+  "parentGateGrantExtraTitle": "Débloquer plus de temps",
+  "parentGateEnterPinPrompt": "Un parent est présent ? Entre le code PIN pour continuer.",
+  "parentGateCreatePinPrompt": "Crée un code PIN à 4 chiffres pour protéger l'Espace parent.",
+  "parentGateConfirmPinPrompt": "Confirme le code PIN.",
+  "parentGatePinHint": "Code PIN",
+  "parentGateSubmit": "Valider",
+  "parentGateErrorWrongPin": "Code PIN incorrect.",
+  "parentGateErrorInvalidFormat": "Le code doit contenir 4 chiffres.",
+  "parentGateErrorMismatch": "Les deux codes ne correspondent pas.",
+
+  "parentDashboardTitle": "Espace parent",
+  "parentDashboardUsageTitle": "Temps d'utilisation (7 derniers jours)",
+  "parentDashboardTodayMinutes": "Aujourd'hui : {minutes} min",
+  "@parentDashboardTodayMinutes": {
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+  "parentDashboardLimitTitle": "Limite quotidienne",
+  "parentDashboardLimitNone": "Aucune limite définie",
+  "parentDashboardLimitSet": "{minutes} minutes par jour",
+  "@parentDashboardLimitSet": {
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+  "parentDashboardLimitEdit": "Modifier la limite",
+  "parentDashboardLimitDialogTitle": "Limite quotidienne (minutes)",
+  "parentDashboardLimitDialogHint": "Ex : 30",
+  "parentDashboardLimitRemove": "Retirer la limite",
+  "parentDashboardLessonsTitle": "Leçons terminées",
+  "parentDashboardLessonsCount": "{count} leçons terminées au total",
+  "@parentDashboardLessonsCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "parentDashboardBadgesTitle": "Badges obtenus",
+  "parentDashboardBadgesCount": "{unlocked} badges débloqués sur {total}",
+  "@parentDashboardBadgesCount": {
+    "placeholders": {
+      "unlocked": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "parentDashboardLeaderboardToggle": "Classement public",
+  "parentDashboardLeaderboardOn": "Ton enfant apparaît dans le classement public avec son pseudo.",
+  "parentDashboardLeaderboardOff": "Ton enfant n'apparaît pas dans le classement public.",
+  "parentDashboardChangePin": "Changer le code PIN",
+
+  "screenTimeLimitTitle": "Pause bien méritée !",
+  "screenTimeLimitMessage": "Tu as atteint ton temps d'écran pour aujourd'hui. On se retrouve demain pour coder à nouveau !",
+  "screenTimeLimitParentAction": "Je suis un parent, débloquer du temps",
+
+  "homeSeeAllPaths": "Voir tous les parcours",
+
+  "pathsTitle": "Mes parcours",
+  "pathsSubtitle": "Choisis un ou plusieurs parcours à suivre en parallèle.",
+  "pathsActiveLabel": "Actif",
+  "pathsActivateCta": "Commencer ce parcours",
+  "pathsOpenCta": "Ouvrir la roadmap",
+
+  "roadmapModuleLockedMessage": "Termine d'abord : {titles}",
+  "@roadmapModuleLockedMessage": {
+    "placeholders": { "titles": { "type": "String" } }
+  },
+  "roadmapViewCertificate": "Voir mon certificat 🎓",
+
+  "lessonIntroDuration": "Environ {minutes} min",
+  "@lessonIntroDuration": {
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+  "lessonIntroOutlineTitle": "Ce que tu vas apprendre",
+  "lessonIntroStart": "Commencer",
+  "lessonIntroResume": "Continuer",
+  "lessonIntroReread": "Revoir cette leçon",
+  "lessonStepProgress": "Étape {current}/{total}",
+  "@lessonStepProgress": {
+    "placeholders": { "current": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "lessonPrevious": "Précédent",
+  "lessonNext": "Suivant",
+  "lessonRecapTitle": "Résumé",
+  "lessonStartQuiz": "Faire le quiz",
+  "lessonSkipQuizAlreadyDone": "Retour à la roadmap",
+
+  "quizQuestionProgress": "Question {current}/{total}",
+  "@quizQuestionProgress": {
+    "placeholders": { "current": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "quizNext": "Suivant",
+  "quizFinish": "Terminer",
+  "quizReviewLesson": "Revoir la leçon",
+
+  "lessonCompletedTitle": "Bravo !",
+  "lessonCompletedMessage": "Tu as terminé cette leçon avec {score}/{total} bonnes réponses.",
+  "@lessonCompletedMessage": {
+    "placeholders": { "score": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "lessonCompletedBackToRoadmap": "Retour à la roadmap",
+  "lessonTryPracticalExercise": "Essayer en pratique",
+
+  "homeSeeLessonCatalog": "Explorer le catalogue de leçons",
+  "lessonCatalogTitle": "Catalogue de leçons",
+  "lessonCatalogFilterAll": "Tout",
+
+  "homeOpenPlayground": "Ouvrir l'espace de code",
+  "playgroundTitle": "Espace de code",
+  "playgroundRun": "Exécuter",
+  "playgroundConsolePlaceholder": "Appuie sur Exécuter pour voir le résultat ici.",
+  "playgroundConsoleNoOutput": "Ton code ne montre rien pour l'instant. Essaie d'ajouter un print ou un console.log !",
+  "playgroundErrorGenericType": "Erreur",
+  "playgroundErrorAtLine": "Ligne {line} : {type} — {message}",
+  "@playgroundErrorAtLine": {
+    "placeholders": {
+      "line": { "type": "int" },
+      "type": { "type": "String" },
+      "message": { "type": "String" }
+    }
+  },
+
+  "playgroundOpenAssistant": "Demander à l'assistant",
+  "playgroundShareSnippet": "Partager avec un ami",
+  "playgroundShareMessage": "Regarde mon code LearningKids ! Entre ce code dans l'app : {id}",
+  "@playgroundShareMessage": {
+    "placeholders": {
+      "id": { "type": "String" }
+    }
+  },
+  "playgroundViewSharedSnippet": "Voir un code partagé",
+  "playgroundSnippetCodeHint": "Code du snippet",
+  "sharedSnippetTitle": "Code partagé",
+  "sharedSnippetNotFound": "Ce code partagé est introuvable.",
+  "sharedSnippetBy": "Code de {pseudo} · {language}",
+  "@sharedSnippetBy": {
+    "placeholders": {
+      "pseudo": { "type": "String" },
+      "language": { "type": "String" }
+    }
+  },
+  "assistantTitle": "Assistant IA",
+  "assistantActionExplain": "Expliquer ce code",
+  "assistantActionFindBug": "Trouver l'erreur",
+  "assistantActionImprove": "Améliorer mon code",
+  "assistantEmptyState": "Choisis une action ci-dessus ou pose une question sur ton code !",
+  "assistantInputHint": "Pose ta question ici…",
+  "assistantSend": "Envoyer",
+  "assistantSuggestionLabel": "Code proposé :",
+  "assistantAccept": "Appliquer",
+  "assistantReject": "Ignorer",
+  "assistantErrorGeneric": "L'assistant n'a pas pu répondre, réessaie dans un instant.",
+
+  "homeOpenProjects": "Mes projets",
+  "myProjectsTitle": "Mes projets",
+  "myProjectsNewProject": "Nouveau projet",
+  "myProjectsEmpty": "Tu n'as pas encore de projet. Crée-en un à partir d'un modèle guidé !",
+  "myProjectsPublishedBadge": "publié",
+  "projectTemplatesTitle": "Modèles de projets",
+  "projectEditorTitle": "Mon projet",
+  "projectRenameTitle": "Renommer le projet",
+  "projectCategoryPickerTitle": "Choisir une catégorie",
+  "projectDeleteConfirmTitle": "Supprimer ce projet ? Cette action est définitive.",
+  "projectDeleteConfirm": "Supprimer",
+  "projectFeedbackAction": "Avis de l'IA",
+  "projectFeedbackTitle": "Avis de l'assistant IA",
+  "projectFeedbackEmpty": "L'assistant analyse ton projet…",
+  "projectPublish": "Publier dans mon portfolio",
+  "projectUnpublish": "Retirer du portfolio",
+
+  "portfolioTitle": "Portfolio",
+  "portfolioEmpty": "Aucun projet publié pour l'instant.",
+  "portfolioPublicToggle": "Portfolio public",
+  "portfolioPublicOn": "N'importe qui avec ton code peut voir ton portfolio.",
+  "portfolioPublicOff": "Ton portfolio est privé : personne ne peut le voir.",
+  "portfolioShare": "Partager mon code",
+  "portfolioShareMessage": "Regarde mon portfolio LearningKids ! Entre ce code dans l'app : {uid}",
+  "@portfolioShareMessage": {
+    "placeholders": {
+      "uid": { "type": "String" }
+    }
+  },
+  "portfolioViewFriend": "Voir le portfolio d'un ami",
+  "portfolioFriendCodeHint": "Code de ton ami",
+  "portfolioReportTitle": "Signaler ce projet",
+  "portfolioReportReasonHint": "Explique en quelques mots le problème",
+  "portfolioReportSubmit": "Envoyer",
+  "portfolioReportSent": "Signalement envoyé, merci de nous avoir prévenus.",
+
+  "homeOpenBadges": "Voir mes badges",
+  "homeOpenLeaderboard": "Voir le classement",
+  "homeOpenChallenge": "Défi de la semaine",
+  "streakDaysCount": "🔥 {days} jours de suite",
+  "@streakDaysCount": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
+  "streakAtRiskWarning": "Ton streak est en danger ! Apprends aujourd'hui pour le garder.",
+  "levelLabel": "Niveau {level} · {xpIntoLevel}/{xpPerLevel} XP",
+  "@levelLabel": {
+    "placeholders": {
+      "level": { "type": "int" },
+      "xpIntoLevel": { "type": "int" },
+      "xpPerLevel": { "type": "int" }
+    }
+  },
+
+  "badgesTitle": "Mes badges",
+
+  "leaderboardTitle": "Classement",
+  "leaderboardEmpty": "Personne n'a encore de score. Sois le·la premier·ère !",
+
+  "challengeTitle": "Défi de la semaine",
+  "challengeMarkCompleted": "J'ai relevé le défi !",
+  "challengeCompleted": "Défi relevé cette semaine ✅",
+  "challengeLeaderboardTitle": "Qui a relevé le défi ?",
+  "challengeLeaderboardEmpty": "Personne n'a encore relevé le défi cette semaine. Sois le·la premier·ère !",
+
+  "gitSimulatorTitle": "Simulateur Git",
+  "gitSimulatorTryAgain": "Ce n'est pas la bonne commande, essaie encore !",
+  "gitSimulatorFinished": "Bravo, tu as terminé le scénario Git !",
+  "gitSimulatorRestart": "Recommencer",
+
+  "certificateTitle": "Mon certificat",
+  "certificateHeading": "Certificat de réussite",
+  "certificateBody": "a terminé avec succès le parcours « {pathTitle} ».",
+  "@certificateBody": {
+    "placeholders": {
+      "pathTitle": { "type": "String" }
+    }
+  },
+  "certificateShare": "Partager mon certificat",
+
+  "homeOpenDashboard": "Mon tableau de bord",
+  "dashboardTitle": "Ma progression",
+  "dashboardLessonsCompleted": "{count} leçons terminées",
+  "@dashboardLessonsCompleted": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashboardWeeklySummaryTitle": "Cette semaine",
+  "dashboardWeeklySummaryBody": "{lessons} leçons terminées, {xp} XP gagnés et {projects} projets publiés.",
+  "@dashboardWeeklySummaryBody": {
+    "placeholders": {
+      "lessons": { "type": "int" },
+      "xp": { "type": "int" },
+      "projects": { "type": "int" }
+    }
+  },
+  "dashboardGoalTitle": "Ton objectif",
+  "dashboardPathsTitle": "Tes parcours",
+  "dashboardModulesCount": "{completed}/{total} modules",
+  "@dashboardModulesCount": {
+    "placeholders": {
+      "completed": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "dashboardSkillsTitle": "Tes compétences",
+  "dashboardWeakModulesTitle": "Notions à retravailler",
+  "dashboardWeakModulesSubtitle": "Ces leçons ont eu un score de quiz un peu faible — un petit rappel ne fera pas de mal !",
+  "dashboardWeakModuleScore": "Score : {correct}/{total}",
+  "@dashboardWeakModuleScore": {
+    "placeholders": {
+      "correct": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "dashboardReview": "Revoir",
+  "dashboardUsageTitle": "Temps d'apprentissage (7 derniers jours)",
+
+  "notificationSettingsTitle": "Notifications",
+  "notificationSettingsDailyReminder": "Rappel quotidien",
+  "notificationSettingsDailyReminderSubtitle": "Une notification pour penser à t'entraîner et garder ton streak.",
+  "notificationSettingsChangeTime": "Changer l'heure ({time})",
+  "@notificationSettingsChangeTime": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "notificationSettingsRewards": "Notifications de récompenses",
+  "notificationSettingsRewardsSubtitle": "Une notification quand tu débloques un badge, un certificat ou un niveau.",
+  "notificationSettingsPermissionDenied": "Les notifications sont désactivées pour LearningKids dans les réglages de ton appareil.",
+
+  "accountSuspendedTitle": "Compte suspendu",
+  "accountSuspendedMessage": "Ton compte a été temporairement suspendu. Contacte le support si tu penses que c'est une erreur.",
+
+  "adminHomeTitle": "Back-office",
+  "adminModerationQueueTitle": "File de modération",
+  "adminModerationQueueEmpty": "Aucun signalement en attente.",
+  "adminModerationQueueReason": "Motif : {reason}",
+  "@adminModerationQueueReason": {
+    "placeholders": {
+      "reason": { "type": "String" }
+    }
+  },
+  "adminModerationApprove": "Accepter",
+  "adminModerationReject": "Rejeter",
+  "adminAccountsTitle": "Comptes",
+  "adminAccountsEmpty": "Aucun compte pour l'instant.",
+  "adminAccountsSuspended": "Suspendu",
+  "adminAccountsSupportNotes": "Note de support",
+
+  "languageSettingsTitle": "Langue",
+  "languageSettingsSystem": "Suivre l'appareil",
+  "languageSettingsFrench": "Français",
+  "languageSettingsEnglish": "English",
+
+  "accessibilitySettingsTitle": "Accessibilité",
+  "accessibilityTextSizeTitle": "Taille du texte",
+  "accessibilityTextSizeSmall": "Petite",
+  "accessibilityTextSizeNormal": "Normale",
+  "accessibilityTextSizeLarge": "Grande",
+  "accessibilityTextSizeExtraLarge": "Très grande",
+  "accessibilityReadAloudStart": "Lire à voix haute",
+  "accessibilityReadAloudStop": "Arrêter la lecture"
+}

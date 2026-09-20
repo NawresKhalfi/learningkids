@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+  Host page for the plain-JavaScript runtime (EP05, US26/US27). Fully
+  self-contained (no external resources), loaded via
+  WebViewController.loadFlutterAsset so it works offline (US31).
+-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <script>
+      function runJavaScript(requestId, code) {
+        const logs = [];
+        const originalLog = console.log;
+        console.log = function () {
+          logs.push(Array.prototype.map.call(arguments, String).join(' '));
+        };
+        try {
+          new Function(code)();
+          console.log = originalLog;
+          FlutterChannel.postMessage(
+            JSON.stringify({
+              event: 'result',
+              requestId: requestId,
+              stdout: logs.join('\n'),
+              stderr: '',
+              error: null,
+            })
+          );
+        } catch (e) {
+          console.log = originalLog;
+          FlutterChannel.postMessage(
+            JSON.stringify({
+              event: 'result',
+              requestId: requestId,
+              stdout: logs.join('\n'),
+              stderr: '',
+              error: e && e.message ? e.message : String(e),
+              errorName: e && e.name ? e.name : null,
+              stack: e && e.stack ? e.stack : null,
+            })
+          );
+        }
+      }
+
+      FlutterChannel.postMessage(JSON.stringify({ event: 'ready' }));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "713101106786",
+    "project_id": "learningkids-ac360",
+    "storage_bucket": "learningkids-ac360.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713101106786:android:34ddd7127c0d13c9283b3b",
+        "android_client_info": {
+          "package_name": "com.example.learningkids"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-_Fb3qz7E7myigfBJdQyhVmGUJl_Apkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

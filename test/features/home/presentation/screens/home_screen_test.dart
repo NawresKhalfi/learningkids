@@ -10,7 +10,6 @@ import 'package:learningkids/features/onboarding/domain/recommended_path.dart';
 import 'package:learningkids/features/profile/application/profile_controller.dart';
 import 'package:learningkids/features/profile/domain/avatar.dart';
 import 'package:learningkids/features/profile/domain/user_profile.dart';
-import 'package:learningkids/l10n/gen/app_localizations.dart';
 
 import '../../../../support/pump_localized_widget.dart';
 
@@ -35,13 +34,11 @@ void main() {
         gamificationProfileProvider.overrideWith((ref) => Stream.value(const GamificationProfile())),
       ],
     );
-    final l10n = AppLocalizations.of(tester.element(find.byType(HomeScreen)));
-
     final info = learningPathInfo(primaryPathFor(profile.recommendedPath));
 
-    expect(find.text(l10n.homeGreeting('Léo')), findsOneWidget);
+    expect(find.text('Salut, Léo !'), findsOneWidget);
     expect(find.text('${info.emoji} ${info.title}'), findsOneWidget);
-    expect(find.text(l10n.homeSeeAllPaths), findsOneWidget);
-    expect(find.text(l10n.homeSeeLessonCatalog), findsOneWidget);
+    expect(find.text('Tous les parcours'), findsOneWidget);
+    expect(find.text('Catalogue de leçons'), findsOneWidget);
   });
 }

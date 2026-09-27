@@ -414,7 +414,7 @@ class _Tile extends StatelessWidget {
     borderRadius: BorderRadius.circular(22),
     child: _Card(
       radius: 22,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

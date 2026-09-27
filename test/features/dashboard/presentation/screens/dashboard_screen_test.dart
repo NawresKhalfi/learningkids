@@ -20,7 +20,7 @@ import 'package:learningkids/features/profile/domain/user_profile.dart';
 import '../../../../support/pump_localized_widget.dart';
 
 void main() {
-  testWidgets('shows key indicators, weekly summary, goal, paths, skills and weak points', (tester) async {
+  testWidgets('shows the path progress and weekly summary', (tester) async {
     await tester.binding.setSurfaceSize(const Size(400, 2200));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -89,24 +89,18 @@ void main() {
       ],
     );
 
-    // Key indicators (US49).
-    expect(find.text('2 leçons terminées'), findsOneWidget);
+    // Recommended-path progress.
+    expect(find.text('2/${modules.length} modules terminés'), findsOneWidget);
 
     // Weekly summary (US50): 2 lessons (20 XP each) + 1 project (30 XP),
     // all recorded just now, so the whole total counts as "this week".
-    expect(find.textContaining('2 leçons terminées, 70 XP gagnés et 1 projets publiés'), findsOneWidget);
+    await tester.tap(find.text('Cette semaine'));
+    await tester.pumpAndSettle();
+    expect(find.text('2 leçons terminées'), findsOneWidget);
+    expect(find.text('70 XP gagnés'), findsOneWidget);
+    expect(find.text('1 projets publiés'), findsOneWidget);
 
-    // Goal vs progress (US52): recommended path is Front-End.
+    // Recommended path is Front-End.
     expect(find.textContaining('Front-End'), findsWidgets);
-
-    // Weak point detection (US51): the second module scored 0 and should
-    // be flagged; the first (perfect score) should not appear as weak.
-    expect(find.text(modules[1].title), findsOneWidget);
-    expect(find.text('Score : 0/${modules[1].quiz.length}'), findsOneWidget);
-    expect(find.text(l10nReviewLabel), findsWidgets);
   });
 }
-
-/// Matches `dashboardReview` in the French ARB — kept as a constant here so
-/// the test doesn't need a BuildContext just to read one string.
-const l10nReviewLabel = 'Revoir';

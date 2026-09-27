@@ -537,6 +537,10 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get playgroundShareFailed =>
+      'Impossible de partager le code pour le moment. Réessaie dans un instant.';
+
+  @override
   String get playgroundViewSharedSnippet => 'Voir un code partagé';
 
   @override

@@ -235,6 +235,7 @@
       "id": { "type": "String" }
     }
   },
+  "playgroundShareFailed": "Impossible de partager le code pour le moment. Réessaie dans un instant.",
   "playgroundViewSharedSnippet": "Voir un code partagé",
   "playgroundSnippetCodeHint": "Code du snippet",
   "sharedSnippetTitle": "Code partagé",

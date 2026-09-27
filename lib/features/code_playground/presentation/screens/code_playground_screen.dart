@@ -46,10 +46,16 @@ class _CodePlaygroundScreenState extends State<CodePlaygroundScreen> {
         final l10n = AppLocalizations.of(context);
         return AlertDialog(
           title: Text(l10n.playgroundViewSharedSnippet),
-          content: TextField(controller: controller, decoration: InputDecoration(hintText: l10n.playgroundSnippetCodeHint)),
+          content: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              hintText: l10n.playgroundSnippetCodeHint,
+            ),
+          ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(controller.text.trim()),
+              onPressed: () =>
+                  Navigator.of(context).pop(controller.text.trim()),
               child: Text(l10n.commonContinue),
             ),
           ],
@@ -79,7 +85,10 @@ class _CodePlaygroundScreenState extends State<CodePlaygroundScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg,
+                vertical: AppSpacing.sm,
+              ),
               child: _LanguageTabs(
                 selected: _selected,
                 onSelect: (language) => setState(() => _selected = language),
@@ -119,21 +128,26 @@ class _LanguageTabs extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: language == selected ? AppColors.brandBlue : AppColors.surface,
+                  color: language == selected
+                      ? AppColors.brandBlue
+                      : AppColors.surface,
                   borderRadius: BorderRadius.circular(AppRadii.chip),
                   border: Border.all(color: AppColors.ink, width: 1.5),
                 ),
                 child: Text(
                   programmingLanguageTitle(language),
                   style: AppTextStyles.body.copyWith(
-                    color: language == selected ? AppColors.surface : AppColors.ink,
+                    color: language == selected
+                        ? AppColors.surface
+                        : AppColors.ink,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
               ),
             ),
           ),
-          if (language != ProgrammingLanguage.values.last) const SizedBox(width: AppSpacing.sm),
+          if (language != ProgrammingLanguage.values.last)
+            const SizedBox(width: AppSpacing.sm),
         ],
       ],
     );
@@ -153,7 +167,8 @@ class _LanguageEditorBody extends ConsumerWidget {
     return codeAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (_, _) => Center(child: Text(l10n.commonSomethingWentWrong)),
-      data: (initialCode) => _EditorBody(language: language, initialCode: initialCode),
+      data: (initialCode) =>
+          _EditorBody(language: language, initialCode: initialCode),
     );
   }
 }
@@ -185,7 +200,9 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
   }
 
   void _onTextChanged() {
-    ref.read(codeSnippetControllerProvider.notifier).onCodeChanged(widget.language, _controller.text);
+    ref
+        .read(codeSnippetControllerProvider.notifier)
+        .onCodeChanged(widget.language, _controller.text);
   }
 
   @override
@@ -216,7 +233,10 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
   Future<void> _openAssistant() async {
     final acceptedCode = await context.push<String>(
       AppRoutes.codeAssistant,
-      extra: CodeAssistantScreen(language: widget.language, code: _controller.text),
+      extra: CodeAssistantScreen(
+        language: widget.language,
+        code: _controller.text,
+      ),
     );
     if (acceptedCode != null && mounted) {
       _controller.text = acceptedCode;
@@ -225,11 +245,20 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
 
   Future<void> _shareSnippet() async {
     final l10n = AppLocalizations.of(context);
-    final id = await ref
-        .read(sharedSnippetControllerProvider.notifier)
-        .shareSnippet(language: widget.language, code: _controller.text);
-    if (!mounted) return;
-    await SharePlus.instance.share(ShareParams(text: l10n.playgroundShareMessage(id)));
+    try {
+      final id = await ref
+          .read(sharedSnippetControllerProvider.notifier)
+          .shareSnippet(language: widget.language, code: _controller.text);
+      if (!mounted) return;
+      await SharePlus.instance.share(
+        ShareParams(text: l10n.playgroundShareMessage(id)),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.playgroundShareFailed)));
+    }
   }
 
   @override
@@ -237,7 +266,9 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
     final l10n = AppLocalizations.of(context);
     final runtime = switch (widget.language) {
       ProgrammingLanguage.python => ref.watch(pythonRuntimeServiceProvider),
-      ProgrammingLanguage.javascript => ref.watch(javascriptRuntimeServiceProvider),
+      ProgrammingLanguage.javascript => ref.watch(
+        javascriptRuntimeServiceProvider,
+      ),
       ProgrammingLanguage.html => null,
     };
 
@@ -246,7 +277,8 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (runtime != null) HiddenRuntimeWebView(controller: runtime.controller),
+          if (runtime != null)
+            HiddenRuntimeWebView(controller: runtime.controller),
           CodeSymbolToolbar(controller: _controller),
           const SizedBox(height: AppSpacing.sm),
           Expanded(flex: 3, child: CodeEditorField(controller: _controller)),
@@ -283,13 +315,13 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
             flex: 2,
             child: widget.language == ProgrammingLanguage.html
                 ? (_htmlOutput == null
-                    ? Center(
-                        child: Text(
-                          l10n.playgroundConsolePlaceholder,
-                          style: AppTextStyles.bodyMuted,
-                        ),
-                      )
-                    : HtmlPreviewView(html: _htmlOutput!))
+                      ? Center(
+                          child: Text(
+                            l10n.playgroundConsolePlaceholder,
+                            style: AppTextStyles.bodyMuted,
+                          ),
+                        )
+                      : HtmlPreviewView(html: _htmlOutput!))
                 : ConsoleOutputView(language: widget.language, result: _result),
           ),
         ],

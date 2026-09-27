@@ -1046,6 +1046,12 @@ abstract class AppLocalizations {
   /// **'Regarde mon code LearningKids ! Entre ce code dans l\'app : {id}'**
   String playgroundShareMessage(String id);
 
+  /// No description provided for @playgroundShareFailed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de partager le code pour le moment. Réessaie dans un instant.'**
+  String get playgroundShareFailed;
+
   /// No description provided for @playgroundViewSharedSnippet.
   ///
   /// In fr, this message translates to:

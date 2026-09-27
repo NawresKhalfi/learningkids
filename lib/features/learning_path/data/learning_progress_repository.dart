@@ -48,7 +48,7 @@ class LearningProgressRepository {
   }) =>
       _doc(uid).set({
         completedModulesField(path): FieldValue.arrayUnion([moduleId]),
-        if (correctAnswers != null) quizScoreField(moduleId): correctAnswers,
+        quizScoreField(moduleId): ?correctAnswers,
       }, SetOptions(merge: true));
 
   /// Saves where in the lesson the learner last stopped, so reopening it

@@ -21,15 +21,17 @@ class ReadAloudButton extends ConsumerStatefulWidget {
 
 class _ReadAloudButtonState extends ConsumerState<ReadAloudButton> {
   bool _isSpeaking = false;
+  TtsService? _tts;
 
   @override
   void dispose() {
-    if (_isSpeaking) ref.read(ttsServiceProvider).stop();
+    if (_isSpeaking) _tts?.stop();
     super.dispose();
   }
 
   Future<void> _toggle() async {
     final tts = ref.read(ttsServiceProvider);
+    _tts = tts;
     if (_isSpeaking) {
       await tts.stop();
       if (mounted) setState(() => _isSpeaking = false);

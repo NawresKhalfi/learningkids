@@ -57,7 +57,9 @@ void main() {
     expect(find.text(l10n.signUpErrorWeakPassword), findsOneWidget);
   });
 
-  testWidgets('valid input creates the account with no error shown', (tester) async {
+  testWidgets('valid input creates the account with no error shown', (
+    tester,
+  ) async {
     final l10n = await pump(tester);
 
     await tester.enterText(find.byType(TextField).at(0), 'kid@example.com');
@@ -69,5 +71,12 @@ void main() {
     expect(find.text(l10n.signUpErrorInvalidEmail), findsNothing);
     expect(find.text(l10n.signUpErrorPasswordMismatch), findsNothing);
     expect(find.text(l10n.signUpErrorWeakPassword), findsNothing);
+  });
+
+  testWidgets('shows Google sign-in but not Apple sign-in', (tester) async {
+    final l10n = await pump(tester);
+
+    expect(find.text(l10n.authContinueWithGoogle), findsOneWidget);
+    expect(find.byIcon(Icons.apple), findsNothing);
   });
 }

@@ -112,14 +112,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       .read(authControllerProvider.notifier)
                       .signInWithGoogle();
                   if (!mounted || failure == null) return;
-                  setState(() => _errorText = signUpFailureMessage(l10n, failure));
-                },
-                onApplePressed: () async {
-                  final failure = await ref
-                      .read(authControllerProvider.notifier)
-                      .signInWithApple();
-                  if (!mounted || failure == null) return;
-                  setState(() => _errorText = signUpFailureMessage(l10n, failure));
+                  setState(
+                    () => _errorText = signUpFailureMessage(l10n, failure),
+                  );
                 },
               ),
               const SizedBox(height: AppSpacing.xl),

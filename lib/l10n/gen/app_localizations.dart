@@ -188,12 +188,6 @@ abstract class AppLocalizations {
   /// **'Continuer avec Google'**
   String get authContinueWithGoogle;
 
-  /// No description provided for @authContinueWithApple.
-  ///
-  /// In fr, this message translates to:
-  /// **'Continuer avec Apple'**
-  String get authContinueWithApple;
-
   /// No description provided for @signUpTitle.
   ///
   /// In fr, this message translates to:

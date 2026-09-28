@@ -56,9 +56,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get authContinueWithGoogle => 'Continuer avec Google';
 
   @override
-  String get authContinueWithApple => 'Continuer avec Apple';
-
-  @override
   String get signUpTitle => 'Inscription';
 
   @override

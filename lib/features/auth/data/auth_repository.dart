@@ -1,21 +1,16 @@
-import 'dart:convert';
-import 'dart:math';
-
-import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../domain/app_user.dart';
 
-/// Wraps `firebase_auth` plus the Google/Apple native sign-in SDKs behind a
+/// Wraps `firebase_auth` plus the Google native sign-in SDK behind a
 /// small surface the rest of the app depends on, so features never touch
 /// the Firebase SDK types directly (see `domain/app_user.dart`).
 class AuthRepository {
   AuthRepository({FirebaseAuth? firebaseAuth, GoogleSignIn? googleSignIn})
-      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn();
+    : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+      _googleSignIn = googleSignIn ?? GoogleSignIn();
 
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
@@ -35,7 +30,11 @@ class AuthRepository {
 
   AppUser? _toAppUser(User? user) => user == null
       ? null
-      : AppUser(uid: user.uid, email: user.email, displayName: user.displayName);
+      : AppUser(
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+        );
 
   Future<void> signUpWithEmail({
     required String email,
@@ -77,26 +76,6 @@ class AuthRepository {
     await _firebaseAuth.signInWithCredential(credential);
   }
 
-  Future<void> signInWithApple() async {
-    final rawNonce = _generateNonce();
-    final nonce = sha256.convert(utf8.encode(rawNonce)).toString();
-
-    final appleCredential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-      nonce: nonce,
-    );
-
-    final credential = OAuthProvider('apple.com').credential(
-      idToken: appleCredential.identityToken,
-      rawNonce: rawNonce,
-      accessToken: appleCredential.authorizationCode,
-    );
-    await _firebaseAuth.signInWithCredential(credential);
-  }
-
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
     // Best-effort: throws if the user never signed in through Google (or,
@@ -112,17 +91,11 @@ class AuthRepository {
   Future<void> deleteAccount() async {
     await _firebaseAuth.currentUser?.delete();
   }
-
-  String _generateNonce([int length = 32]) {
-    const charset =
-        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
-    final random = Random.secure();
-    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
-        .join();
-  }
 }
 
-final authRepositoryProvider = Provider<AuthRepository>((ref) => AuthRepository());
+final authRepositoryProvider = Provider<AuthRepository>(
+  (ref) => AuthRepository(),
+);
 
 final authStateChangesProvider = StreamProvider<AppUser?>(
   (ref) => ref.watch(authRepositoryProvider).authStateChanges(),

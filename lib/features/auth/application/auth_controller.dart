@@ -22,24 +22,30 @@ class AuthController extends Notifier<AsyncValue<void>> {
     }
   }
 
-  Future<AuthFailure?> signUp({required String email, required String password}) =>
-      _run(() => ref
-          .read(authRepositoryProvider)
-          .signUpWithEmail(email: email, password: password));
+  Future<AuthFailure?> signUp({
+    required String email,
+    required String password,
+  }) => _run(
+    () => ref
+        .read(authRepositoryProvider)
+        .signUpWithEmail(email: email, password: password),
+  );
 
-  Future<AuthFailure?> signIn({required String email, required String password}) =>
-      _run(() => ref
-          .read(authRepositoryProvider)
-          .signInWithEmail(email: email, password: password));
+  Future<AuthFailure?> signIn({
+    required String email,
+    required String password,
+  }) => _run(
+    () => ref
+        .read(authRepositoryProvider)
+        .signInWithEmail(email: email, password: password),
+  );
 
   Future<AuthFailure?> signInWithGoogle() =>
       _run(() => ref.read(authRepositoryProvider).signInWithGoogle());
 
-  Future<AuthFailure?> signInWithApple() =>
-      _run(() => ref.read(authRepositoryProvider).signInWithApple());
-
-  Future<AuthFailure?> sendPasswordResetEmail(String email) =>
-      _run(() => ref.read(authRepositoryProvider).sendPasswordResetEmail(email));
+  Future<AuthFailure?> sendPasswordResetEmail(String email) => _run(
+    () => ref.read(authRepositoryProvider).sendPasswordResetEmail(email),
+  );
 
   Future<AuthFailure?> signOut() =>
       _run(() => ref.read(authRepositoryProvider).signOut());

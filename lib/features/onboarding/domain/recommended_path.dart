@@ -1,7 +1,7 @@
 import 'coding_level.dart';
 import 'learning_goal.dart';
 
-enum RecommendedPath { discovery, frontEnd, python, fullStack }
+enum RecommendedPath { discovery, frontEnd, python, mobile, fullStack }
 
 /// Turns the level test (US03) and chosen goals (US05) into the learning
 /// path recommended on the home screen. Pure so it is unit-testable without
@@ -11,6 +11,12 @@ RecommendedPath resolveRecommendedPath(
   CodingLevel level,
   Set<LearningGoal> goals,
 ) {
+  // A chosen project goal is more specific than the general level. In
+  // particular, learners asking to create a mobile app should not be sent to
+  // the unrelated full-stack roadmap just because they already know basics.
+  if (goals.contains(LearningGoal.mobileApp)) {
+    return RecommendedPath.mobile;
+  }
   switch (level) {
     case CodingLevel.comfortable:
       return RecommendedPath.fullStack;

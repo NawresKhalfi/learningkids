@@ -2,6 +2,7 @@ import 'curriculum/backend_curriculum.dart';
 import 'curriculum/collaboration_curriculum.dart';
 import 'curriculum/front_end_curriculum.dart';
 import 'curriculum/full_stack_curriculum.dart';
+import 'curriculum/mobile_curriculum.dart';
 import 'curriculum/python_curriculum.dart';
 import 'learning_path.dart';
 import 'module.dart';
@@ -13,6 +14,8 @@ List<Module> curriculumFor(LearningPath path) {
       return frontEndCurriculum;
     case LearningPath.python:
       return pythonCurriculum;
+    case LearningPath.mobile:
+      return mobileCurriculum;
     case LearningPath.fullStack:
       return fullStackCurriculum;
     case LearningPath.backend:
@@ -27,9 +30,11 @@ List<Module> curriculumFor(LearningPath path) {
 final List<Module> allModules = [
   ...frontEndCurriculum,
   ...pythonCurriculum,
+  ...mobileCurriculum,
   ...fullStackCurriculum,
   ...backendCurriculum,
   ...collaborationCurriculum,
 ];
 
-Module moduleById(String id) => allModules.firstWhere((module) => module.id == id);
+Module moduleById(String id) =>
+    allModules.firstWhere((module) => module.id == id);

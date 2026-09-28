@@ -5,6 +5,18 @@ import 'package:learningkids/features/onboarding/domain/recommended_path.dart';
 
 void main() {
   group('resolveRecommendedPath', () {
+    test(
+      'mobile-app goal recommends the mobile development path at every level',
+      () {
+        for (final level in CodingLevel.values) {
+          expect(
+            resolveRecommendedPath(level, {LearningGoal.mobileApp}),
+            RecommendedPath.mobile,
+          );
+        }
+      },
+    );
+
     test('comfortable level always recommends full-stack', () {
       expect(
         resolveRecommendedPath(CodingLevel.comfortable, {}),
@@ -18,17 +30,18 @@ void main() {
 
     test('beginner level always recommends discovery', () {
       expect(
-        resolveRecommendedPath(CodingLevel.beginner, {LearningGoal.artificialIntelligence}),
+        resolveRecommendedPath(CodingLevel.beginner, {
+          LearningGoal.artificialIntelligence,
+        }),
         RecommendedPath.discovery,
       );
     });
 
     test('some-basics level with AI goal recommends python', () {
       expect(
-        resolveRecommendedPath(
-          CodingLevel.someBasics,
-          {LearningGoal.artificialIntelligence},
-        ),
+        resolveRecommendedPath(CodingLevel.someBasics, {
+          LearningGoal.artificialIntelligence,
+        }),
         RecommendedPath.python,
       );
     });

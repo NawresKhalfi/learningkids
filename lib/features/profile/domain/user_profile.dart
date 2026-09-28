@@ -37,30 +37,41 @@ class UserProfile {
   /// app never re-checks it after account creation.
   final DateTime consentGivenAt;
 
-  UserProfile copyWith({String? pseudo, Avatar? avatar, bool? portfolioPublic}) => UserProfile(
-        uid: uid,
-        pseudo: pseudo ?? this.pseudo,
-        avatar: avatar ?? this.avatar,
-        ageRange: ageRange,
-        codingLevel: codingLevel,
-        goals: goals,
-        recommendedPath: recommendedPath,
-        consentGivenAt: consentGivenAt,
-        portfolioPublic: portfolioPublic ?? this.portfolioPublic,
-      );
+  UserProfile copyWith({
+    String? pseudo,
+    Avatar? avatar,
+    bool? portfolioPublic,
+  }) => UserProfile(
+    uid: uid,
+    pseudo: pseudo ?? this.pseudo,
+    avatar: avatar ?? this.avatar,
+    ageRange: ageRange,
+    codingLevel: codingLevel,
+    goals: goals,
+    recommendedPath: recommendedPath,
+    consentGivenAt: consentGivenAt,
+    portfolioPublic: portfolioPublic ?? this.portfolioPublic,
+  );
 
   Map<String, dynamic> toMap() => {
-        'pseudo': pseudo,
-        'avatarId': avatar.name,
-        'ageRange': ageRange.name,
-        'codingLevel': codingLevel.name,
-        'goals': goals.map((goal) => goal.name).toList(),
-        'recommendedPath': recommendedPath.name,
-        'consentGivenAt': consentGivenAt.toIso8601String(),
-        'portfolioPublic': portfolioPublic,
-      };
+    'pseudo': pseudo,
+    'avatarId': avatar.name,
+    'ageRange': ageRange.name,
+    'codingLevel': codingLevel.name,
+    'goals': goals.map((goal) => goal.name).toList(),
+    'recommendedPath': recommendedPath.name,
+    'consentGivenAt': consentGivenAt.toIso8601String(),
+    'portfolioPublic': portfolioPublic,
+  };
 
   static UserProfile fromMap(String uid, Map<String, dynamic> map) {
+    final goals = ((map['goals'] as List<dynamic>?) ?? [])
+        .map((id) => LearningGoal.values.firstWhere((g) => g.name == id))
+        .toSet();
+    final storedRecommendedPath = RecommendedPath.values.firstWhere(
+      (value) => value.name == map['recommendedPath'],
+      orElse: () => RecommendedPath.discovery,
+    );
     return UserProfile(
       uid: uid,
       pseudo: map['pseudo'] as String? ?? '',
@@ -73,14 +84,14 @@ class UserProfile {
         (value) => value.name == map['codingLevel'],
         orElse: () => CodingLevel.beginner,
       ),
-      goals: ((map['goals'] as List<dynamic>?) ?? [])
-          .map((id) => LearningGoal.values.firstWhere((g) => g.name == id))
-          .toSet(),
-      recommendedPath: RecommendedPath.values.firstWhere(
-        (value) => value.name == map['recommendedPath'],
-        orElse: () => RecommendedPath.discovery,
-      ),
-      consentGivenAt: DateTime.tryParse(map['consentGivenAt'] as String? ?? '') ??
+      goals: goals,
+      // Profiles created before the mobile path existed may still store
+      // `fullStack`; their explicit mobile goal is more accurate.
+      recommendedPath: goals.contains(LearningGoal.mobileApp)
+          ? RecommendedPath.mobile
+          : storedRecommendedPath,
+      consentGivenAt:
+          DateTime.tryParse(map['consentGivenAt'] as String? ?? '') ??
           DateTime.fromMillisecondsSinceEpoch(0),
       portfolioPublic: map['portfolioPublic'] as bool? ?? false,
     );

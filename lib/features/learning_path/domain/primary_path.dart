@@ -12,6 +12,8 @@ LearningPath primaryPathFor(RecommendedPath recommended) {
       return LearningPath.frontEnd;
     case RecommendedPath.python:
       return LearningPath.python;
+    case RecommendedPath.mobile:
+      return LearningPath.mobile;
     case RecommendedPath.fullStack:
       return LearningPath.fullStack;
   }

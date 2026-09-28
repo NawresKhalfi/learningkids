@@ -31,14 +31,17 @@ void main() {
     expect(restored.portfolioPublic, isFalse);
   });
 
-  test('portfolioPublic defaults to false and round-trips once enabled (US40)', () {
-    expect(profile.portfolioPublic, isFalse);
+  test(
+    'portfolioPublic defaults to false and round-trips once enabled (US40)',
+    () {
+      expect(profile.portfolioPublic, isFalse);
 
-    final public = profile.copyWith(portfolioPublic: true);
-    final restored = UserProfile.fromMap(public.uid, public.toMap());
+      final public = profile.copyWith(portfolioPublic: true);
+      final restored = UserProfile.fromMap(public.uid, public.toMap());
 
-    expect(restored.portfolioPublic, isTrue);
-  });
+      expect(restored.portfolioPublic, isTrue);
+    },
+  );
 
   test('fromMap falls back to sane defaults for missing fields', () {
     final restored = UserProfile.fromMap('uid-2', const {});
@@ -50,6 +53,19 @@ void main() {
     expect(restored.goals, isEmpty);
     expect(restored.recommendedPath, RecommendedPath.discovery);
   });
+
+  test(
+    'a legacy full-stack recommendation with a mobile goal opens mobile',
+    () {
+      final restored = UserProfile.fromMap('uid-mobile', {
+        ...profile.toMap(),
+        'goals': [LearningGoal.mobileApp.name],
+        'recommendedPath': RecommendedPath.fullStack.name,
+      });
+
+      expect(restored.recommendedPath, RecommendedPath.mobile);
+    },
+  );
 
   test('copyWith only changes pseudo/avatar', () {
     final updated = profile.copyWith(pseudo: 'Emma', avatar: Avatar.owl);

@@ -2,4 +2,11 @@
 /// track. Each has its own ordered module list (see `curriculum.dart`) and
 /// its own independent progress, so a learner can follow several at once
 /// (US18).
-enum LearningPath { frontEnd, python, fullStack, backend, collaboration }
+enum LearningPath {
+  frontEnd,
+  python,
+  mobile,
+  fullStack,
+  backend,
+  collaboration,
+}

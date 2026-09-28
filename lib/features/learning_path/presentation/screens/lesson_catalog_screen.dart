@@ -72,6 +72,7 @@ class _LessonCatalogScreenState extends ConsumerState<LessonCatalogScreen> {
                 error: (_, _) => Center(child: Text(l10n.commonSomethingWentWrong)),
                 data: (progress) {
                   return ListView.separated(
+                    key: const ValueKey('lesson_catalog_list'),
                     padding: const EdgeInsets.all(AppSpacing.lg),
                     itemCount: modules.length,
                     separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),

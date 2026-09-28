@@ -20,4 +20,12 @@ void main() {
   test('mobile recommendation maps to the mobile path', () {
     expect(primaryPathFor(RecommendedPath.mobile), LearningPath.mobile);
   });
+
+  test('game recommendation maps to the game path', () {
+    expect(primaryPathFor(RecommendedPath.game), LearningPath.game);
+  });
+
+  test('AI recommendation maps to the backend and AI path', () {
+    expect(primaryPathFor(RecommendedPath.ai), LearningPath.backend);
+  });
 }

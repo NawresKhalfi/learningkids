@@ -86,11 +86,15 @@ class UserProfile {
       ),
       goals: goals,
       // Older profiles can store `fullStack` even when their explicit goal
-      // was mobile or web development. The goal is more accurate.
+      // was mobile, web, game or AI development. The goal is more accurate.
       recommendedPath: goals.contains(LearningGoal.mobileApp)
           ? RecommendedPath.mobile
           : goals.contains(LearningGoal.website)
           ? RecommendedPath.frontEnd
+          : goals.contains(LearningGoal.game)
+          ? RecommendedPath.game
+          : goals.contains(LearningGoal.artificialIntelligence)
+          ? RecommendedPath.ai
           : storedRecommendedPath,
       consentGivenAt:
           DateTime.tryParse(map['consentGivenAt'] as String? ?? '') ??

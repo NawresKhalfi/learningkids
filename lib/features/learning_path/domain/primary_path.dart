@@ -10,6 +10,10 @@ LearningPath primaryPathFor(RecommendedPath recommended) {
     case RecommendedPath.discovery:
     case RecommendedPath.frontEnd:
       return LearningPath.frontEnd;
+    case RecommendedPath.game:
+      return LearningPath.game;
+    case RecommendedPath.ai:
+      return LearningPath.backend;
     case RecommendedPath.python:
       return LearningPath.python;
     case RecommendedPath.mobile:

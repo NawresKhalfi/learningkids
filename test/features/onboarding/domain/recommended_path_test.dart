@@ -26,40 +26,39 @@ void main() {
       }
     });
 
-    test('comfortable level always recommends full-stack', () {
+    test('game goal recommends the game development path at every level', () {
+      for (final level in CodingLevel.values) {
+        expect(
+          resolveRecommendedPath(level, {LearningGoal.game}),
+          RecommendedPath.game,
+        );
+      }
+    });
+
+    test('AI goal recommends the backend and AI path at every level', () {
+      for (final level in CodingLevel.values) {
+        expect(
+          resolveRecommendedPath(level, {LearningGoal.artificialIntelligence}),
+          RecommendedPath.ai,
+        );
+      }
+    });
+
+    test('comfortable level without a specific goal recommends full-stack', () {
       expect(
         resolveRecommendedPath(CodingLevel.comfortable, {}),
         RecommendedPath.fullStack,
       );
-      expect(
-        resolveRecommendedPath(CodingLevel.comfortable, {LearningGoal.game}),
-        RecommendedPath.fullStack,
-      );
     });
 
-    test('beginner level always recommends discovery', () {
+    test('beginner level without a specific goal recommends discovery', () {
       expect(
-        resolveRecommendedPath(CodingLevel.beginner, {
-          LearningGoal.artificialIntelligence,
-        }),
+        resolveRecommendedPath(CodingLevel.beginner, {}),
         RecommendedPath.discovery,
       );
     });
 
-    test('some-basics level with AI goal recommends python', () {
-      expect(
-        resolveRecommendedPath(CodingLevel.someBasics, {
-          LearningGoal.artificialIntelligence,
-        }),
-        RecommendedPath.python,
-      );
-    });
-
-    test('some-basics level without AI goal recommends front-end', () {
-      expect(
-        resolveRecommendedPath(CodingLevel.someBasics, {LearningGoal.website}),
-        RecommendedPath.frontEnd,
-      );
+    test('some-basics level without a specific goal recommends front-end', () {
       expect(
         resolveRecommendedPath(CodingLevel.someBasics, {}),
         RecommendedPath.frontEnd,

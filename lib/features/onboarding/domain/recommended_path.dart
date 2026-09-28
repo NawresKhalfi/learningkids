@@ -1,7 +1,15 @@
 import 'coding_level.dart';
 import 'learning_goal.dart';
 
-enum RecommendedPath { discovery, frontEnd, python, mobile, fullStack }
+enum RecommendedPath {
+  discovery,
+  frontEnd,
+  game,
+  ai,
+  python,
+  mobile,
+  fullStack,
+}
 
 /// Turns the level test (US03) and chosen goals (US05) into the learning
 /// path recommended on the home screen. Pure so it is unit-testable without
@@ -20,13 +28,16 @@ RecommendedPath resolveRecommendedPath(
   if (goals.contains(LearningGoal.website)) {
     return RecommendedPath.frontEnd;
   }
+  if (goals.contains(LearningGoal.game)) {
+    return RecommendedPath.game;
+  }
+  if (goals.contains(LearningGoal.artificialIntelligence)) {
+    return RecommendedPath.ai;
+  }
   switch (level) {
     case CodingLevel.comfortable:
       return RecommendedPath.fullStack;
     case CodingLevel.someBasics:
-      if (goals.contains(LearningGoal.artificialIntelligence)) {
-        return RecommendedPath.python;
-      }
       return RecommendedPath.frontEnd;
     case CodingLevel.beginner:
       return RecommendedPath.discovery;

@@ -29,6 +29,14 @@ LearningPathInfo learningPathInfo(LearningPath path) {
         emoji: '🎨',
         palette: AppColors.cardBlue,
       );
+    case LearningPath.game:
+      return const LearningPathInfo(
+        title: 'Développement de jeux',
+        description:
+            'JavaScript et les bases du game design pour créer tes jeux.',
+        emoji: '🎮',
+        palette: AppColors.cardPink,
+      );
     case LearningPath.python:
       return const LearningPathInfo(
         title: 'Python',

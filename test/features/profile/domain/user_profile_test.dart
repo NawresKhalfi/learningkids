@@ -80,6 +80,32 @@ void main() {
     },
   );
 
+  test(
+    'a legacy full-stack recommendation with a game goal opens game development',
+    () {
+      final restored = UserProfile.fromMap('uid-game', {
+        ...profile.toMap(),
+        'goals': [LearningGoal.game.name],
+        'recommendedPath': RecommendedPath.fullStack.name,
+      });
+
+      expect(restored.recommendedPath, RecommendedPath.game);
+    },
+  );
+
+  test(
+    'a legacy full-stack recommendation with an AI goal opens backend and AI',
+    () {
+      final restored = UserProfile.fromMap('uid-ai', {
+        ...profile.toMap(),
+        'goals': [LearningGoal.artificialIntelligence.name],
+        'recommendedPath': RecommendedPath.fullStack.name,
+      });
+
+      expect(restored.recommendedPath, RecommendedPath.ai);
+    },
+  );
+
   test('copyWith only changes pseudo/avatar', () {
     final updated = profile.copyWith(pseudo: 'Emma', avatar: Avatar.owl);
 

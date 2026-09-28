@@ -4,6 +4,7 @@
 /// (US18).
 enum LearningPath {
   frontEnd,
+  game,
   python,
   mobile,
   fullStack,

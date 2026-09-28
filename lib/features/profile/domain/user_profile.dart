@@ -85,10 +85,12 @@ class UserProfile {
         orElse: () => CodingLevel.beginner,
       ),
       goals: goals,
-      // Profiles created before the mobile path existed may still store
-      // `fullStack`; their explicit mobile goal is more accurate.
+      // Older profiles can store `fullStack` even when their explicit goal
+      // was mobile or web development. The goal is more accurate.
       recommendedPath: goals.contains(LearningGoal.mobileApp)
           ? RecommendedPath.mobile
+          : goals.contains(LearningGoal.website)
+          ? RecommendedPath.frontEnd
           : storedRecommendedPath,
       consentGivenAt:
           DateTime.tryParse(map['consentGivenAt'] as String? ?? '') ??

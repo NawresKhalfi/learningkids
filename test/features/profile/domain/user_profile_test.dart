@@ -67,6 +67,19 @@ void main() {
     },
   );
 
+  test(
+    'a legacy full-stack recommendation with a website goal opens front-end',
+    () {
+      final restored = UserProfile.fromMap('uid-web', {
+        ...profile.toMap(),
+        'goals': [LearningGoal.website.name],
+        'recommendedPath': RecommendedPath.fullStack.name,
+      });
+
+      expect(restored.recommendedPath, RecommendedPath.frontEnd);
+    },
+  );
+
   test('copyWith only changes pseudo/avatar', () {
     final updated = profile.copyWith(pseudo: 'Emma', avatar: Avatar.owl);
 

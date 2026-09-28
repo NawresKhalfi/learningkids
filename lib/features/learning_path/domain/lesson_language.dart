@@ -5,6 +5,8 @@ enum LessonLanguage {
   html,
   css,
   javascript,
+  vue,
+  angular,
   python,
   dart,
   sql,
@@ -20,6 +22,10 @@ String lessonLanguageLabel(LessonLanguage language) {
       return 'CSS';
     case LessonLanguage.javascript:
       return 'JavaScript';
+    case LessonLanguage.vue:
+      return 'Vue.js';
+    case LessonLanguage.angular:
+      return 'Angular';
     case LessonLanguage.python:
       return 'Python';
     case LessonLanguage.dart:

@@ -17,6 +17,15 @@ void main() {
       },
     );
 
+    test('website goal recommends the front-end path at every level', () {
+      for (final level in CodingLevel.values) {
+        expect(
+          resolveRecommendedPath(level, {LearningGoal.website}),
+          RecommendedPath.frontEnd,
+        );
+      }
+    });
+
     test('comfortable level always recommends full-stack', () {
       expect(
         resolveRecommendedPath(CodingLevel.comfortable, {}),

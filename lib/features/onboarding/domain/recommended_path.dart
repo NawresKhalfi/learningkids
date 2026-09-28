@@ -11,11 +11,14 @@ RecommendedPath resolveRecommendedPath(
   CodingLevel level,
   Set<LearningGoal> goals,
 ) {
-  // A chosen project goal is more specific than the general level. In
-  // particular, learners asking to create a mobile app should not be sent to
-  // the unrelated full-stack roadmap just because they already know basics.
+  // A chosen project goal is more specific than the general level. Learners
+  // asking for mobile or web development should not be sent to the unrelated
+  // full-stack roadmap just because they already know basics.
   if (goals.contains(LearningGoal.mobileApp)) {
     return RecommendedPath.mobile;
+  }
+  if (goals.contains(LearningGoal.website)) {
+    return RecommendedPath.frontEnd;
   }
   switch (level) {
     case CodingLevel.comfortable:

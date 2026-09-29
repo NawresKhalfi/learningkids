@@ -10,7 +10,6 @@ import '../../../../l10n/gen/app_localizations.dart';
 import '../../../code_playground/domain/programming_language.dart';
 import '../../../onboarding/domain/coding_level.dart';
 import '../../../learning_path/domain/learning_path.dart';
-import '../../../learning_path/domain/learning_path_info.dart';
 import '../../../learning_path/domain/path_code_languages.dart';
 import '../../application/project_providers.dart';
 import '../../domain/project_category.dart';
@@ -21,9 +20,9 @@ import '../../domain/project_templates_catalog.dart';
 /// language, so a learner picks a realistic starting point instead of a
 /// blank editor.
 class ProjectTemplatesScreen extends ConsumerStatefulWidget {
-  const ProjectTemplatesScreen({super.key, this.path});
+  const ProjectTemplatesScreen({super.key, this.paths});
 
-  final LearningPath? path;
+  final Set<LearningPath>? paths;
 
   @override
   ConsumerState<ProjectTemplatesScreen> createState() =>
@@ -49,14 +48,17 @@ class _ProjectTemplatesScreenState
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final pathTemplates = widget.path == null
+    final pathTemplates = widget.paths == null
         ? projectTemplatesCatalog
         : projectTemplatesCatalog
-              .where((template) => template.path == widget.path)
+              .where((template) => widget.paths!.contains(template.path))
               .toList();
-    final languages = widget.path == null
+    final languages = widget.paths == null
         ? ProgrammingLanguage.values
-        : programmingLanguagesForPath(widget.path!);
+        : {
+            for (final path in widget.paths!)
+              ...programmingLanguagesForPath(path),
+          }.toList();
     final templates = _filter == null
         ? pathTemplates
         : pathTemplates.where((t) => t.language == _filter).toList();
@@ -64,9 +66,9 @@ class _ProjectTemplatesScreenState
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.path == null
+          widget.paths == null
               ? l10n.projectTemplatesTitle
-              : '${l10n.projectTemplatesTitle} · ${learningPathInfo(widget.path!).title}',
+              : '${l10n.projectTemplatesTitle} · Mes parcours',
         ),
       ),
       body: SafeArea(

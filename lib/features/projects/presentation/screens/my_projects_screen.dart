@@ -10,7 +10,6 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../l10n/gen/app_localizations.dart';
 import '../../../code_playground/domain/programming_language.dart';
 import '../../../learning_path/domain/learning_path.dart';
-import '../../../learning_path/domain/learning_path_info.dart';
 import '../../application/project_providers.dart';
 import '../../domain/project.dart';
 import '../../domain/project_category.dart';
@@ -19,9 +18,9 @@ import '../../domain/project_category.dart';
 /// they've started, filterable by category, with entry points into the
 /// template catalog and their portfolio.
 class MyProjectsScreen extends ConsumerStatefulWidget {
-  const MyProjectsScreen({super.key, this.path});
+  const MyProjectsScreen({super.key, this.paths});
 
-  final LearningPath? path;
+  final Set<LearningPath>? paths;
 
   @override
   ConsumerState<MyProjectsScreen> createState() => _MyProjectsScreenState();
@@ -38,9 +37,9 @@ class _MyProjectsScreenState extends ConsumerState<MyProjectsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.path == null
+          widget.paths == null
               ? l10n.myProjectsTitle
-              : '${l10n.myProjectsTitle} · ${learningPathInfo(widget.path!).title}',
+              : '${l10n.myProjectsTitle} · Mes parcours',
         ),
         actions: [
           IconButton(
@@ -64,9 +63,11 @@ class _MyProjectsScreenState extends ConsumerState<MyProjectsScreen> {
                 label: l10n.myProjectsNewProject,
                 icon: const Icon(Icons.add, color: AppColors.ink),
                 onPressed: () => context.push(
-                  widget.path == null
+                  widget.paths == null
                       ? AppRoutes.projectTemplates
-                      : AppRoutes.projectTemplatesFor(widget.path!.name),
+                      : AppRoutes.projectTemplatesForPaths(
+                          widget.paths!.map((path) => path.name),
+                        ),
                 ),
               ),
             ),
@@ -102,10 +103,12 @@ class _MyProjectsScreenState extends ConsumerState<MyProjectsScreen> {
                 error: (_, _) =>
                     Center(child: Text(l10n.commonSomethingWentWrong)),
                 data: (projects) {
-                  final inPath = widget.path == null
+                  final inPath = widget.paths == null
                       ? projects
                       : projects
-                            .where((project) => project.path == widget.path)
+                            .where(
+                              (project) => widget.paths!.contains(project.path),
+                            )
                             .toList();
                   final visible = _filter == null
                       ? inPath

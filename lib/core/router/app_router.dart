@@ -160,11 +160,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.lessonCatalog,
-        builder: (_, state) => LessonCatalogScreen(path: _optionalPath(state)),
+        builder: (_, state) =>
+            LessonCatalogScreen(paths: _pathsFromQuery(state)),
       ),
       GoRoute(
         path: AppRoutes.codePlayground,
-        builder: (_, state) => CodePlaygroundScreen(path: _optionalPath(state)),
+        builder: (_, state) =>
+            CodePlaygroundScreen(paths: _pathsFromQuery(state)),
       ),
       GoRoute(
         // `extra` always carries a pre-built CodeAssistantScreen (language +
@@ -175,14 +177,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.myProjects,
-        builder: (_, state) => MyProjectsScreen(path: _optionalPath(state)),
+        builder: (_, state) => MyProjectsScreen(paths: _pathsFromQuery(state)),
       ),
       // Declared before the `:projectId` pattern below so the literal
       // `/projects/templates` segment always wins the match.
       GoRoute(
         path: AppRoutes.projectTemplates,
         builder: (_, state) =>
-            ProjectTemplatesScreen(path: _optionalPath(state)),
+            ProjectTemplatesScreen(paths: _pathsFromQuery(state)),
       ),
       GoRoute(
         path: AppRoutes.projectDetailPattern,
@@ -258,10 +260,18 @@ LearningPath _pathFromParam(GoRouterState state) {
   return LearningPath.values.firstWhere((path) => path.name == id);
 }
 
-LearningPath? _optionalPath(GoRouterState state) {
-  final id = state.uri.queryParameters['path'];
-  if (id == null) return null;
-  return LearningPath.values.where((path) => path.name == id).firstOrNull;
+Set<LearningPath>? _pathsFromQuery(GoRouterState state) {
+  final ids =
+      state.uri.queryParameters['paths']?.split(',') ??
+      [state.uri.queryParameters['path']].nonNulls;
+  final paths = ids
+      .map(
+        (id) =>
+            LearningPath.values.where((path) => path.name == id).firstOrNull,
+      )
+      .nonNulls
+      .toSet();
+  return paths.isEmpty ? null : paths;
 }
 
 String? _redirect(Ref ref, String location) {

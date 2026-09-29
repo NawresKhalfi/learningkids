@@ -32,18 +32,19 @@ import '../widgets/html_preview_view.dart';
 /// Python/JS runtime only ever has to warm up once per visit to this
 /// screen — not once per tab switch.
 class CodePlaygroundScreen extends StatefulWidget {
-  const CodePlaygroundScreen({super.key, this.path});
+  const CodePlaygroundScreen({super.key, this.paths});
 
-  final LearningPath? path;
+  final Set<LearningPath>? paths;
 
   @override
   State<CodePlaygroundScreen> createState() => _CodePlaygroundScreenState();
 }
 
 class _CodePlaygroundScreenState extends State<CodePlaygroundScreen> {
-  late final List<ProgrammingLanguage> _languages = widget.path == null
+  late final List<ProgrammingLanguage> _languages = widget.paths == null
       ? ProgrammingLanguage.values
-      : programmingLanguagesForPath(widget.path!);
+      : {for (final path in widget.paths!) ...programmingLanguagesForPath(path)}
+            .toList();
   late ProgrammingLanguage _selected = _languages.first;
 
   Future<void> _promptSnippetCode(BuildContext context) async {

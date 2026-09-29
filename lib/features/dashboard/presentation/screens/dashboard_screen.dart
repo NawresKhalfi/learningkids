@@ -49,6 +49,12 @@ class DashboardScreen extends ConsumerWidget {
                 final pathProgress = path == null
                     ? null
                     : pathProgressFor(path, progress);
+                final dashboardPaths = LearningPath.values
+                    .where(
+                      (candidate) =>
+                          progress.isActive(candidate) || candidate == path,
+                    )
+                    .toList();
                 return Stack(
                   children: [
                     ListView(
@@ -100,6 +106,19 @@ class DashboardScreen extends ConsumerWidget {
                                 : AppRoutes.roadmap(path.name),
                           ),
                         ),
+                        for (final activePath in dashboardPaths)
+                          if (activePath != path) ...[
+                            const SizedBox(height: 12),
+                            _RecommendedCard(
+                              title: learningPathInfo(activePath).title,
+                              emoji: learningPathInfo(activePath).emoji,
+                              progress: pathProgressFor(activePath, progress),
+                              label: 'Parcours actif',
+                              onTap: () => context.push(
+                                AppRoutes.roadmap(activePath.name),
+                              ),
+                            ),
+                          ],
                         const SizedBox(height: 26),
                         const _SectionTitle('Apprendre'),
                         const SizedBox(height: 12),
@@ -122,9 +141,11 @@ class DashboardScreen extends ConsumerWidget {
                               'Catalogue de leçons',
                               'Explore librement',
                               () => context.push(
-                                path == null
+                                dashboardPaths.isEmpty
                                     ? AppRoutes.lessonCatalog
-                                    : AppRoutes.lessonCatalogFor(path.name),
+                                    : AppRoutes.lessonCatalogForPaths(
+                                        dashboardPaths.map((path) => path.name),
+                                      ),
                               ),
                             ),
                             _Tile(
@@ -132,9 +153,11 @@ class DashboardScreen extends ConsumerWidget {
                               'Espace de code',
                               'Code en direct',
                               () => context.push(
-                                path == null
+                                dashboardPaths.isEmpty
                                     ? AppRoutes.codePlayground
-                                    : AppRoutes.codePlaygroundFor(path.name),
+                                    : AppRoutes.codePlaygroundForPaths(
+                                        dashboardPaths.map((path) => path.name),
+                                      ),
                               ),
                             ),
                             _Tile(
@@ -142,9 +165,11 @@ class DashboardScreen extends ConsumerWidget {
                               'Mes projets',
                               'Tes créations',
                               () => context.push(
-                                path == null
+                                dashboardPaths.isEmpty
                                     ? AppRoutes.myProjects
-                                    : AppRoutes.myProjectsFor(path.name),
+                                    : AppRoutes.myProjectsForPaths(
+                                        dashboardPaths.map((path) => path.name),
+                                      ),
                               ),
                             ),
                           ],
@@ -182,7 +207,7 @@ class DashboardScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    _DashboardNavigation(path: path),
+                    _DashboardNavigation(paths: dashboardPaths),
                   ],
                 );
               },
@@ -324,10 +349,12 @@ class _RecommendedCard extends StatelessWidget {
     required this.emoji,
     required this.progress,
     required this.onTap,
+    this.label = 'Ton parcours recommandé',
   });
   final String title, emoji;
   final PathProgress? progress;
   final VoidCallback onTap;
+  final String label;
   @override
   Widget build(BuildContext context) => InkWell(
     onTap: onTap,
@@ -357,7 +384,7 @@ class _RecommendedCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Ton parcours recommandé',
+                label,
                 style: AppTextStyles.caption.copyWith(color: AppColors.surface),
               ),
               Text(
@@ -566,9 +593,9 @@ class _Challenge extends StatelessWidget {
 }
 
 class _DashboardNavigation extends StatelessWidget {
-  const _DashboardNavigation({required this.path});
+  const _DashboardNavigation({required this.paths});
 
-  final LearningPath? path;
+  final List<LearningPath> paths;
 
   @override
   Widget build(BuildContext context) => Align(
@@ -588,18 +615,22 @@ class _DashboardNavigation extends StatelessWidget {
             '📚',
             'Leçons',
             () => context.push(
-              path == null
+              paths.isEmpty
                   ? AppRoutes.lessonCatalog
-                  : AppRoutes.lessonCatalogFor(path!.name),
+                  : AppRoutes.lessonCatalogForPaths(
+                      paths.map((path) => path.name),
+                    ),
             ),
           ),
           _Nav(
             '💻',
             'Code',
             () => context.push(
-              path == null
+              paths.isEmpty
                   ? AppRoutes.codePlayground
-                  : AppRoutes.codePlaygroundFor(path!.name),
+                  : AppRoutes.codePlaygroundForPaths(
+                      paths.map((path) => path.name),
+                    ),
             ),
           ),
           _Nav('🏅', 'Badges', () => context.push(AppRoutes.badges)),

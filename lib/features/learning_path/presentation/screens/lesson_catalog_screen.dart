@@ -19,11 +19,11 @@ import '../../domain/module_status.dart';
 /// catalogue independent of a single path's roadmap, and one that grows
 /// automatically as `curriculum.dart` gains new modules/languages.
 class LessonCatalogScreen extends ConsumerStatefulWidget {
-  const LessonCatalogScreen({super.key, this.path});
+  const LessonCatalogScreen({super.key, this.paths});
 
   /// When opened from the dashboard, this is the learner's selected path.
   /// Leaving it null preserves the global catalogue entry point.
-  final LearningPath? path;
+  final Set<LearningPath>? paths;
 
   @override
   ConsumerState<LessonCatalogScreen> createState() =>
@@ -38,9 +38,11 @@ class _LessonCatalogScreenState extends ConsumerState<LessonCatalogScreen> {
     final l10n = AppLocalizations.of(context);
     final progressAsync = ref.watch(learningProgressProvider);
 
-    final pathModules = widget.path == null
+    final pathModules = widget.paths == null
         ? allModules
-        : curriculumFor(widget.path!);
+        : allModules
+              .where((module) => widget.paths!.contains(module.path))
+              .toList();
     final languages = LessonLanguage.values
         .where(
           (language) => pathModules.any((m) => m.languages.contains(language)),
@@ -53,9 +55,9 @@ class _LessonCatalogScreenState extends ConsumerState<LessonCatalogScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.path == null
+          widget.paths == null
               ? l10n.lessonCatalogTitle
-              : '${l10n.lessonCatalogTitle} · ${learningPathInfo(widget.path!).title}',
+              : '${l10n.lessonCatalogTitle} · Mes parcours',
         ),
       ),
       body: SafeArea(

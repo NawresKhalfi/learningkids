@@ -32,10 +32,14 @@ abstract final class AppRoutes {
       '/paths/$pathId/modules/$moduleId';
   static String lessonCatalogFor(String pathId) =>
       '$lessonCatalog?path=$pathId';
+  static String lessonCatalogForPaths(Iterable<String> pathIds) =>
+      '$lessonCatalog?paths=${pathIds.join(',')}';
 
   static const codePlayground = '/code-playground';
   static String codePlaygroundFor(String pathId) =>
       '$codePlayground?path=$pathId';
+  static String codePlaygroundForPaths(Iterable<String> pathIds) =>
+      '$codePlayground?paths=${pathIds.join(',')}';
   static const codeAssistant = '/code-assistant';
   static const gitSimulator = '/git-simulator';
 
@@ -48,8 +52,12 @@ abstract final class AppRoutes {
   static const myProjects = '/projects';
   static const projectTemplates = '/projects/templates';
   static String myProjectsFor(String pathId) => '$myProjects?path=$pathId';
+  static String myProjectsForPaths(Iterable<String> pathIds) =>
+      '$myProjects?paths=${pathIds.join(',')}';
   static String projectTemplatesFor(String pathId) =>
       '$projectTemplates?path=$pathId';
+  static String projectTemplatesForPaths(Iterable<String> pathIds) =>
+      '$projectTemplates?paths=${pathIds.join(',')}';
   static const projectDetailPattern = '/projects/:projectId';
   static const portfolio = '/portfolio';
   static const portfolioForPattern = '/portfolio/:ownerUid';

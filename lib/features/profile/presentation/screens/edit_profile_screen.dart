@@ -62,19 +62,30 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   }
 
   Future<void> _pickPhoto() async {
-    final photo = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 360,
-      maxHeight: 360,
-      imageQuality: 78,
-    );
-    if (photo == null) return;
-    final bytes = await photo.readAsBytes();
-    if (!mounted) return;
-    setState(() {
-      _selectedPhoto = bytes;
-      _selectedPhotoBase64 = base64Encode(bytes);
-    });
+    try {
+      final photo = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 360,
+        maxHeight: 360,
+        imageQuality: 78,
+      );
+      if (photo == null) return;
+      final bytes = await photo.readAsBytes();
+      if (!mounted) return;
+      setState(() {
+        _selectedPhoto = bytes;
+        _selectedPhotoBase64 = base64Encode(bytes);
+      });
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Impossible d’ouvrir la galerie. Réessaie après avoir redémarré l’application.',
+          ),
+        ),
+      );
+    }
   }
 
   @override

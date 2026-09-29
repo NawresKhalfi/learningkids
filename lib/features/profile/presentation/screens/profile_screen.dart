@@ -97,12 +97,6 @@ class ProfileScreen extends ConsumerWidget {
                     onPressed: () =>
                         context.push(AppRoutes.accessibilitySettings),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
-                  AppButton(
-                    label: l10n.profileParentSpace,
-                    variant: AppButtonVariant.outline,
-                    onPressed: () => context.push(AppRoutes.parentGate),
-                  ),
                   if (isAdmin) ...[
                     const SizedBox(height: AppSpacing.sm),
                     AppButton(

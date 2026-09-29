@@ -29,9 +29,11 @@ class LocalPreferences {
 
   /// On by default (opt-out, like the leaderboard in EP08) at a
   /// reasonable after-school default time.
-  bool get dailyReminderEnabled => _prefs.getBool(_kDailyReminderEnabledKey) ?? true;
+  bool get dailyReminderEnabled =>
+      _prefs.getBool(_kDailyReminderEnabledKey) ?? true;
 
-  Future<void> setDailyReminderEnabled(bool value) => _prefs.setBool(_kDailyReminderEnabledKey, value);
+  Future<void> setDailyReminderEnabled(bool value) =>
+      _prefs.setBool(_kDailyReminderEnabledKey, value);
 
   int get dailyReminderHour => _prefs.getInt(_kDailyReminderHourKey) ?? 18;
 
@@ -42,9 +44,11 @@ class LocalPreferences {
     await _prefs.setInt(_kDailyReminderMinuteKey, minute);
   }
 
-  bool get rewardNotificationsEnabled => _prefs.getBool(_kRewardNotificationsEnabledKey) ?? true;
+  bool get rewardNotificationsEnabled =>
+      _prefs.getBool(_kRewardNotificationsEnabledKey) ?? true;
 
-  Future<void> setRewardNotificationsEnabled(bool value) => _prefs.setBool(_kRewardNotificationsEnabledKey, value);
+  Future<void> setRewardNotificationsEnabled(bool value) =>
+      _prefs.setBool(_kRewardNotificationsEnabledKey, value);
 
   // EP13/US64/US66: language and text-size are device-local display
   // preferences, not learner data, so — like the notification settings
@@ -55,12 +59,20 @@ class LocalPreferences {
   /// `'system'`, `'fr'` or `'en'` — see `AppLanguage`.
   String get appLanguage => _prefs.getString(_kAppLanguageKey) ?? 'system';
 
-  Future<void> setAppLanguage(String storageKey) => _prefs.setString(_kAppLanguageKey, storageKey);
+  Future<void> setAppLanguage(String storageKey) =>
+      _prefs.setString(_kAppLanguageKey, storageKey);
 
   /// See `TextScaleOption`.
   String get textScaleOption => _prefs.getString(_kTextScaleKey) ?? 'normal';
 
-  Future<void> setTextScaleOption(String storageKey) => _prefs.setString(_kTextScaleKey, storageKey);
+  Future<void> setTextScaleOption(String storageKey) =>
+      _prefs.setString(_kTextScaleKey, storageKey);
+
+  List<String> extraCodeLanguages(String scope) =>
+      _prefs.getStringList('extra_code_languages_$scope') ?? const [];
+
+  Future<void> setExtraCodeLanguages(String scope, List<String> languages) =>
+      _prefs.setStringList('extra_code_languages_$scope', languages);
 }
 
 /// Overridden in `main.dart` with the real instance loaded before `runApp`.

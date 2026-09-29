@@ -27,8 +27,6 @@ class MyProjectsScreen extends ConsumerStatefulWidget {
 }
 
 class _MyProjectsScreenState extends ConsumerState<MyProjectsScreen> {
-  ProjectCategory? _filter;
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -72,31 +70,6 @@ class _MyProjectsScreenState extends ConsumerState<MyProjectsScreen> {
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
-            SizedBox(
-              height: 48,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                children: [
-                  _FilterChip(
-                    key: const ValueKey('my_projects_filter_all'),
-                    label: l10n.lessonCatalogFilterAll,
-                    isSelected: _filter == null,
-                    onTap: () => setState(() => _filter = null),
-                  ),
-                  for (final category in ProjectCategory.values) ...[
-                    const SizedBox(width: AppSpacing.sm),
-                    _FilterChip(
-                      key: ValueKey('my_projects_filter_${category.name}'),
-                      label: projectCategoryLabel(category),
-                      isSelected: _filter == category,
-                      onTap: () => setState(() => _filter = category),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            const SizedBox(height: AppSpacing.sm),
             Expanded(
               child: projectsAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
@@ -110,9 +83,7 @@ class _MyProjectsScreenState extends ConsumerState<MyProjectsScreen> {
                               (project) => widget.paths!.contains(project.path),
                             )
                             .toList();
-                  final visible = _filter == null
-                      ? inPath
-                      : inPath.where((p) => p.category == _filter).toList();
+                  final visible = inPath;
                   if (visible.isEmpty) {
                     return Center(
                       child: Padding(
@@ -143,42 +114,6 @@ class _MyProjectsScreenState extends ConsumerState<MyProjectsScreen> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _FilterChip extends StatelessWidget {
-  const _FilterChip({
-    super.key,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.brandBlue : AppColors.surface,
-          borderRadius: BorderRadius.circular(AppRadii.chip),
-          border: Border.all(color: AppColors.ink, width: 1.5),
-        ),
-        child: Text(
-          label,
-          style: AppTextStyles.body.copyWith(
-            color: isSelected ? AppColors.surface : AppColors.ink,
-            fontWeight: FontWeight.w800,
-          ),
         ),
       ),
     );

@@ -2,7 +2,7 @@
 /// app (US26), matching the three named in the backlog. Each gets its own
 /// persistent scratch buffer (US30) — a full multi-file project manager is
 /// EP07's job, not this one.
-enum ProgrammingLanguage { python, javascript, html }
+enum ProgrammingLanguage { python, javascript, html, dart }
 
 String programmingLanguageTitle(ProgrammingLanguage language) {
   switch (language) {
@@ -12,6 +12,8 @@ String programmingLanguageTitle(ProgrammingLanguage language) {
       return 'JavaScript';
     case ProgrammingLanguage.html:
       return 'HTML';
+    case ProgrammingLanguage.dart:
+      return 'Dart';
   }
 }
 
@@ -25,5 +27,7 @@ String starterCodeFor(ProgrammingLanguage language) {
       return "console.log('Salut depuis JavaScript !');";
     case ProgrammingLanguage.html:
       return '<h1>Salut !</h1>\n<p>Modifie ce HTML et regarde l\'aperçu changer.</p>';
+    case ProgrammingLanguage.dart:
+      return "void main() {\n  print('Salut depuis Dart !');\n}";
   }
 }

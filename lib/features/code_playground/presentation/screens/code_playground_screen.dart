@@ -282,6 +282,7 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
         javascriptRuntimeServiceProvider,
       ),
       ProgrammingLanguage.html => null,
+      ProgrammingLanguage.dart => null,
     };
 
     return Padding(
@@ -301,7 +302,9 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
                 child: AppButton(
                   label: l10n.playgroundRun,
                   isLoading: _isRunning,
-                  onPressed: () => _run(runtime),
+                  onPressed: widget.language == ProgrammingLanguage.dart
+                      ? null
+                      : () => _run(runtime),
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),

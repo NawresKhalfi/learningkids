@@ -12,7 +12,7 @@ List<ProgrammingLanguage> programmingLanguagesForPath(LearningPath path) =>
       ],
       LearningPath.game => const [ProgrammingLanguage.javascript],
       LearningPath.python => const [ProgrammingLanguage.python],
-      LearningPath.mobile => const [ProgrammingLanguage.javascript],
+      LearningPath.mobile => const [ProgrammingLanguage.dart],
       LearningPath.fullStack => const [
         ProgrammingLanguage.html,
         ProgrammingLanguage.javascript,

@@ -80,7 +80,9 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
   }
 
   void _onTextChanged() {
-    ref.read(projectsControllerProvider.notifier).updateCode(widget.project, _controller.text);
+    ref
+        .read(projectsControllerProvider.notifier)
+        .updateCode(widget.project, _controller.text);
   }
 
   @override
@@ -109,7 +111,9 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
   }
 
   Future<void> _requestFeedback() async {
-    ref.read(projectFeedbackControllerProvider.notifier).analyze(widget.project);
+    ref
+        .read(projectFeedbackControllerProvider.notifier)
+        .analyze(widget.project);
     await showProjectFeedbackSheet(context);
   }
 
@@ -127,15 +131,25 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
   }
 
   Future<void> _rename() async {
-    final newTitle = await showRenameProjectDialog(context, initialTitle: widget.project.title);
+    final newTitle = await showRenameProjectDialog(
+      context,
+      initialTitle: widget.project.title,
+    );
     if (newTitle == null || newTitle.isEmpty) return;
-    await ref.read(projectsControllerProvider.notifier).rename(widget.project, newTitle);
+    await ref
+        .read(projectsControllerProvider.notifier)
+        .rename(widget.project, newTitle);
   }
 
   Future<void> _pickCategory() async {
-    final category = await showSelectCategoryDialog(context, initial: widget.project.category);
+    final category = await showSelectCategoryDialog(
+      context,
+      initial: widget.project.category,
+    );
     if (category == null) return;
-    await ref.read(projectsControllerProvider.notifier).setCategory(widget.project, category);
+    await ref
+        .read(projectsControllerProvider.notifier)
+        .setCategory(widget.project, category);
   }
 
   Future<void> _delete() async {
@@ -146,8 +160,14 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
         return AlertDialog(
           title: Text(l10n.projectDeleteConfirmTitle),
           actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.commonCancel)),
-            TextButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.projectDeleteConfirm)),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(l10n.commonCancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(l10n.projectDeleteConfirm),
+            ),
           ],
         );
       },
@@ -162,8 +182,11 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
     final l10n = AppLocalizations.of(context);
     final runtime = switch (widget.project.language) {
       ProgrammingLanguage.python => ref.watch(pythonRuntimeServiceProvider),
-      ProgrammingLanguage.javascript => ref.watch(javascriptRuntimeServiceProvider),
+      ProgrammingLanguage.javascript => ref.watch(
+        javascriptRuntimeServiceProvider,
+      ),
       ProgrammingLanguage.html => null,
+      ProgrammingLanguage.dart => null,
     };
 
     return Padding(
@@ -171,17 +194,27 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (runtime != null) HiddenRuntimeWebView(controller: runtime.controller),
+          if (runtime != null)
+            HiddenRuntimeWebView(controller: runtime.controller),
           Row(
             children: [
               Expanded(
                 child: GestureDetector(
                   onTap: _rename,
-                  child: Text(widget.project.title, style: Theme.of(context).textTheme.titleMedium),
+                  child: Text(
+                    widget.project.title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                 ),
               ),
-              IconButton(icon: const Icon(Icons.category_outlined), onPressed: _pickCategory),
-              IconButton(icon: const Icon(Icons.delete_outline), onPressed: _delete),
+              IconButton(
+                icon: const Icon(Icons.category_outlined),
+                onPressed: _pickCategory,
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete_outline),
+                onPressed: _delete,
+              ),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -192,7 +225,13 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
           Row(
             children: [
               Expanded(
-                child: AppButton(label: l10n.playgroundRun, isLoading: _isRunning, onPressed: () => _run(runtime)),
+                child: AppButton(
+                  label: l10n.playgroundRun,
+                  isLoading: _isRunning,
+                  onPressed: widget.project.language == ProgrammingLanguage.dart
+                      ? null
+                      : () => _run(runtime),
+                ),
               ),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
@@ -213,13 +252,20 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
                   ? (_htmlOutput == null
                         ? Center(child: Text(l10n.playgroundConsolePlaceholder))
                         : HtmlPreviewView(html: _htmlOutput!))
-                  : ConsoleOutputView(language: widget.project.language, result: _result),
+                  : ConsoleOutputView(
+                      language: widget.project.language,
+                      result: _result,
+                    ),
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
           AppButton(
-            label: widget.project.isPublished ? l10n.projectUnpublish : l10n.projectPublish,
-            variant: widget.project.isPublished ? AppButtonVariant.outline : AppButtonVariant.primary,
+            label: widget.project.isPublished
+                ? l10n.projectUnpublish
+                : l10n.projectPublish,
+            variant: widget.project.isPublished
+                ? AppButtonVariant.outline
+                : AppButtonVariant.primary,
             isLoading: _isPublishing,
             onPressed: _togglePublish,
           ),

@@ -250,4 +250,245 @@ function filtrer(type) { document.querySelectorAll('.project').forEach(p => p.hi
 <script>function envoyer(){message.textContent=email.validity.valid?'Merci, inscription réussie !':'Entre une adresse e-mail valide.'}</script>
 ''',
   ),
+  ProjectTemplate(
+    id: 'mobile-habit-tracker',
+    title: 'Suivi d’habitudes mobile',
+    description:
+        'Modélise les habitudes, les séries et le résumé quotidien en Dart.',
+    language: ProgrammingLanguage.dart,
+    level: CodingLevel.someBasics,
+    category: ProjectCategory.tool,
+    path: LearningPath.mobile,
+    starterCode: '''
+class Habit { Habit(this.name, this.done); final String name; bool done; }
+void main() {
+  final habits = [Habit('Lire 10 min', true), Habit('Coder', false)];
+  final completed = habits.where((habit) => habit.done).length;
+  print('Habitudes terminées : ' + completed.toString() + '/' + habits.length.toString());
+}
+''',
+  ),
+  ProjectTemplate(
+    id: 'mobile-budget-planner',
+    title: 'Planificateur de budget',
+    description:
+        'Calcule un budget et organise des dépenses dans une application Dart.',
+    language: ProgrammingLanguage.dart,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.tool,
+    path: LearningPath.mobile,
+    starterCode: '''
+class Expense { const Expense(this.label, this.amount); final String label; final double amount; }
+void main() {
+  const budget = 80.0;
+  const expenses = [Expense('Livre', 12), Expense('Bus', 8.5), Expense('Goûter', 6)];
+  final spent = expenses.fold<double>(0, (sum, item) => sum + item.amount);
+  final remaining = budget - spent;
+  print('Reste : ' + remaining.toStringAsFixed(2) + ' €');
+}
+''',
+  ),
+  ProjectTemplate(
+    id: 'mobile-quiz-engine',
+    title: 'Moteur de quiz mobile',
+    description:
+        'Crée la logique d’un quiz réutilisable pour une future interface Flutter.',
+    language: ProgrammingLanguage.dart,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.game,
+    path: LearningPath.mobile,
+    starterCode: '''
+class Question { const Question(this.prompt, this.answer); final String prompt; final String answer; }
+void main() {
+  const question = Question('Quel widget affiche du texte ?', 'Text');
+  const response = 'Text';
+  print(response == question.answer ? 'Bonne réponse !' : 'Essaie encore.');
+}
+''',
+  ),
+  ProjectTemplate(
+    id: 'mobile-offline-notes',
+    title: 'Notes hors connexion',
+    description:
+        'Prépare le modèle de données d’une application de notes synchronisable.',
+    language: ProgrammingLanguage.dart,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.tool,
+    path: LearningPath.mobile,
+    starterCode: '''
+class Note {
+  Note(this.id, this.content, this.updatedAt);
+  final String id;
+  String content;
+  DateTime updatedAt;
+  void update(String value) { content = value; updatedAt = DateTime.now(); }
+}
+void main() { final note = Note('1', 'Idée de projet', DateTime.now()); note.update('Idée synchronisée'); print(note.content); }
+''',
+  ),
+  ProjectTemplate(
+    id: 'mobile-weather-state',
+    title: 'État météo réactif',
+    description:
+        'Structure les états chargement, succès et erreur d’un écran mobile.',
+    language: ProgrammingLanguage.dart,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.tool,
+    path: LearningPath.mobile,
+    starterCode: '''
+sealed class WeatherState { const WeatherState(); }
+class Loading extends WeatherState { const Loading(); }
+class Success extends WeatherState { const Success(this.celsius); final int celsius; }
+class Failure extends WeatherState { const Failure(this.message); final String message; }
+void main() { const state = Success(26); switch (state) { case Success(:final celsius): print(celsius.toString() + '°C'); default: print('Météo indisponible'); } }
+''',
+  ),
+  ProjectTemplate(
+    id: 'game-space-dodger',
+    title: 'Esquive spatiale',
+    description:
+        'Programme la logique d’un jeu où un vaisseau évite des obstacles.',
+    language: ProgrammingLanguage.javascript,
+    level: CodingLevel.someBasics,
+    category: ProjectCategory.game,
+    path: LearningPath.game,
+    starterCode: '''
+const player = { x: 5, lives: 3 };
+const meteors = [2, 8, 5];
+const nextPosition = 6;
+if (meteors.includes(nextPosition)) {
+  player.lives--;
+  console.log('Impact ! Vies :', player.lives);
+} else {
+  player.x = nextPosition;
+  console.log('Position sûre :', player.x);
+}
+''',
+  ),
+  ProjectTemplate(
+    id: 'game-turn-battle',
+    title: 'Combat au tour par tour',
+    description: 'Gère points de vie, attaques et victoire d’un combat.',
+    language: ProgrammingLanguage.javascript,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.game,
+    path: LearningPath.game,
+    starterCode: '''
+const hero = { name: 'Byte', hp: 20, attack: 6 };
+const monster = { name: 'Bug', hp: 15 };
+while (hero.hp > 0 && monster.hp > 0) {
+  monster.hp -= hero.attack;
+  console.log(hero.name + ' attaque : ' + monster.hp + ' HP');
+  if (monster.hp > 0) hero.hp -= 3;
+}
+console.log(monster.hp <= 0 ? 'Victoire !' : 'Réessaie !');
+''',
+  ),
+  ProjectTemplate(
+    id: 'game-level-generator',
+    title: 'Générateur de niveau',
+    description:
+        'Crée une carte simple et reproductible à partir d’une graine.',
+    language: ProgrammingLanguage.javascript,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.game,
+    path: LearningPath.game,
+    starterCode: '''
+let seed = 42;
+function random() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+const tiles = Array.from({ length: 12 }, () => random() > 0.72 ? '🪨' : '🌿');
+console.log('Niveau :', tiles.join(' '));
+console.log('Même graine = même niveau');
+''',
+  ),
+  ProjectTemplate(
+    id: 'game-scoreboard',
+    title: 'Classement de joueurs',
+    description:
+        'Trie un classement et attribue des médailles aux meilleurs scores.',
+    language: ProgrammingLanguage.javascript,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.tool,
+    path: LearningPath.game,
+    starterCode: '''
+const players = [{ name: 'Sam', score: 120 }, { name: 'Lina', score: 180 }, { name: 'Noé', score: 145 }];
+players.sort((a, b) => b.score - a.score);
+players.forEach((player, index) => console.log(['🥇', '🥈', '🥉'][index] + ' ' + player.name + ' — ' + player.score));
+''',
+  ),
+  ProjectTemplate(
+    id: 'game-dialogue-tree',
+    title: 'Arbre de dialogue',
+    description: 'Fais évoluer une aventure selon les choix du joueur.',
+    language: ProgrammingLanguage.javascript,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.game,
+    path: LearningPath.game,
+    starterCode: '''
+const scenes = {
+  start: { text: 'Une porte mystérieuse apparaît.', choices: { entrer: 'treasure', fuir: 'forest' } },
+  treasure: { text: 'Tu trouves un trésor !', choices: {} },
+  forest: { text: 'Tu rencontres un renard.', choices: {} },
+};
+const choice = 'entrer';
+console.log(scenes.start.text);
+console.log('Choix : ' + choice + ' → ' + scenes[scenes.start.choices[choice]].text);
+''',
+  ),
+  ProjectTemplate(
+    id: 'ai-rule-recommender',
+    title: 'Recommandeur de défis',
+    description: 'Propose un défi de code selon le niveau et les intérêts.',
+    language: ProgrammingLanguage.python,
+    level: CodingLevel.someBasics,
+    category: ProjectCategory.tool,
+    path: LearningPath.backend,
+    starterCode:
+        "def recommend(level, likes_games):\n    if level == 'débutant':\n        return 'Crée une carte de profil en HTML'\n    return 'Programme un compteur de score' if likes_games else 'Construis une liste de tâches'\n\nprint(recommend('intermédiaire', True))",
+  ),
+  ProjectTemplate(
+    id: 'ai-sentiment-analyzer',
+    title: 'Analyseur de sentiment',
+    description: 'Découvre une IA explicable avec un classifieur de mots-clés.',
+    language: ProgrammingLanguage.python,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.tool,
+    path: LearningPath.backend,
+    starterCode:
+        "positive = {'super', 'génial', 'bravo', 'amusant'}\nnegative = {'triste', 'lent', 'difficile', 'bug'}\nmessage = 'Ce défi est génial mais difficile'\nwords = set(message.lower().split())\nscore = len(words & positive) - len(words & negative)\nprint('positif' if score > 0 else 'négatif' if score < 0 else 'neutre')",
+  ),
+  ProjectTemplate(
+    id: 'ai-data-cleaner',
+    title: 'Nettoyeur de données',
+    description:
+        'Prépare des données fiables avant leur utilisation par un modèle.',
+    language: ProgrammingLanguage.python,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.tool,
+    path: LearningPath.backend,
+    starterCode:
+        "raw_scores = [' 12 ', '8', '', 'inconnu', '19']\nclean_scores = [int(value.strip()) for value in raw_scores if value.strip().isdigit()]\nprint('Scores valides :', clean_scores)\nprint('Moyenne :', sum(clean_scores) / len(clean_scores))",
+  ),
+  ProjectTemplate(
+    id: 'ai-safe-chat-filter',
+    title: 'Filtre de discussion sûr',
+    description: 'Détecte des messages à vérifier avant leur publication.',
+    language: ProgrammingLanguage.python,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.tool,
+    path: LearningPath.backend,
+    starterCode:
+        "blocked_words = {'insulte', 'secret'}\nmessage = 'Voici mon idée de jeu amusant'\nneeds_review = any(word in message.lower() for word in blocked_words)\nprint('À vérifier par un adulte' if needs_review else 'Message accepté')",
+  ),
+  ProjectTemplate(
+    id: 'ai-model-evaluator',
+    title: 'Évaluateur de modèle',
+    description: 'Calcule précision et erreurs à partir de prédictions test.',
+    language: ProgrammingLanguage.python,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.tool,
+    path: LearningPath.backend,
+    starterCode:
+        "expected = ['chat', 'chien', 'chat', 'lapin']\npredicted = ['chat', 'chien', 'lapin', 'lapin']\ncorrect = sum(real == guess for real, guess in zip(expected, predicted))\nprint('Précision :', round(correct / len(expected) * 100), '%')\nprint('Erreurs :', [(real, guess) for real, guess in zip(expected, predicted) if real != guess])",
+  ),
 ];

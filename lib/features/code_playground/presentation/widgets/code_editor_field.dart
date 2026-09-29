@@ -51,5 +51,7 @@ dynamic highlightModeFor(ProgrammingLanguage language) {
       return hl_js.javascript;
     case ProgrammingLanguage.html:
       return hl_xml.xml;
+    case ProgrammingLanguage.dart:
+      return hl_js.javascript;
   }
 }

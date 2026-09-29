@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_dimens.dart';
@@ -20,6 +24,8 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   final _pseudoController = TextEditingController();
   Avatar? _selectedAvatar;
+  Uint8List? _selectedPhoto;
+  String? _selectedPhotoBase64;
   String? _errorText;
   bool _initialized = false;
 
@@ -37,19 +43,38 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       return;
     }
     setState(() => _errorText = null);
-    final failure = await ref.read(profileControllerProvider.notifier).updateProfile(
+    final failure = await ref
+        .read(profileControllerProvider.notifier)
+        .updateProfile(
           pseudo: pseudo,
           avatar: _selectedAvatar ?? Avatar.fox,
+          avatarImageBase64: _selectedPhotoBase64,
         );
     if (!mounted) return;
     if (failure == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.editProfileSaved)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.editProfileSaved)));
       Navigator.of(context).pop();
     } else {
       setState(() => _errorText = l10n.commonSomethingWentWrong);
     }
+  }
+
+  Future<void> _pickPhoto() async {
+    final photo = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 360,
+      maxHeight: 360,
+      imageQuality: 78,
+    );
+    if (photo == null) return;
+    final bytes = await photo.readAsBytes();
+    if (!mounted) return;
+    setState(() {
+      _selectedPhoto = bytes;
+      _selectedPhotoBase64 = base64Encode(bytes);
+    });
   }
 
   @override
@@ -63,6 +88,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         _initialized = true;
         _pseudoController.text = profile.pseudo;
         _selectedAvatar = profile.avatar;
+        _selectedPhotoBase64 = profile.avatarImageBase64;
+        if (_selectedPhotoBase64 != null) {
+          _selectedPhoto = base64Decode(_selectedPhotoBase64!);
+        }
       }
     });
 
@@ -83,10 +112,28 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   for (final avatar in Avatar.values)
                     _AvatarOption(
                       avatar: avatar,
-                      isSelected: _selectedAvatar == avatar,
-                      onTap: () => setState(() => _selectedAvatar = avatar),
+                      isSelected:
+                          _selectedPhoto == null && _selectedAvatar == avatar,
+                      onTap: () => setState(() {
+                        _selectedAvatar = avatar;
+                        _selectedPhoto = null;
+                        _selectedPhotoBase64 = null;
+                      }),
                     ),
+                  _PhotoOption(
+                    photo: _selectedPhoto,
+                    isSelected: _selectedPhoto != null,
+                    onTap: _pickPhoto,
+                  ),
                 ],
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton.icon(
+                  onPressed: _pickPhoto,
+                  icon: const Icon(Icons.add_photo_alternate_outlined),
+                  label: const Text('Importer une photo'),
+                ),
               ),
               const SizedBox(height: AppSpacing.lg),
               Text(l10n.editProfilePseudoLabel, style: AppTextStyles.title),
@@ -110,6 +157,36 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       ),
     );
   }
+}
+
+class _PhotoOption extends StatelessWidget {
+  const _PhotoOption({
+    required this.photo,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final Uint8List? photo;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: onTap,
+    child: Container(
+      width: 64,
+      height: 64,
+      decoration: BoxDecoration(
+        color: AppColors.cardBlue.surface,
+        shape: BoxShape.circle,
+        border: Border.all(color: AppColors.ink, width: isSelected ? 3.5 : 1.5),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: photo == null
+          ? const Icon(Icons.add_a_photo_outlined, color: AppColors.ink)
+          : Image.memory(photo!, fit: BoxFit.cover),
+    ),
+  );
 }
 
 class _AvatarOption extends StatelessWidget {

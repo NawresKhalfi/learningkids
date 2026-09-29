@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -60,10 +62,16 @@ class ProfileScreen extends ConsumerWidget {
                       border: Border.all(color: AppColors.ink, width: 3),
                     ),
                     alignment: Alignment.center,
-                    child: Text(
-                      profile?.avatar.emoji ?? '🙂',
-                      style: const TextStyle(fontSize: 44),
-                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: profile?.avatarImageBase64 == null
+                        ? Text(
+                            profile?.avatar.emoji ?? '🙂',
+                            style: const TextStyle(fontSize: 44),
+                          )
+                        : Image.memory(
+                            base64Decode(profile!.avatarImageBase64!),
+                            fit: BoxFit.cover,
+                          ),
                   ),
                   const SizedBox(height: AppSpacing.md),
                   Text(profile?.pseudo ?? '', style: AppTextStyles.headline),

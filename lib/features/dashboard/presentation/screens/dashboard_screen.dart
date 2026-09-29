@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -66,6 +68,7 @@ class DashboardScreen extends ConsumerWidget {
                           avatarColor:
                               user?.avatar.palette.surface ??
                               AppColors.cardBlue.surface,
+                          avatarImageBase64: user?.avatarImageBase64,
                           onTap: () => context.push(AppRoutes.profile),
                         ),
                         const SizedBox(height: 24),
@@ -257,10 +260,12 @@ class _Header extends StatelessWidget {
     required this.name,
     required this.avatar,
     required this.avatarColor,
+    this.avatarImageBase64,
     required this.onTap,
   });
   final String name, avatar;
   final Color avatarColor;
+  final String? avatarImageBase64;
   final VoidCallback onTap;
   @override
   Widget build(BuildContext context) => Row(
@@ -289,7 +294,13 @@ class _Header extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(color: AppColors.ink, width: 2),
           ),
-          child: Text(avatar, style: const TextStyle(fontSize: 27)),
+          clipBehavior: Clip.antiAlias,
+          child: avatarImageBase64 == null
+              ? Text(avatar, style: const TextStyle(fontSize: 27))
+              : Image.memory(
+                  base64Decode(avatarImageBase64!),
+                  fit: BoxFit.cover,
+                ),
         ),
       ),
     ],

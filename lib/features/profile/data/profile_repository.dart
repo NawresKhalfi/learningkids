@@ -9,7 +9,7 @@ import '../domain/user_profile.dart';
 /// `agent.md`: no data is pushed by default without consent).
 class ProfileRepository {
   ProfileRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   final FirebaseFirestore _firestore;
 
@@ -24,10 +24,11 @@ class ProfileRepository {
   DocumentReference<Map<String, dynamic>> _directoryDoc(String uid) =>
       _firestore.collection('accountDirectory').doc(uid);
 
-  Future<void> _mirrorToDirectory(UserProfile profile) => _directoryDoc(profile.uid).set({
-    'pseudo': profile.pseudo,
-    'avatarId': profile.avatar.name,
-  }, SetOptions(merge: true));
+  Future<void> _mirrorToDirectory(UserProfile profile) =>
+      _directoryDoc(profile.uid).set({
+        'pseudo': profile.pseudo,
+        'avatarId': profile.avatar.name,
+      }, SetOptions(merge: true));
 
   Future<UserProfile?> fetchProfile(String uid) async {
     final snapshot = await _doc(uid).get();
@@ -53,9 +54,16 @@ class ProfileRepository {
     required String uid,
     required String pseudo,
     required Avatar avatar,
+    String? avatarImageBase64,
   }) async {
-    await _doc(uid).update({'pseudo': pseudo, 'avatarId': avatar.name});
-    await _directoryDoc(uid).set({'pseudo': pseudo, 'avatarId': avatar.name}, SetOptions(merge: true));
+    await _doc(uid).update({
+      'pseudo': pseudo,
+      'avatarId': avatar.name,
+      'avatarImageBase64': avatarImageBase64,
+    });
+    await _directoryDoc(
+      uid,
+    ).set({'pseudo': pseudo, 'avatarId': avatar.name}, SetOptions(merge: true));
   }
 
   Future<void> updatePortfolioVisibility(String uid, bool isPublic) =>
@@ -67,5 +75,6 @@ class ProfileRepository {
   }
 }
 
-final profileRepositoryProvider =
-    Provider<ProfileRepository>((ref) => ProfileRepository());
+final profileRepositoryProvider = Provider<ProfileRepository>(
+  (ref) => ProfileRepository(),
+);

@@ -17,7 +17,7 @@ enum Avatar {
   final CardPalette palette;
 
   static Avatar fromId(String? id) => Avatar.values.firstWhere(
-        (avatar) => avatar.name == id,
-        orElse: () => Avatar.fox,
-      );
+    (avatar) => avatar.name == id,
+    orElse: () => Avatar.fox,
+  );
 }

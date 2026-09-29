@@ -35,13 +35,17 @@ class ProfileController extends Notifier<AsyncValue<void>> {
   Future<AuthFailure?> updateProfile({
     required String pseudo,
     required Avatar avatar,
+    String? avatarImageBase64,
   }) {
     return _run(() async {
       final uid = ref.read(authRepositoryProvider).currentUser!.uid;
-      await ref.read(profileRepositoryProvider).updatePseudoAndAvatar(
+      await ref
+          .read(profileRepositoryProvider)
+          .updatePseudoAndAvatar(
             uid: uid,
             pseudo: pseudo,
             avatar: avatar,
+            avatarImageBase64: avatarImageBase64,
           );
     });
   }
@@ -58,4 +62,6 @@ class ProfileController extends Notifier<AsyncValue<void>> {
 }
 
 final profileControllerProvider =
-    NotifierProvider<ProfileController, AsyncValue<void>>(ProfileController.new);
+    NotifierProvider<ProfileController, AsyncValue<void>>(
+      ProfileController.new,
+    );

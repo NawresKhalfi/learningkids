@@ -17,6 +17,7 @@ class UserProfile {
     required this.recommendedPath,
     required this.consentGivenAt,
     this.portfolioPublic = false,
+    this.avatarImageBase64,
   });
 
   final String uid;
@@ -32,6 +33,10 @@ class UserProfile {
   /// portfolio is private until the learner explicitly opts in.
   final bool portfolioPublic;
 
+  /// Optional photo selected by the learner, stored as a compact base64
+  /// image. Preset emoji avatars remain the fallback when it is absent.
+  final String? avatarImageBase64;
+
   /// When the parent/guardian accepted the data-collection notice shown
   /// before onboarding starts (US12) — kept as a record, not a gate: the
   /// app never re-checks it after account creation.
@@ -41,6 +46,7 @@ class UserProfile {
     String? pseudo,
     Avatar? avatar,
     bool? portfolioPublic,
+    String? avatarImageBase64,
   }) => UserProfile(
     uid: uid,
     pseudo: pseudo ?? this.pseudo,
@@ -51,11 +57,13 @@ class UserProfile {
     recommendedPath: recommendedPath,
     consentGivenAt: consentGivenAt,
     portfolioPublic: portfolioPublic ?? this.portfolioPublic,
+    avatarImageBase64: avatarImageBase64 ?? this.avatarImageBase64,
   );
 
   Map<String, dynamic> toMap() => {
     'pseudo': pseudo,
     'avatarId': avatar.name,
+    if (avatarImageBase64 != null) 'avatarImageBase64': avatarImageBase64,
     'ageRange': ageRange.name,
     'codingLevel': codingLevel.name,
     'goals': goals.map((goal) => goal.name).toList(),
@@ -100,6 +108,7 @@ class UserProfile {
           DateTime.tryParse(map['consentGivenAt'] as String? ?? '') ??
           DateTime.fromMillisecondsSinceEpoch(0),
       portfolioPublic: map['portfolioPublic'] as bool? ?? false,
+      avatarImageBase64: map['avatarImageBase64'] as String?,
     );
   }
 }

@@ -18,6 +18,7 @@ import '../../application/code_snippet_controller.dart';
 import '../../application/shared_snippet_providers.dart';
 import '../../data/code_runtime_service.dart';
 import '../../domain/code_execution_result.dart';
+import '../../domain/dart_playground_transpiler.dart';
 import '../../domain/programming_language.dart';
 import '../widgets/code_editor_field.dart';
 import '../widgets/code_symbol_toolbar.dart';
@@ -234,7 +235,10 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
       _isRunning = true;
       _result = null;
     });
-    final result = await runtime.run(_controller.text);
+    final source = widget.language == ProgrammingLanguage.dart
+        ? transpileDartForPlayground(_controller.text)
+        : _controller.text;
+    final result = await runtime.run(source);
     if (!mounted) return;
     setState(() {
       _isRunning = false;
@@ -282,7 +286,7 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
         javascriptRuntimeServiceProvider,
       ),
       ProgrammingLanguage.html => null,
-      ProgrammingLanguage.dart => null,
+      ProgrammingLanguage.dart => ref.watch(javascriptRuntimeServiceProvider),
     };
 
     return Padding(
@@ -302,9 +306,7 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
                 child: AppButton(
                   label: l10n.playgroundRun,
                   isLoading: _isRunning,
-                  onPressed: widget.language == ProgrammingLanguage.dart
-                      ? null
-                      : () => _run(runtime),
+                  onPressed: () => _run(runtime),
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),

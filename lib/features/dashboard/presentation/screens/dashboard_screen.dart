@@ -12,6 +12,7 @@ import '../../../gamification/domain/level.dart';
 import '../../../gamification/domain/weekly_summary.dart';
 import '../../../learning_path/application/learning_progress_controller.dart';
 import '../../../learning_path/domain/learning_path_info.dart';
+import '../../../learning_path/domain/learning_path.dart';
 import '../../../learning_path/domain/primary_path.dart';
 import '../../../profile/application/profile_controller.dart';
 import '../../domain/path_progress.dart';
@@ -181,7 +182,7 @@ class DashboardScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const _DashboardNavigation(),
+                    _DashboardNavigation(path: path),
                   ],
                 );
               },
@@ -565,7 +566,10 @@ class _Challenge extends StatelessWidget {
 }
 
 class _DashboardNavigation extends StatelessWidget {
-  const _DashboardNavigation();
+  const _DashboardNavigation({required this.path});
+
+  final LearningPath? path;
+
   @override
   Widget build(BuildContext context) => Align(
     alignment: Alignment.bottomCenter,
@@ -580,8 +584,24 @@ class _DashboardNavigation extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _Nav('🏠', 'Accueil', () => context.go(AppRoutes.home), active: true),
-          _Nav('📚', 'Leçons', () => context.push(AppRoutes.lessonCatalog)),
-          _Nav('💻', 'Code', () => context.push(AppRoutes.codePlayground)),
+          _Nav(
+            '📚',
+            'Leçons',
+            () => context.push(
+              path == null
+                  ? AppRoutes.lessonCatalog
+                  : AppRoutes.lessonCatalogFor(path!.name),
+            ),
+          ),
+          _Nav(
+            '💻',
+            'Code',
+            () => context.push(
+              path == null
+                  ? AppRoutes.codePlayground
+                  : AppRoutes.codePlaygroundFor(path!.name),
+            ),
+          ),
           _Nav('🏅', 'Badges', () => context.push(AppRoutes.badges)),
         ],
       ),

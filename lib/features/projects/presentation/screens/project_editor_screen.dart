@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../core/theme/app_dimens.dart';
 import '../../../../core/widgets/app_button.dart';
@@ -10,16 +11,15 @@ import '../../../../l10n/gen/app_localizations.dart';
 import '../../../code_playground/application/code_runtime_providers.dart';
 import '../../../code_playground/data/code_runtime_service.dart';
 import '../../../code_playground/domain/code_execution_result.dart';
+import '../../../code_playground/domain/dart_playground_transpiler.dart';
 import '../../../code_playground/domain/programming_language.dart';
 import '../../../code_playground/presentation/widgets/code_editor_field.dart';
 import '../../../code_playground/presentation/widgets/code_symbol_toolbar.dart';
 import '../../../code_playground/presentation/widgets/console_output_view.dart';
 import '../../../code_playground/presentation/widgets/hidden_runtime_webview.dart';
 import '../../../code_playground/presentation/widgets/html_preview_view.dart';
-import '../../application/project_feedback_provider.dart';
 import '../../application/project_providers.dart';
 import '../../domain/project.dart';
-import '../widgets/project_feedback_sheet.dart';
 import '../widgets/rename_project_dialog.dart';
 import '../widgets/select_category_dialog.dart';
 
@@ -102,7 +102,10 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
       _isRunning = true;
       _result = null;
     });
-    final result = await runtime.run(_controller.text);
+    final source = widget.project.language == ProgrammingLanguage.dart
+        ? transpileDartForPlayground(_controller.text)
+        : _controller.text;
+    final result = await runtime.run(source);
     if (!mounted) return;
     setState(() {
       _isRunning = false;
@@ -110,12 +113,12 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
     });
   }
 
-  Future<void> _requestFeedback() async {
-    ref
-        .read(projectFeedbackControllerProvider.notifier)
-        .analyze(widget.project);
-    await showProjectFeedbackSheet(context);
-  }
+  Future<void> _shareWithFriend() => SharePlus.instance.share(
+    ShareParams(
+      text:
+          'Regarde mon projet « ${widget.project.title} » !\n\n${_controller.text}',
+    ),
+  );
 
   Future<void> _togglePublish() async {
     setState(() => _isPublishing = true);
@@ -186,7 +189,7 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
         javascriptRuntimeServiceProvider,
       ),
       ProgrammingLanguage.html => null,
-      ProgrammingLanguage.dart => null,
+      ProgrammingLanguage.dart => ref.watch(javascriptRuntimeServiceProvider),
     };
 
     return Padding(
@@ -228,17 +231,15 @@ class _EditorBodyState extends ConsumerState<_EditorBody> {
                 child: AppButton(
                   label: l10n.playgroundRun,
                   isLoading: _isRunning,
-                  onPressed: widget.project.language == ProgrammingLanguage.dart
-                      ? null
-                      : () => _run(runtime),
+                  onPressed: () => _run(runtime),
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: AppButton(
-                  label: l10n.projectFeedbackAction,
+                  label: l10n.playgroundShareSnippet,
                   variant: AppButtonVariant.secondary,
-                  onPressed: _requestFeedback,
+                  onPressed: _shareWithFriend,
                 ),
               ),
             ],

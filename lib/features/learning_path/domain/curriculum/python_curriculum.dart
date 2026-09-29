@@ -291,6 +291,7 @@ final List<Module> pythonCurriculum = [
     courses: [
       ...pythonAdvancedCourses,
       ...ultraAdvancedCoursesFor(LearningPath.python),
+      ...masteryCoursesFor(LearningPath.python),
     ],
   ),
 ];

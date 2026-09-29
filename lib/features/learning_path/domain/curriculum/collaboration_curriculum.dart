@@ -268,6 +268,7 @@ final List<Module> collaborationCurriculum = [
     courses: [
       ...collaborationAdvancedCourses,
       ...ultraAdvancedCoursesFor(LearningPath.collaboration),
+      ...masteryCoursesFor(LearningPath.collaboration),
     ],
   ),
 ];

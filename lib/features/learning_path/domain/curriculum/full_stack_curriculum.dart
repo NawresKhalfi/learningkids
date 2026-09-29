@@ -309,6 +309,7 @@ final List<Module> fullStackCurriculum = [
     courses: [
       ...fullStackAdvancedCourses,
       ...ultraAdvancedCoursesFor(LearningPath.fullStack),
+      ...masteryCoursesFor(LearningPath.fullStack),
     ],
   ),
 ];

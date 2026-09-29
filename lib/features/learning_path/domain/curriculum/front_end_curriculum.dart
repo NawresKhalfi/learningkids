@@ -469,6 +469,7 @@ final List<Module> frontEndCurriculum = [
     courses: [
       ...frontEndAdvancedCourses,
       ...ultraAdvancedCoursesFor(LearningPath.frontEnd),
+      ...masteryCoursesFor(LearningPath.frontEnd),
     ],
   ),
 ];

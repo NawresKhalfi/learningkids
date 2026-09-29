@@ -515,6 +515,7 @@ final List<Module> gameCurriculum = [
     courses: [
       ...gameAdvancedCourses,
       ...ultraAdvancedCoursesFor(LearningPath.game),
+      ...masteryCoursesFor(LearningPath.game),
     ],
   ),
 ];

@@ -573,6 +573,7 @@ final List<Module> backendCurriculum = [
     courses: [
       ...backendAdvancedCourses,
       ...ultraAdvancedCoursesFor(LearningPath.backend),
+      ...masteryCoursesFor(LearningPath.backend),
     ],
   ),
 ];

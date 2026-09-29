@@ -515,6 +515,7 @@ final List<Module> mobileCurriculum = [
     courses: [
       ...mobileAdvancedCourses,
       ...ultraAdvancedCoursesFor(LearningPath.mobile),
+      ...masteryCoursesFor(LearningPath.mobile),
     ],
   ),
 ];

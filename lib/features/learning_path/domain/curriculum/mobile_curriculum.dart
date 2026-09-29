@@ -512,6 +512,9 @@ final List<Module> mobileCurriculum = [
     idPrefix: 'mobile',
     firstOrder: 11,
     firstPrerequisite: 'mobile-10',
-    courses: [...mobileAdvancedCourses, ...ultraAdvancedCoursesFor(LearningPath.mobile)],
+    courses: [
+      ...mobileAdvancedCourses,
+      ...ultraAdvancedCoursesFor(LearningPath.mobile),
+    ],
   ),
 ];

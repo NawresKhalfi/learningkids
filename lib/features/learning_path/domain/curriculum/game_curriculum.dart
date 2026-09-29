@@ -512,6 +512,9 @@ final List<Module> gameCurriculum = [
     idPrefix: 'game',
     firstOrder: 11,
     firstPrerequisite: 'game-10',
-    courses: [...gameAdvancedCourses, ...ultraAdvancedCoursesFor(LearningPath.game)],
+    courses: [
+      ...gameAdvancedCourses,
+      ...ultraAdvancedCoursesFor(LearningPath.game),
+    ],
   ),
 ];

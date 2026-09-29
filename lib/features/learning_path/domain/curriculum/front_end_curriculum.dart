@@ -466,6 +466,9 @@ final List<Module> frontEndCurriculum = [
     idPrefix: 'frontend',
     firstOrder: 9,
     firstPrerequisite: 'frontend-8',
-    courses: [...frontEndAdvancedCourses, ...ultraAdvancedCoursesFor(LearningPath.frontEnd)],
+    courses: [
+      ...frontEndAdvancedCourses,
+      ...ultraAdvancedCoursesFor(LearningPath.frontEnd),
+    ],
   ),
 ];

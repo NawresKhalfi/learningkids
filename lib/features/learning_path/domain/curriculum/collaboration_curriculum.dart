@@ -265,6 +265,9 @@ final List<Module> collaborationCurriculum = [
     idPrefix: 'collaboration',
     firstOrder: 5,
     firstPrerequisite: 'collaboration-4',
-    courses: [...collaborationAdvancedCourses, ...ultraAdvancedCoursesFor(LearningPath.collaboration)],
+    courses: [
+      ...collaborationAdvancedCourses,
+      ...ultraAdvancedCoursesFor(LearningPath.collaboration),
+    ],
   ),
 ];

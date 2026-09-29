@@ -1,5 +1,6 @@
 import '../../code_playground/domain/programming_language.dart';
 import '../../onboarding/domain/coding_level.dart';
+import '../../learning_path/domain/learning_path.dart';
 import 'project_category.dart';
 import 'project_template.dart';
 
@@ -14,7 +15,8 @@ const projectTemplatesCatalog = <ProjectTemplate>[
   ProjectTemplate(
     id: 'python-dice-game',
     title: 'Le lancer de dé magique',
-    description: 'Un petit jeu qui simule des lancers de dé et affiche les résultats.',
+    description:
+        'Un petit jeu qui simule des lancers de dé et affiche les résultats.',
     language: ProgrammingLanguage.python,
     level: CodingLevel.beginner,
     category: ProjectCategory.game,
@@ -38,7 +40,8 @@ print("Meilleur lancer :", max(resultats))
   ProjectTemplate(
     id: 'python-temperature-converter',
     title: 'Convertisseur de températures',
-    description: 'Transforme une liste de températures en Celsius vers des Fahrenheit.',
+    description:
+        'Transforme une liste de températures en Celsius vers des Fahrenheit.',
     language: ProgrammingLanguage.python,
     level: CodingLevel.someBasics,
     category: ProjectCategory.tool,
@@ -94,10 +97,12 @@ console.log(`Total à payer : \${total.toFixed(2)} €`);
   ProjectTemplate(
     id: 'html-profile-card',
     title: 'Carte de présentation',
-    description: 'Une petite carte de profil à personnaliser avec ton prénom et tes goûts.',
+    description:
+        'Une petite carte de profil à personnaliser avec ton prénom et tes goûts.',
     language: ProgrammingLanguage.html,
     level: CodingLevel.beginner,
     category: ProjectCategory.website,
+    path: LearningPath.frontEnd,
     starterCode: '''
 <!DOCTYPE html>
 <html>
@@ -124,7 +129,8 @@ console.log(`Total à payer : \${total.toFixed(2)} €`);
   ProjectTemplate(
     id: 'html-landing-page',
     title: 'Mini-site personnel',
-    description: 'Une page d\'accueil avec plusieurs sections et un bouton interactif.',
+    description:
+        'Une page d\'accueil avec plusieurs sections et un bouton interactif.',
     language: ProgrammingLanguage.html,
     level: CodingLevel.comfortable,
     category: ProjectCategory.website,
@@ -160,6 +166,88 @@ console.log(`Total à payer : \${total.toFixed(2)} €`);
   </section>
 </body>
 </html>
+''',
+  ),
+  ProjectTemplate(
+    id: 'frontend-portfolio-interactive',
+    title: 'Portfolio interactif',
+    description:
+        'Présente tes compétences avec des cartes et un filtre en JavaScript.',
+    language: ProgrammingLanguage.html,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.website,
+    starterCode: '''
+<!doctype html>
+<style>
+body { font-family: sans-serif; background:#fff4e4; color:#241f47; max-width:760px; margin:auto; padding:32px; }
+button { border:2px solid #241f47; border-radius:12px; padding:10px; background:#fff; margin-right:8px; }
+.project { background:#fff; border-radius:16px; padding:16px; margin-top:12px; }
+</style>
+<h1>Mon portfolio</h1>
+<button onclick="filtrer('web')">Web</button><button onclick="filtrer('jeu')">Jeux</button>
+<div class="project web">🌐 Site pour un club</div><div class="project jeu">🎮 Mini jeu</div>
+<script>
+function filtrer(type) { document.querySelectorAll('.project').forEach(p => p.hidden = !p.classList.contains(type)); }
+</script>
+''',
+  ),
+  ProjectTemplate(
+    id: 'frontend-task-board',
+    title: 'Tableau de tâches',
+    description:
+        'Crée un mini tableau Kanban avec ajout de tâches et compteur.',
+    language: ProgrammingLanguage.html,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.tool,
+    path: LearningPath.frontEnd,
+    starterCode: '''
+<!doctype html><style>body{font-family:sans-serif;padding:24px;background:#fff4e4}input,button{padding:10px;border-radius:10px;border:2px solid #241f47}li{margin:8px}</style>
+<h1>Mes tâches <span id="count">0</span></h1><input id="task" placeholder="Nouvelle tâche"><button onclick="add()">Ajouter</button><ul id="list"></ul>
+<script>function add(){const text=task.value.trim();if(!text)return;list.innerHTML+=`<li><input type="checkbox"> \${text}</li>`;task.value='';count.textContent=list.children.length}</script>
+''',
+  ),
+  ProjectTemplate(
+    id: 'frontend-weather-dashboard',
+    title: 'Dashboard météo',
+    description:
+        'Mets en page des données météo réactives avec une interface soignée.',
+    language: ProgrammingLanguage.html,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.website,
+    path: LearningPath.frontEnd,
+    starterCode: '''
+<!doctype html><style>body{font-family:sans-serif;background:linear-gradient(#86d8ff,#fff4e4);min-height:100vh;padding:30px}.card{background:#fff;border-radius:24px;padding:24px;max-width:360px;box-shadow:0 6px 20px #0002}.temp{font-size:64px}</style>
+<main class="card"><h1>☀️ Tunis</h1><div class="temp" id="temp">27°</div><p id="detail">Ensoleillé · Vent léger</p><button onclick="changer()">Actualiser</button></main>
+<script>function changer(){temp.textContent=(20+Math.floor(Math.random()*12))+'°';detail.textContent='Mis à jour à '+new Date().toLocaleTimeString()}</script>
+''',
+  ),
+  ProjectTemplate(
+    id: 'frontend-memory-game',
+    title: 'Jeu de mémoire Web',
+    description: 'Programme des cartes à retourner et un score de partie.',
+    language: ProgrammingLanguage.html,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.game,
+    path: LearningPath.frontEnd,
+    starterCode: '''
+<!doctype html><style>body{font-family:sans-serif;text-align:center;background:#fff4e4}.grid{display:grid;grid-template-columns:repeat(4,70px);gap:10px;justify-content:center}.card{height:70px;border:2px solid #241f47;border-radius:14px;background:#8d50f4;font-size:32px}</style>
+<h1>Jeu de mémoire</h1><p>Score : <span id="score">0</span></p><div class="grid" id="grid"></div>
+<script>const icons=['🐱','🦊','🐼','🐸','🐱','🦊','🐼','🐸'];let open=[];icons.sort(()=>Math.random()-.5).forEach(i=>{let b=document.createElement('button');b.className='card';b.onclick=()=>{if(open.includes(b))return;b.textContent=i;open.push(b);if(open.length==2){if(open[0].textContent==open[1].textContent)score.textContent++;else setTimeout(()=>open.forEach(x=>x.textContent=''),500);open=[]}};grid.append(b)})</script>
+''',
+  ),
+  ProjectTemplate(
+    id: 'frontend-accessible-form',
+    title: 'Formulaire accessible',
+    description:
+        'Construis un formulaire avec validation et messages compréhensibles.',
+    language: ProgrammingLanguage.html,
+    level: CodingLevel.comfortable,
+    category: ProjectCategory.tool,
+    path: LearningPath.frontEnd,
+    starterCode: '''
+<!doctype html><style>body{font-family:sans-serif;max-width:480px;margin:auto;padding:30px}input,button{display:block;width:100%;box-sizing:border-box;padding:10px;margin:8px 0}.error{color:#b00020}</style>
+<h1>Inscription à la newsletter</h1><label for="email">Adresse e-mail</label><input id="email" type="email" aria-describedby="message"><p class="error" id="message" role="alert"></p><button onclick="envoyer()">S'inscrire</button>
+<script>function envoyer(){message.textContent=email.validity.valid?'Merci, inscription réussie !':'Entre une adresse e-mail valide.'}</script>
 ''',
   ),
 ];

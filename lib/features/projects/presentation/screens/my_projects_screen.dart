@@ -9,6 +9,8 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../l10n/gen/app_localizations.dart';
 import '../../../code_playground/domain/programming_language.dart';
+import '../../../learning_path/domain/learning_path.dart';
+import '../../../learning_path/domain/learning_path_info.dart';
 import '../../application/project_providers.dart';
 import '../../domain/project.dart';
 import '../../domain/project_category.dart';
@@ -17,7 +19,9 @@ import '../../domain/project_category.dart';
 /// they've started, filterable by category, with entry points into the
 /// template catalog and their portfolio.
 class MyProjectsScreen extends ConsumerStatefulWidget {
-  const MyProjectsScreen({super.key});
+  const MyProjectsScreen({super.key, this.path});
+
+  final LearningPath? path;
 
   @override
   ConsumerState<MyProjectsScreen> createState() => _MyProjectsScreenState();
@@ -33,7 +37,11 @@ class _MyProjectsScreenState extends ConsumerState<MyProjectsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.myProjectsTitle),
+        title: Text(
+          widget.path == null
+              ? l10n.myProjectsTitle
+              : '${l10n.myProjectsTitle} · ${learningPathInfo(widget.path!).title}',
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.collections_bookmark_outlined),
@@ -46,11 +54,20 @@ class _MyProjectsScreenState extends ConsumerState<MyProjectsScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, 0),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.md,
+                AppSpacing.lg,
+                0,
+              ),
               child: AppButton(
                 label: l10n.myProjectsNewProject,
                 icon: const Icon(Icons.add, color: AppColors.ink),
-                onPressed: () => context.push(AppRoutes.projectTemplates),
+                onPressed: () => context.push(
+                  widget.path == null
+                      ? AppRoutes.projectTemplates
+                      : AppRoutes.projectTemplatesFor(widget.path!.name),
+                ),
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -82,28 +99,40 @@ class _MyProjectsScreenState extends ConsumerState<MyProjectsScreen> {
             Expanded(
               child: projectsAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (_, _) => Center(child: Text(l10n.commonSomethingWentWrong)),
+                error: (_, _) =>
+                    Center(child: Text(l10n.commonSomethingWentWrong)),
                 data: (projects) {
-                  final visible = _filter == null
+                  final inPath = widget.path == null
                       ? projects
-                      : projects.where((p) => p.category == _filter).toList();
+                      : projects
+                            .where((project) => project.path == widget.path)
+                            .toList();
+                  final visible = _filter == null
+                      ? inPath
+                      : inPath.where((p) => p.category == _filter).toList();
                   if (visible.isEmpty) {
                     return Center(
                       child: Padding(
                         padding: const EdgeInsets.all(AppSpacing.lg),
-                        child: Text(l10n.myProjectsEmpty, style: AppTextStyles.bodyMuted, textAlign: TextAlign.center),
+                        child: Text(
+                          l10n.myProjectsEmpty,
+                          style: AppTextStyles.bodyMuted,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     );
                   }
                   return ListView.separated(
                     padding: const EdgeInsets.all(AppSpacing.lg),
                     itemCount: visible.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
+                    separatorBuilder: (_, _) =>
+                        const SizedBox(height: AppSpacing.sm),
                     itemBuilder: (context, index) {
                       final project = visible[index];
                       return _ProjectRow(
                         project: project,
-                        onTap: () => context.push(AppRoutes.projectDetail(project.id)),
+                        onTap: () =>
+                            context.push(AppRoutes.projectDetail(project.id)),
                       );
                     },
                   );
@@ -118,7 +147,12 @@ class _MyProjectsScreenState extends ConsumerState<MyProjectsScreen> {
 }
 
 class _FilterChip extends StatelessWidget {
-  const _FilterChip({super.key, required this.label, required this.isSelected, required this.onTap});
+  const _FilterChip({
+    super.key,
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
 
   final String label;
   final bool isSelected;
@@ -170,7 +204,9 @@ class _ProjectRow extends StatelessWidget {
           children: [
             Icon(
               project.isPublished ? Icons.public : Icons.edit_note,
-              color: project.isPublished ? AppColors.success : AppColors.inkMuted,
+              color: project.isPublished
+                  ? AppColors.success
+                  : AppColors.inkMuted,
               size: 28,
             ),
             const SizedBox(width: AppSpacing.md),

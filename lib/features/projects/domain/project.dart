@@ -1,4 +1,5 @@
 import '../../code_playground/domain/programming_language.dart';
+import '../../learning_path/domain/learning_path.dart';
 import 'project_category.dart';
 
 /// A learner's project (EP07), started from a [ProjectTemplate] and then
@@ -13,6 +14,7 @@ class Project {
     required this.category,
     required this.code,
     required this.createdAt,
+    this.path,
     this.isPublished = false,
     this.thumbnailBase64,
   });
@@ -23,6 +25,7 @@ class Project {
   final ProjectCategory category;
   final String code;
   final DateTime createdAt;
+  final LearningPath? path;
 
   /// Whether this project appears in the learner's portfolio (US39). A
   /// project can be edited freely while unpublished; publishing does not
@@ -48,6 +51,7 @@ class Project {
     category: category ?? this.category,
     code: code ?? this.code,
     createdAt: createdAt,
+    path: path,
     isPublished: isPublished ?? this.isPublished,
     thumbnailBase64: thumbnailBase64 ?? this.thumbnailBase64,
   );
@@ -58,6 +62,7 @@ class Project {
     'category': category.name,
     'code': code,
     'createdAt': createdAt.toIso8601String(),
+    if (path != null) 'path': path!.name,
     'isPublished': isPublished,
     if (thumbnailBase64 != null) 'thumbnailBase64': thumbnailBase64,
   };
@@ -74,7 +79,12 @@ class Project {
       orElse: () => ProjectCategory.tool,
     ),
     code: map['code'] as String? ?? '',
-    createdAt: DateTime.tryParse(map['createdAt'] as String? ?? '') ?? DateTime.fromMillisecondsSinceEpoch(0),
+    createdAt:
+        DateTime.tryParse(map['createdAt'] as String? ?? '') ??
+        DateTime.fromMillisecondsSinceEpoch(0),
+    path: LearningPath.values
+        .where((value) => value.name == map['path'])
+        .firstOrNull,
     isPublished: map['isPublished'] as bool? ?? false,
     thumbnailBase64: map['thumbnailBase64'] as String?,
   );

@@ -120,19 +120,31 @@ class DashboardScreen extends ConsumerWidget {
                               '📚',
                               'Catalogue de leçons',
                               'Explore librement',
-                              () => context.push(AppRoutes.lessonCatalog),
+                              () => context.push(
+                                path == null
+                                    ? AppRoutes.lessonCatalog
+                                    : AppRoutes.lessonCatalogFor(path.name),
+                              ),
                             ),
                             _Tile(
                               '💻',
                               'Espace de code',
                               'Code en direct',
-                              () => context.push(AppRoutes.codePlayground),
+                              () => context.push(
+                                path == null
+                                    ? AppRoutes.codePlayground
+                                    : AppRoutes.codePlaygroundFor(path.name),
+                              ),
                             ),
                             _Tile(
                               '🛠️',
                               'Mes projets',
                               'Tes créations',
-                              () => context.push(AppRoutes.myProjects),
+                              () => context.push(
+                                path == null
+                                    ? AppRoutes.myProjects
+                                    : AppRoutes.myProjectsFor(path.name),
+                              ),
                             ),
                           ],
                         ),

@@ -30,18 +30,26 @@ abstract final class AppRoutes {
   static String roadmap(String pathId) => '/paths/$pathId';
   static String moduleDetail(String pathId, String moduleId) =>
       '/paths/$pathId/modules/$moduleId';
+  static String lessonCatalogFor(String pathId) =>
+      '$lessonCatalog?path=$pathId';
 
   static const codePlayground = '/code-playground';
+  static String codePlaygroundFor(String pathId) =>
+      '$codePlayground?path=$pathId';
   static const codeAssistant = '/code-assistant';
   static const gitSimulator = '/git-simulator';
 
   static const sharedSnippetViewPattern = '/shared-snippet/:snippetId';
-  static String sharedSnippetView(String snippetId) => '/shared-snippet/$snippetId';
+  static String sharedSnippetView(String snippetId) =>
+      '/shared-snippet/$snippetId';
 
   static const challenge = '/challenge';
 
   static const myProjects = '/projects';
   static const projectTemplates = '/projects/templates';
+  static String myProjectsFor(String pathId) => '$myProjects?path=$pathId';
+  static String projectTemplatesFor(String pathId) =>
+      '$projectTemplates?path=$pathId';
   static const projectDetailPattern = '/projects/:projectId';
   static const portfolio = '/portfolio';
   static const portfolioForPattern = '/portfolio/:ownerUid';

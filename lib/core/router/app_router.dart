@@ -67,8 +67,9 @@ const _screenTimeExemptRoutes = {
 };
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final refreshStream =
-      GoRouterRefreshStream(ref.watch(authRepositoryProvider).authStateChanges());
+  final refreshStream = GoRouterRefreshStream(
+    ref.watch(authRepositoryProvider).authStateChanges(),
+  );
   ref.onDispose(refreshStream.dispose);
   // Screen time ticks (and limit/PIN changes) don't come from navigation,
   // so the redirect above wouldn't otherwise re-run when they happen.
@@ -82,7 +83,10 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) => _redirect(ref, state.matchedLocation),
     routes: [
       GoRoute(path: AppRoutes.splash, builder: (_, _) => const SplashScreen()),
-      GoRoute(path: AppRoutes.welcome, builder: (_, _) => const WelcomeScreen()),
+      GoRoute(
+        path: AppRoutes.welcome,
+        builder: (_, _) => const WelcomeScreen(),
+      ),
       GoRoute(path: AppRoutes.signUp, builder: (_, _) => const SignUpScreen()),
       GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
       GoRoute(
@@ -114,7 +118,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const OnboardingLoadingScreen(),
       ),
       GoRoute(path: AppRoutes.home, builder: (_, _) => const HomeScreen()),
-      GoRoute(path: AppRoutes.profile, builder: (_, _) => const ProfileScreen()),
+      GoRoute(
+        path: AppRoutes.profile,
+        builder: (_, _) => const ProfileScreen(),
+      ),
       GoRoute(
         path: AppRoutes.editProfile,
         builder: (_, _) => const EditProfileScreen(),
@@ -128,7 +135,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         // `extra` carries a pre-built ParentGateScreen when the caller
         // needs a non-default action/forceCreatePin (see
         // `parent_dashboard_screen.dart` and `screen_time_limit_screen.dart`).
-        builder: (_, state) => state.extra as Widget? ?? const ParentGateScreen(),
+        builder: (_, state) =>
+            state.extra as Widget? ?? const ParentGateScreen(),
       ),
       GoRoute(
         path: AppRoutes.parentDashboard,
@@ -152,11 +160,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.lessonCatalog,
-        builder: (_, _) => const LessonCatalogScreen(),
+        builder: (_, state) => LessonCatalogScreen(path: _optionalPath(state)),
       ),
       GoRoute(
         path: AppRoutes.codePlayground,
-        builder: (_, _) => const CodePlaygroundScreen(),
+        builder: (_, state) => CodePlaygroundScreen(path: _optionalPath(state)),
       ),
       GoRoute(
         // `extra` always carries a pre-built CodeAssistantScreen (language +
@@ -165,41 +173,82 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.codeAssistant,
         builder: (_, state) => state.extra! as Widget,
       ),
-      GoRoute(path: AppRoutes.myProjects, builder: (_, _) => const MyProjectsScreen()),
+      GoRoute(
+        path: AppRoutes.myProjects,
+        builder: (_, state) => MyProjectsScreen(path: _optionalPath(state)),
+      ),
       // Declared before the `:projectId` pattern below so the literal
       // `/projects/templates` segment always wins the match.
       GoRoute(
         path: AppRoutes.projectTemplates,
-        builder: (_, _) => const ProjectTemplatesScreen(),
+        builder: (_, state) =>
+            ProjectTemplatesScreen(path: _optionalPath(state)),
       ),
       GoRoute(
         path: AppRoutes.projectDetailPattern,
-        builder: (_, state) => ProjectEditorScreen(projectId: state.pathParameters['projectId']!),
+        builder: (_, state) =>
+            ProjectEditorScreen(projectId: state.pathParameters['projectId']!),
       ),
-      GoRoute(path: AppRoutes.portfolio, builder: (_, _) => const PortfolioScreen()),
+      GoRoute(
+        path: AppRoutes.portfolio,
+        builder: (_, _) => const PortfolioScreen(),
+      ),
       GoRoute(
         path: AppRoutes.portfolioForPattern,
-        builder: (_, state) => PortfolioScreen(ownerUid: state.pathParameters['ownerUid']),
+        builder: (_, state) =>
+            PortfolioScreen(ownerUid: state.pathParameters['ownerUid']),
       ),
       GoRoute(path: AppRoutes.badges, builder: (_, _) => const BadgesScreen()),
-      GoRoute(path: AppRoutes.leaderboard, builder: (_, _) => const LeaderboardScreen()),
-      GoRoute(path: AppRoutes.challenge, builder: (_, _) => const ChallengeScreen()),
-      GoRoute(path: AppRoutes.dashboard, builder: (_, _) => const DashboardScreen()),
+      GoRoute(
+        path: AppRoutes.leaderboard,
+        builder: (_, _) => const LeaderboardScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.challenge,
+        builder: (_, _) => const ChallengeScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.dashboard,
+        builder: (_, _) => const DashboardScreen(),
+      ),
       GoRoute(
         path: AppRoutes.certificatePattern,
         builder: (_, state) => CertificateScreen(path: _pathFromParam(state)),
       ),
-      GoRoute(path: AppRoutes.gitSimulator, builder: (_, _) => const GitSimulatorScreen()),
+      GoRoute(
+        path: AppRoutes.gitSimulator,
+        builder: (_, _) => const GitSimulatorScreen(),
+      ),
       GoRoute(
         path: AppRoutes.sharedSnippetViewPattern,
-        builder: (_, state) => SharedSnippetViewScreen(snippetId: state.pathParameters['snippetId']!),
+        builder: (_, state) => SharedSnippetViewScreen(
+          snippetId: state.pathParameters['snippetId']!,
+        ),
       ),
-      GoRoute(path: AppRoutes.accountSuspended, builder: (_, _) => const AccountSuspendedScreen()),
-      GoRoute(path: AppRoutes.adminHome, builder: (_, _) => const AdminHomeScreen()),
-      GoRoute(path: AppRoutes.adminModerationQueue, builder: (_, _) => const ModerationQueueScreen()),
-      GoRoute(path: AppRoutes.adminAccounts, builder: (_, _) => const AccountManagementScreen()),
-      GoRoute(path: AppRoutes.languageSettings, builder: (_, _) => const LanguageSettingsScreen()),
-      GoRoute(path: AppRoutes.accessibilitySettings, builder: (_, _) => const AccessibilitySettingsScreen()),
+      GoRoute(
+        path: AppRoutes.accountSuspended,
+        builder: (_, _) => const AccountSuspendedScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.adminHome,
+        builder: (_, _) => const AdminHomeScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.adminModerationQueue,
+        builder: (_, _) => const ModerationQueueScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.adminAccounts,
+        builder: (_, _) => const AccountManagementScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.languageSettings,
+        builder: (_, _) => const LanguageSettingsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.accessibilitySettings,
+        builder: (_, _) => const AccessibilitySettingsScreen(),
+      ),
     ],
   );
 });
@@ -207,6 +256,12 @@ final routerProvider = Provider<GoRouter>((ref) {
 LearningPath _pathFromParam(GoRouterState state) {
   final id = state.pathParameters['pathId'];
   return LearningPath.values.firstWhere((path) => path.name == id);
+}
+
+LearningPath? _optionalPath(GoRouterState state) {
+  final id = state.uri.queryParameters['path'];
+  if (id == null) return null;
+  return LearningPath.values.where((path) => path.name == id).firstOrNull;
 }
 
 String? _redirect(Ref ref, String location) {
@@ -223,7 +278,9 @@ String? _redirect(Ref ref, String location) {
     return isAuthRoute ? null : AppRoutes.welcome;
   }
 
-  final hasOnboarded = ref.read(localPreferencesProvider).hasCompletedOnboarding;
+  final hasOnboarded = ref
+      .read(localPreferencesProvider)
+      .hasCompletedOnboarding;
   if (!hasOnboarded) {
     return isOnboardingRoute ? null : AppRoutes.onboardingConsent;
   }
@@ -233,11 +290,13 @@ String? _redirect(Ref ref, String location) {
     return AppRoutes.accountSuspended;
   }
 
-  final mustLeave = isAuthRoute || isOnboardingRoute || location == AppRoutes.splash;
+  final mustLeave =
+      isAuthRoute || isOnboardingRoute || location == AppRoutes.splash;
   if (mustLeave) return AppRoutes.home;
 
   final isLimitReached =
-      ref.read(screenTimeControllerProvider).valueOrNull?.isLimitReached ?? false;
+      ref.read(screenTimeControllerProvider).valueOrNull?.isLimitReached ??
+      false;
   if (isLimitReached && !_screenTimeExemptRoutes.contains(location)) {
     return AppRoutes.screenTimeLimit;
   }

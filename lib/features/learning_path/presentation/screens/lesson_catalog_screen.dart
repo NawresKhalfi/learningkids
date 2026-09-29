@@ -10,6 +10,7 @@ import '../../../../l10n/gen/app_localizations.dart';
 import '../../application/learning_progress_controller.dart';
 import '../../domain/curriculum.dart';
 import '../../domain/learning_path_info.dart';
+import '../../domain/learning_path.dart';
 import '../../domain/lesson_language.dart';
 import '../../domain/module.dart';
 import '../../domain/module_status.dart';
@@ -18,10 +19,15 @@ import '../../domain/module_status.dart';
 /// catalogue independent of a single path's roadmap, and one that grows
 /// automatically as `curriculum.dart` gains new modules/languages.
 class LessonCatalogScreen extends ConsumerStatefulWidget {
-  const LessonCatalogScreen({super.key});
+  const LessonCatalogScreen({super.key, this.path});
+
+  /// When opened from the dashboard, this is the learner's selected path.
+  /// Leaving it null preserves the global catalogue entry point.
+  final LearningPath? path;
 
   @override
-  ConsumerState<LessonCatalogScreen> createState() => _LessonCatalogScreenState();
+  ConsumerState<LessonCatalogScreen> createState() =>
+      _LessonCatalogScreenState();
 }
 
 class _LessonCatalogScreenState extends ConsumerState<LessonCatalogScreen> {
@@ -32,12 +38,26 @@ class _LessonCatalogScreenState extends ConsumerState<LessonCatalogScreen> {
     final l10n = AppLocalizations.of(context);
     final progressAsync = ref.watch(learningProgressProvider);
 
-    final modules = _filter == null
+    final pathModules = widget.path == null
         ? allModules
-        : allModules.where((m) => m.languages.contains(_filter)).toList();
+        : curriculumFor(widget.path!);
+    final languages = LessonLanguage.values
+        .where(
+          (language) => pathModules.any((m) => m.languages.contains(language)),
+        )
+        .toList();
+    final modules = _filter == null
+        ? pathModules
+        : pathModules.where((m) => m.languages.contains(_filter)).toList();
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.lessonCatalogTitle)),
+      appBar: AppBar(
+        title: Text(
+          widget.path == null
+              ? l10n.lessonCatalogTitle
+              : '${l10n.lessonCatalogTitle} · ${learningPathInfo(widget.path!).title}',
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -53,7 +73,7 @@ class _LessonCatalogScreenState extends ConsumerState<LessonCatalogScreen> {
                     isSelected: _filter == null,
                     onTap: () => setState(() => _filter = null),
                   ),
-                  for (final language in LessonLanguage.values) ...[
+                  for (final language in languages) ...[
                     const SizedBox(width: AppSpacing.sm),
                     _FilterChip(
                       key: ValueKey('lesson_catalog_filter_${language.name}'),
@@ -69,13 +89,15 @@ class _LessonCatalogScreenState extends ConsumerState<LessonCatalogScreen> {
             Expanded(
               child: progressAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (_, _) => Center(child: Text(l10n.commonSomethingWentWrong)),
+                error: (_, _) =>
+                    Center(child: Text(l10n.commonSomethingWentWrong)),
                 data: (progress) {
                   return ListView.separated(
                     key: const ValueKey('lesson_catalog_list'),
                     padding: const EdgeInsets.all(AppSpacing.lg),
                     itemCount: modules.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
+                    separatorBuilder: (_, _) =>
+                        const SizedBox(height: AppSpacing.sm),
                     itemBuilder: (context, index) {
                       final module = modules[index];
                       final status = resolveModuleStatus(
@@ -92,12 +114,16 @@ class _LessonCatalogScreenState extends ConsumerState<LessonCatalogScreen> {
                                 .join(', ');
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(l10n.roadmapModuleLockedMessage(prereqTitles)),
+                                content: Text(
+                                  l10n.roadmapModuleLockedMessage(prereqTitles),
+                                ),
                               ),
                             );
                             return;
                           }
-                          context.push(AppRoutes.moduleDetail(module.path.name, module.id));
+                          context.push(
+                            AppRoutes.moduleDetail(module.path.name, module.id),
+                          );
                         },
                       );
                     },
@@ -149,7 +175,11 @@ class _FilterChip extends StatelessWidget {
 }
 
 class _CatalogRow extends StatelessWidget {
-  const _CatalogRow({required this.module, required this.status, required this.onTap});
+  const _CatalogRow({
+    required this.module,
+    required this.status,
+    required this.onTap,
+  });
 
   final Module module;
   final ModuleStatus status;

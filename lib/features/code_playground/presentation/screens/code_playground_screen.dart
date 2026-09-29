@@ -11,6 +11,8 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../l10n/gen/app_localizations.dart';
 import '../../../code_assistant/presentation/screens/code_assistant_screen.dart';
+import '../../../learning_path/domain/learning_path.dart';
+import '../../../learning_path/domain/path_code_languages.dart';
 import '../../application/code_runtime_providers.dart';
 import '../../application/code_snippet_controller.dart';
 import '../../application/shared_snippet_providers.dart';
@@ -29,14 +31,19 @@ import '../widgets/html_preview_view.dart';
 /// Python/JS runtime only ever has to warm up once per visit to this
 /// screen — not once per tab switch.
 class CodePlaygroundScreen extends StatefulWidget {
-  const CodePlaygroundScreen({super.key});
+  const CodePlaygroundScreen({super.key, this.path});
+
+  final LearningPath? path;
 
   @override
   State<CodePlaygroundScreen> createState() => _CodePlaygroundScreenState();
 }
 
 class _CodePlaygroundScreenState extends State<CodePlaygroundScreen> {
-  ProgrammingLanguage _selected = ProgrammingLanguage.python;
+  late final List<ProgrammingLanguage> _languages = widget.path == null
+      ? ProgrammingLanguage.values
+      : programmingLanguagesForPath(widget.path!);
+  late ProgrammingLanguage _selected = _languages.first;
 
   Future<void> _promptSnippetCode(BuildContext context) async {
     final controller = TextEditingController();
@@ -90,15 +97,16 @@ class _CodePlaygroundScreenState extends State<CodePlaygroundScreen> {
                 vertical: AppSpacing.sm,
               ),
               child: _LanguageTabs(
+                languages: _languages,
                 selected: _selected,
                 onSelect: (language) => setState(() => _selected = language),
               ),
             ),
             Expanded(
               child: IndexedStack(
-                index: ProgrammingLanguage.values.indexOf(_selected),
+                index: _languages.indexOf(_selected),
                 children: [
-                  for (final language in ProgrammingLanguage.values)
+                  for (final language in _languages)
                     _LanguageEditorBody(language: language),
                 ],
               ),
@@ -111,8 +119,13 @@ class _CodePlaygroundScreenState extends State<CodePlaygroundScreen> {
 }
 
 class _LanguageTabs extends StatelessWidget {
-  const _LanguageTabs({required this.selected, required this.onSelect});
+  const _LanguageTabs({
+    required this.languages,
+    required this.selected,
+    required this.onSelect,
+  });
 
+  final List<ProgrammingLanguage> languages;
   final ProgrammingLanguage selected;
   final ValueChanged<ProgrammingLanguage> onSelect;
 
@@ -120,7 +133,7 @@ class _LanguageTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        for (final language in ProgrammingLanguage.values) ...[
+        for (final language in languages) ...[
           Expanded(
             child: GestureDetector(
               onTap: () => onSelect(language),
@@ -146,8 +159,7 @@ class _LanguageTabs extends StatelessWidget {
               ),
             ),
           ),
-          if (language != ProgrammingLanguage.values.last)
-            const SizedBox(width: AppSpacing.sm),
+          if (language != languages.last) const SizedBox(width: AppSpacing.sm),
         ],
       ],
     );

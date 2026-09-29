@@ -46,4 +46,3 @@ class Module {
 /// number, but not meant to be precise to the second either.
 int estimatedLessonMinutes(Module module) =>
     (module.lesson.sections.length * 2 + 1).clamp(3, 10);
-

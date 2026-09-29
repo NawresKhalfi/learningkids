@@ -306,6 +306,6 @@ final List<Module> fullStackCurriculum = [
     idPrefix: 'fullstack',
     firstOrder: 6,
     firstPrerequisite: 'fullstack-5',
-    courses: fullStackAdvancedCourses,
+    courses: [...fullStackAdvancedCourses, ...ultraAdvancedCoursesFor(LearningPath.fullStack)],
   ),
 ];

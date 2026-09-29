@@ -570,6 +570,6 @@ final List<Module> backendCurriculum = [
     idPrefix: 'backend',
     firstOrder: 11,
     firstPrerequisite: 'backend-10',
-    courses: backendAdvancedCourses,
+    courses: [...backendAdvancedCourses, ...ultraAdvancedCoursesFor(LearningPath.backend)],
   ),
 ];

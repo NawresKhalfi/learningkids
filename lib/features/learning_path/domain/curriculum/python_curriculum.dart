@@ -288,6 +288,6 @@ final List<Module> pythonCurriculum = [
     idPrefix: 'python',
     firstOrder: 6,
     firstPrerequisite: 'python-5',
-    courses: pythonAdvancedCourses,
+    courses: [...pythonAdvancedCourses, ...ultraAdvancedCoursesFor(LearningPath.python)],
   ),
 ];

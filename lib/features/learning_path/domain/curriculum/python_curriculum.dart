@@ -1,3 +1,4 @@
+import 'advanced_curriculum.dart';
 import '../learning_path.dart';
 import '../lesson.dart';
 import '../lesson_language.dart';
@@ -31,7 +32,8 @@ final List<Module> pythonCurriculum = [
           body:
               "Les types les plus courants sont les nombres entiers (int), les nombres "
               "à virgule (float), le texte (str) et le vrai/faux (bool).",
-          codeExample: 'score = 12       # int\npi = 3.14        # float\nok = True        # bool',
+          codeExample:
+              'score = 12       # int\npi = 3.14        # float\nok = True        # bool',
         ),
       ],
       recap:
@@ -58,7 +60,8 @@ final List<Module> pythonCurriculum = [
     path: LearningPath.python,
     order: 2,
     title: 'Conditions et boucles',
-    description: 'Fais prendre des décisions à ton programme et répète des actions.',
+    description:
+        'Fais prendre des décisions à ton programme et répète des actions.',
     prerequisiteIds: const ['python-1'],
     languages: const [LessonLanguage.python],
     lesson: const Lesson(
@@ -71,7 +74,8 @@ final List<Module> pythonCurriculum = [
           body:
               "Le mot-clé if permet d'exécuter du code seulement si une condition est "
               "vraie, et else pour le cas contraire.",
-          codeExample: "if age >= 7:\n    print('Tu peux jouer !')\nelse:\n    print('Bientôt !')",
+          codeExample:
+              "if age >= 7:\n    print('Tu peux jouer !')\nelse:\n    print('Bientôt !')",
         ),
         LessonSection(
           heading: 'Répéter une action',
@@ -87,7 +91,8 @@ final List<Module> pythonCurriculum = [
     ),
     quiz: const [
       QuizQuestion(
-        prompt: 'Quel mot-clé exécute du code seulement si une condition est fausse ?',
+        prompt:
+            'Quel mot-clé exécute du code seulement si une condition est fausse ?',
         options: ['if', 'else', 'for', 'while'],
         correctIndex: 1,
         explanation: "else s'exécute quand la condition du if n'est pas vraie.",
@@ -101,7 +106,8 @@ final List<Module> pythonCurriculum = [
           'Il crée une variable',
         ],
         correctIndex: 0,
-        explanation: "range(3) donne les nombres 0, 1, 2 : la boucle s'exécute donc 3 fois.",
+        explanation:
+            "range(3) donne les nombres 0, 1, 2 : la boucle s'exécute donc 3 fois.",
       ),
     ],
   ),
@@ -129,7 +135,8 @@ final List<Module> pythonCurriculum = [
           body:
               "On définit une fonction avec def, un nom, et des parenthèses. Elle peut "
               "recevoir des informations (paramètres) et en renvoyer une (return).",
-          codeExample: "def double(nombre):\n    return nombre * 2\n\nprint(double(4))",
+          codeExample:
+              "def double(nombre):\n    return nombre * 2\n\nprint(double(4))",
         ),
       ],
       recap:
@@ -152,7 +159,8 @@ final List<Module> pythonCurriculum = [
           'Elle crée une boucle',
         ],
         correctIndex: 1,
-        explanation: 'return renvoie un résultat que l\'on peut ensuite utiliser.',
+        explanation:
+            'return renvoie un résultat que l\'on peut ensuite utiliser.',
       ),
     ],
   ),
@@ -161,7 +169,8 @@ final List<Module> pythonCurriculum = [
     path: LearningPath.python,
     order: 4,
     title: 'Listes et dictionnaires',
-    description: 'Range plusieurs valeurs ensemble et associe des informations.',
+    description:
+        'Range plusieurs valeurs ensemble et associe des informations.',
     prerequisiteIds: const ['python-3'],
     languages: const [LessonLanguage.python],
     lesson: const Lesson(
@@ -181,7 +190,8 @@ final List<Module> pythonCurriculum = [
           body:
               "Un dictionnaire associe une clé à une valeur, entre accolades — pratique "
               "pour décrire un objet, comme un joueur avec son pseudo et son score.",
-          codeExample: "joueur = {'pseudo': 'Léo', 'score': 12}\nprint(joueur['pseudo'])",
+          codeExample:
+              "joueur = {'pseudo': 'Léo', 'score': 12}\nprint(joueur['pseudo'])",
         ),
       ],
       recap:
@@ -196,11 +206,18 @@ final List<Module> pythonCurriculum = [
         explanation: 'En Python, les listes commencent à l\'index 0.',
       ),
       QuizQuestion(
-        prompt: "Comment récupère-t-on la valeur associée à la clé 'pseudo' dans un "
+        prompt:
+            "Comment récupère-t-on la valeur associée à la clé 'pseudo' dans un "
             'dictionnaire joueur ?',
-        options: ['joueur.pseudo', "joueur['pseudo']", 'joueur(pseudo)', 'joueur->pseudo'],
+        options: [
+          'joueur.pseudo',
+          "joueur['pseudo']",
+          'joueur(pseudo)',
+          'joueur->pseudo',
+        ],
         correctIndex: 1,
-        explanation: "On utilise des crochets avec la clé entre guillemets : joueur['pseudo'].",
+        explanation:
+            "On utilise des crochets avec la clé entre guillemets : joueur['pseudo'].",
       ),
     ],
   ),
@@ -238,7 +255,8 @@ final List<Module> pythonCurriculum = [
     ),
     quiz: const [
       QuizQuestion(
-        prompt: 'Quelle est la première étape pour écrire un programme un peu complexe ?',
+        prompt:
+            'Quelle est la première étape pour écrire un programme un peu complexe ?',
         options: [
           "Écrire tout le code d'un coup",
           'Découper le problème en petites étapes',
@@ -264,5 +282,12 @@ final List<Module> pythonCurriculum = [
             'portfolio.',
       ),
     ],
+  ),
+  ...advancedModules(
+    path: LearningPath.python,
+    idPrefix: 'python',
+    firstOrder: 6,
+    firstPrerequisite: 'python-5',
+    courses: pythonAdvancedCourses,
   ),
 ];

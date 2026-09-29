@@ -1,3 +1,4 @@
+import 'advanced_curriculum.dart';
 import '../learning_path.dart';
 import '../lesson.dart';
 import '../lesson_language.dart';
@@ -12,7 +13,8 @@ final List<Module> fullStackCurriculum = [
     path: LearningPath.fullStack,
     order: 1,
     title: 'Node.js et Express',
-    description: 'Fais tourner du JavaScript côté serveur pour la première fois.',
+    description:
+        'Fais tourner du JavaScript côté serveur pour la première fois.',
     prerequisiteIds: const [],
     languages: const [LessonLanguage.javascript],
     lesson: const Lesson(
@@ -100,7 +102,8 @@ final List<Module> fullStackCurriculum = [
         prompt: 'Quelle commande SQL permet de demander des données ?',
         options: ['GET', 'SELECT', 'FIND', 'ASK'],
         correctIndex: 1,
-        explanation: 'SELECT est la commande utilisée pour interroger une base SQL.',
+        explanation:
+            'SELECT est la commande utilisée pour interroger une base SQL.',
       ),
       QuizQuestion(
         prompt: 'Dans une base SQL, une table ressemble le plus à...',
@@ -111,7 +114,8 @@ final List<Module> fullStackCurriculum = [
           'Un composant React',
         ],
         correctIndex: 0,
-        explanation: 'Une table SQL range les données en lignes et colonnes, comme un tableur.',
+        explanation:
+            'Une table SQL range les données en lignes et colonnes, comme un tableur.',
       ),
     ],
   ),
@@ -120,7 +124,8 @@ final List<Module> fullStackCurriculum = [
     path: LearningPath.fullStack,
     order: 3,
     title: 'TypeScript',
-    description: 'Ajoute des garde-fous à ton JavaScript pour éviter les erreurs.',
+    description:
+        'Ajoute des garde-fous à ton JavaScript pour éviter les erreurs.',
     prerequisiteIds: const ['fullstack-2'],
     languages: const [LessonLanguage.typescript],
     lesson: const Lesson(
@@ -149,7 +154,12 @@ final List<Module> fullStackCurriculum = [
     quiz: const [
       QuizQuestion(
         prompt: 'Que permet d\'ajouter TypeScript à JavaScript ?',
-        options: ['Des couleurs', 'Des types', 'De la musique', 'Des animations'],
+        options: [
+          'Des couleurs',
+          'Des types',
+          'De la musique',
+          'Des animations',
+        ],
         correctIndex: 1,
         explanation: 'TypeScript ajoute un système de types à JavaScript.',
       ),
@@ -217,10 +227,12 @@ final List<Module> fullStackCurriculum = [
             'serveur.',
       ),
       QuizQuestion(
-        prompt: 'Quelle fonction JavaScript permet d\'appeler une API depuis une page web ?',
+        prompt:
+            'Quelle fonction JavaScript permet d\'appeler une API depuis une page web ?',
         options: ['fetch', 'print', 'connect', 'require'],
         correctIndex: 0,
-        explanation: 'fetch envoie une demande à une adresse (souvent une API) et récupère la réponse.',
+        explanation:
+            'fetch envoie une demande à une adresse (souvent une API) et récupère la réponse.',
       ),
     ],
   ),
@@ -229,9 +241,14 @@ final List<Module> fullStackCurriculum = [
     path: LearningPath.fullStack,
     order: 5,
     title: 'Projet Full-Stack',
-    description: 'Construis une mini-application complète, du serveur à la page web.',
+    description:
+        'Construis une mini-application complète, du serveur à la page web.',
     prerequisiteIds: const ['fullstack-4'],
-    languages: const [LessonLanguage.javascript, LessonLanguage.sql, LessonLanguage.typescript],
+    languages: const [
+      LessonLanguage.javascript,
+      LessonLanguage.sql,
+      LessonLanguage.typescript,
+    ],
     lesson: const Lesson(
       intro:
           "C'est le moment d'assembler un serveur Express, une base de données et une "
@@ -269,7 +286,8 @@ final List<Module> fullStackCurriculum = [
             '(back) et les données.',
       ),
       QuizQuestion(
-        prompt: 'Par quoi commence-t-on généralement la construction d\'une application full-stack ?',
+        prompt:
+            'Par quoi commence-t-on généralement la construction d\'une application full-stack ?',
         options: [
           'Par la couleur des boutons',
           'Par le serveur et sa base de données',
@@ -282,5 +300,12 @@ final List<Module> fullStackCurriculum = [
             'relier à une interface.',
       ),
     ],
+  ),
+  ...advancedModules(
+    path: LearningPath.fullStack,
+    idPrefix: 'fullstack',
+    firstOrder: 6,
+    firstPrerequisite: 'fullstack-5',
+    courses: fullStackAdvancedCourses,
   ),
 ];

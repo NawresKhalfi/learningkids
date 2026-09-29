@@ -1,3 +1,4 @@
+import 'advanced_curriculum.dart';
 import '../learning_path.dart';
 import '../lesson.dart';
 import '../lesson_language.dart';
@@ -505,5 +506,12 @@ final List<Module> gameCurriculum = [
         explanation: 'Les retours des joueurs aident à améliorer le jeu.',
       ),
     ],
+  ),
+  ...advancedModules(
+    path: LearningPath.game,
+    idPrefix: 'game',
+    firstOrder: 11,
+    firstPrerequisite: 'game-10',
+    courses: gameAdvancedCourses,
   ),
 ];

@@ -1,3 +1,4 @@
+import 'advanced_curriculum.dart';
 import '../learning_path.dart';
 import '../lesson.dart';
 import '../lesson_language.dart';
@@ -505,5 +506,12 @@ final List<Module> mobileCurriculum = [
             'Les tests permettent de vérifier que le parcours de l’utilisateur fonctionne.',
       ),
     ],
+  ),
+  ...advancedModules(
+    path: LearningPath.mobile,
+    idPrefix: 'mobile',
+    firstOrder: 11,
+    firstPrerequisite: 'mobile-10',
+    courses: mobileAdvancedCourses,
   ),
 ];

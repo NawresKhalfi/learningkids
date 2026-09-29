@@ -1,3 +1,4 @@
+import 'advanced_curriculum.dart';
 import '../learning_path.dart';
 import '../lesson.dart';
 import '../lesson_language.dart';
@@ -459,5 +460,12 @@ final List<Module> frontEndCurriculum = [
         explanation: 'Les besoins du projet guident le choix de l’outil.',
       ),
     ],
+  ),
+  ...advancedModules(
+    path: LearningPath.frontEnd,
+    idPrefix: 'frontend',
+    firstOrder: 9,
+    firstPrerequisite: 'frontend-8',
+    courses: frontEndAdvancedCourses,
   ),
 ];

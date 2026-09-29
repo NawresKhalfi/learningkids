@@ -1,3 +1,4 @@
+import 'advanced_curriculum.dart';
 import '../learning_path.dart';
 import '../lesson.dart';
 import '../lesson_language.dart';
@@ -14,7 +15,8 @@ final List<Module> collaborationCurriculum = [
     path: LearningPath.collaboration,
     order: 1,
     title: 'Les bases de Git',
-    description: 'Découvre comment Git garde une mémoire de toutes les versions de ton projet.',
+    description:
+        'Découvre comment Git garde une mémoire de toutes les versions de ton projet.',
     prerequisiteIds: const [],
     languages: const [LessonLanguage.git],
     practicalExercise: PracticalExerciseKind.gitSimulator,
@@ -37,7 +39,8 @@ final List<Module> collaborationCurriculum = [
               "Avant d'enregistrer une version, on choisit quels fichiers inclure avec git add. "
               "Ensuite, git commit crée un instantané permanent avec un message qui explique le "
               "changement.",
-          codeExample: "git add index.html\ngit commit -m 'Ajoute la page d\\'accueil'",
+          codeExample:
+              "git add index.html\ngit commit -m 'Ajoute la page d\\'accueil'",
         ),
       ],
       recap:
@@ -54,7 +57,8 @@ final List<Module> collaborationCurriculum = [
           'À corriger les fautes de frappe',
         ],
         correctIndex: 0,
-        explanation: 'Git enregistre l\'historique des versions d\'un projet, comme une machine à remonter le temps.',
+        explanation:
+            'Git enregistre l\'historique des versions d\'un projet, comme une machine à remonter le temps.',
       ),
       QuizQuestion(
         prompt: 'Que fait la commande git commit ?',
@@ -65,7 +69,8 @@ final List<Module> collaborationCurriculum = [
           'Elle installe Git',
         ],
         correctIndex: 1,
-        explanation: 'git commit enregistre un instantané des fichiers ajoutés, avec un message explicatif.',
+        explanation:
+            'git commit enregistre un instantané des fichiers ajoutés, avec un message explicatif.',
       ),
     ],
   ),
@@ -74,7 +79,8 @@ final List<Module> collaborationCurriculum = [
     path: LearningPath.collaboration,
     order: 2,
     title: 'Branches et GitHub',
-    description: "Apprends à travailler sur une idée sans risque, puis à la partager sur GitHub.",
+    description:
+        "Apprends à travailler sur une idée sans risque, puis à la partager sur GitHub.",
     prerequisiteIds: const ['collaboration-1'],
     languages: const [LessonLanguage.git],
     practicalExercise: PracticalExerciseKind.gitSimulator,
@@ -114,7 +120,8 @@ final List<Module> collaborationCurriculum = [
           'Pour créer un compte GitHub',
         ],
         correctIndex: 1,
-        explanation: "Une branche isole tes expérimentations du code principal (main), qui reste intact.",
+        explanation:
+            "Une branche isole tes expérimentations du code principal (main), qui reste intact.",
       ),
       QuizQuestion(
         prompt: 'Que fait git push ?',
@@ -125,7 +132,8 @@ final List<Module> collaborationCurriculum = [
           'Il installe un langage de programmation',
         ],
         correctIndex: 0,
-        explanation: 'git push envoie tes commits enregistrés localement vers un dépôt distant (GitHub).',
+        explanation:
+            'git push envoie tes commits enregistrés localement vers un dépôt distant (GitHub).',
       ),
     ],
   ),
@@ -134,7 +142,8 @@ final List<Module> collaborationCurriculum = [
     path: LearningPath.collaboration,
     order: 3,
     title: 'Revue de code et tests',
-    description: "Découvre comment les équipes de développeurs vérifient leur code avant de le publier.",
+    description:
+        "Découvre comment les équipes de développeurs vérifient leur code avant de le publier.",
     prerequisiteIds: const ['collaboration-2'],
     languages: const [LessonLanguage.git],
     lesson: const Lesson(
@@ -184,7 +193,8 @@ final List<Module> collaborationCurriculum = [
           'À écrire de la documentation',
         ],
         correctIndex: 0,
-        explanation: 'Un test automatique détecte si une modification a cassé quelque chose qui marchait avant.',
+        explanation:
+            'Un test automatique détecte si une modification a cassé quelque chose qui marchait avant.',
       ),
     ],
   ),
@@ -193,7 +203,8 @@ final List<Module> collaborationCurriculum = [
     path: LearningPath.collaboration,
     order: 4,
     title: 'Intégration continue (CI/CD)',
-    description: 'Comprends comment un projet se met à jour automatiquement en toute sécurité.',
+    description:
+        'Comprends comment un projet se met à jour automatiquement en toute sécurité.',
     prerequisiteIds: const ['collaboration-3'],
     languages: const [LessonLanguage.git],
     lesson: const Lesson(
@@ -232,7 +243,8 @@ final List<Module> collaborationCurriculum = [
           'Elle crée des comptes utilisateurs',
         ],
         correctIndex: 0,
-        explanation: 'La CI exécute automatiquement les tests dès qu\'un changement est proposé.',
+        explanation:
+            'La CI exécute automatiquement les tests dès qu\'un changement est proposé.',
       ),
       QuizQuestion(
         prompt: 'Que permet le déploiement continu (CD) ?',
@@ -247,5 +259,12 @@ final List<Module> collaborationCurriculum = [
             'La CD publie automatiquement une nouvelle version dès que les tests de la CI ont réussi.',
       ),
     ],
+  ),
+  ...advancedModules(
+    path: LearningPath.collaboration,
+    idPrefix: 'collaboration',
+    firstOrder: 5,
+    firstPrerequisite: 'collaboration-4',
+    courses: collaborationAdvancedCourses,
   ),
 ];

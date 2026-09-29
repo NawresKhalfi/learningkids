@@ -1,3 +1,4 @@
+import 'advanced_curriculum.dart';
 import '../learning_path.dart';
 import '../lesson.dart';
 import '../lesson_language.dart';
@@ -563,5 +564,12 @@ final List<Module> backendCurriculum = [
             'Les tests et les améliorations progressives rendent l’outil plus fiable.',
       ),
     ],
+  ),
+  ...advancedModules(
+    path: LearningPath.backend,
+    idPrefix: 'backend',
+    firstOrder: 11,
+    firstPrerequisite: 'backend-10',
+    courses: backendAdvancedCourses,
   ),
 ];

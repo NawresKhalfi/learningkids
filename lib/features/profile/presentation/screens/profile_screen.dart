@@ -20,12 +20,14 @@ class ProfileScreen extends ConsumerWidget {
   Future<void> _handleDelete(BuildContext context, WidgetRef ref) async {
     final confirmed = await showDeleteAccountDialog(context);
     if (!confirmed) return;
-    final failure = await ref.read(profileControllerProvider.notifier).deleteAccount();
+    final failure = await ref
+        .read(profileControllerProvider.notifier)
+        .deleteAccount();
     if (!context.mounted || failure == null) return;
     final l10n = AppLocalizations.of(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(l10n.profileDeleteReauthRequired)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(l10n.profileDeleteReauthRequired)));
   }
 
   @override
@@ -51,7 +53,9 @@ class ProfileScreen extends ConsumerWidget {
                     width: 96,
                     height: 96,
                     decoration: BoxDecoration(
-                      color: profile?.avatar.palette.surface ?? AppColors.cardBlue.surface,
+                      color:
+                          profile?.avatar.palette.surface ??
+                          AppColors.cardBlue.surface,
                       shape: BoxShape.circle,
                       border: Border.all(color: AppColors.ink, width: 3),
                     ),
@@ -75,19 +79,15 @@ class ProfileScreen extends ConsumerWidget {
                   AppButton(
                     label: l10n.profileNotificationSettings,
                     variant: AppButtonVariant.outline,
-                    onPressed: () => context.push(AppRoutes.notificationSettings),
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  AppButton(
-                    label: l10n.profileLanguageSettings,
-                    variant: AppButtonVariant.outline,
-                    onPressed: () => context.push(AppRoutes.languageSettings),
+                    onPressed: () =>
+                        context.push(AppRoutes.notificationSettings),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   AppButton(
                     label: l10n.profileAccessibilitySettings,
                     variant: AppButtonVariant.outline,
-                    onPressed: () => context.push(AppRoutes.accessibilitySettings),
+                    onPressed: () =>
+                        context.push(AppRoutes.accessibilitySettings),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   AppButton(
@@ -108,14 +108,19 @@ class ProfileScreen extends ConsumerWidget {
                     label: l10n.profileLogOut,
                     variant: AppButtonVariant.secondary,
                     isLoading: isLoading,
-                    onPressed: () => ref.read(authControllerProvider.notifier).signOut(),
+                    onPressed: () =>
+                        ref.read(authControllerProvider.notifier).signOut(),
                   ),
                   const SizedBox(height: AppSpacing.xl),
                   TextButton(
-                    onPressed: isLoading ? null : () => _handleDelete(context, ref),
+                    onPressed: isLoading
+                        ? null
+                        : () => _handleDelete(context, ref),
                     child: Text(
                       l10n.profileDeleteAccount,
-                      style: AppTextStyles.bodyMuted.copyWith(color: AppColors.error),
+                      style: AppTextStyles.bodyMuted.copyWith(
+                        color: AppColors.error,
+                      ),
                     ),
                   ),
                 ],

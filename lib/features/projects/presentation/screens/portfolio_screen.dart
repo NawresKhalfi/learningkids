@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_dimens.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -43,7 +41,9 @@ class PortfolioScreen extends ConsumerWidget {
       );
     }
 
-    final projectsAsync = ref.watch(isOwnPortfolio ? myProjectsProvider : portfolioProvider(targetUid));
+    final projectsAsync = ref.watch(
+      isOwnPortfolio ? myProjectsProvider : portfolioProvider(targetUid),
+    );
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.portfolioTitle)),
@@ -54,9 +54,12 @@ class PortfolioScreen extends ConsumerWidget {
             Expanded(
               child: projectsAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (_, _) => Center(child: Text(l10n.commonSomethingWentWrong)),
+                error: (_, _) =>
+                    Center(child: Text(l10n.commonSomethingWentWrong)),
                 data: (projects) {
-                  final published = projects.where((p) => p.isPublished).toList();
+                  final published = projects
+                      .where((p) => p.isPublished)
+                      .toList();
                   if (published.isEmpty) {
                     return Center(
                       child: Padding(
@@ -71,12 +74,13 @@ class PortfolioScreen extends ConsumerWidget {
                   }
                   return GridView.builder(
                     padding: const EdgeInsets.all(AppSpacing.lg),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: AppSpacing.sm,
-                      crossAxisSpacing: AppSpacing.sm,
-                      childAspectRatio: 0.85,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: AppSpacing.sm,
+                          crossAxisSpacing: AppSpacing.sm,
+                          childAspectRatio: 0.85,
+                        ),
                     itemCount: published.length,
                     itemBuilder: (context, index) => _PortfolioCard(
                       project: published[index],
@@ -112,9 +116,14 @@ class _OwnPortfolioControls extends ConsumerWidget {
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
             value: isPublic,
-            onChanged: (value) => ref.read(profileRepositoryProvider).updatePortfolioVisibility(uid, value),
+            onChanged: (value) => ref
+                .read(profileRepositoryProvider)
+                .updatePortfolioVisibility(uid, value),
             title: Text(l10n.portfolioPublicToggle),
-            subtitle: Text(isPublic ? l10n.portfolioPublicOn : l10n.portfolioPublicOff, style: AppTextStyles.caption),
+            subtitle: Text(
+              isPublic ? l10n.portfolioPublicOn : l10n.portfolioPublicOff,
+              style: AppTextStyles.caption,
+            ),
           ),
           const SizedBox(height: AppSpacing.sm),
           Row(
@@ -123,15 +132,11 @@ class _OwnPortfolioControls extends ConsumerWidget {
                 child: AppButton(
                   label: l10n.portfolioShare,
                   variant: AppButtonVariant.secondary,
-                  onPressed: isPublic ? () => SharePlus.instance.share(ShareParams(text: l10n.portfolioShareMessage(uid))) : null,
-                ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(
-                child: AppButton(
-                  label: l10n.portfolioViewFriend,
-                  variant: AppButtonVariant.outline,
-                  onPressed: () => _promptFriendCode(context),
+                  onPressed: isPublic
+                      ? () => SharePlus.instance.share(
+                          ShareParams(text: l10n.portfolioShareMessage(uid)),
+                        )
+                      : null,
                 ),
               ),
             ],
@@ -139,28 +144,6 @@ class _OwnPortfolioControls extends ConsumerWidget {
         ],
       ),
     );
-  }
-
-  Future<void> _promptFriendCode(BuildContext context) async {
-    final controller = TextEditingController();
-    final code = await showDialog<String>(
-      context: context,
-      builder: (context) {
-        final l10n = AppLocalizations.of(context);
-        return AlertDialog(
-          title: Text(l10n.portfolioViewFriend),
-          content: TextField(controller: controller, decoration: InputDecoration(hintText: l10n.portfolioFriendCodeHint)),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(controller.text.trim()),
-              child: Text(l10n.commonContinue),
-            ),
-          ],
-        );
-      },
-    );
-    if (code == null || code.isEmpty || !context.mounted) return;
-    context.push(AppRoutes.portfolioFor(code));
   }
 }
 
@@ -181,10 +164,16 @@ class _PortfolioCard extends ConsumerWidget {
         final controller = TextEditingController();
         return AlertDialog(
           title: Text(l10n.portfolioReportTitle),
-          content: TextField(controller: controller, decoration: InputDecoration(hintText: l10n.portfolioReportReasonHint)),
+          content: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              hintText: l10n.portfolioReportReasonHint,
+            ),
+          ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(controller.text.trim()),
+              onPressed: () =>
+                  Navigator.of(context).pop(controller.text.trim()),
               child: Text(l10n.portfolioReportSubmit),
             ),
           ],
@@ -194,9 +183,16 @@ class _PortfolioCard extends ConsumerWidget {
     if (reason == null || reason.isEmpty || !context.mounted) return;
     await ref
         .read(moderationControllerProvider.notifier)
-        .reportProject(projectId: project.id, ownerUid: ownerUid!, projectTitle: project.title, reason: reason);
+        .reportProject(
+          projectId: project.id,
+          ownerUid: ownerUid!,
+          projectTitle: project.title,
+          reason: reason,
+        );
     if (!context.mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.portfolioReportSent)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(l10n.portfolioReportSent)));
   }
 
   @override
@@ -217,7 +213,10 @@ class _PortfolioCard extends ConsumerWidget {
               children: [
                 Positioned.fill(
                   child: thumbnail == null
-                      ? const ColoredBox(color: AppColors.background, child: Icon(Icons.image_not_supported_outlined))
+                      ? const ColoredBox(
+                          color: AppColors.background,
+                          child: Icon(Icons.image_not_supported_outlined),
+                        )
                       : Image.memory(thumbnail, fit: BoxFit.cover),
                 ),
                 if (ownerUid != null)
@@ -238,7 +237,12 @@ class _PortfolioCard extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(project.title, style: AppTextStyles.body, maxLines: 1, overflow: TextOverflow.ellipsis),
+                Text(
+                  project.title,
+                  style: AppTextStyles.body,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 Text(
                   '${programmingLanguageTitle(project.language)} · ${projectCategoryLabel(project.category)}',
                   style: AppTextStyles.caption,

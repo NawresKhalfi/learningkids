@@ -74,7 +74,7 @@ void main() {
     expect(find.text('Mon jeu'), findsOneWidget);
   });
 
-  testWidgets('filtering by category narrows the list (US41)', (tester) async {
+  testWidgets('shows every project without category filter controls', (tester) async {
     final firestore = FakeFirebaseFirestore();
     final repository = ProjectRepository(firestore: firestore);
     await repository.createProject(
@@ -105,11 +105,9 @@ void main() {
     expect(find.text('Mon jeu'), findsOneWidget);
     expect(find.text('Mon outil'), findsOneWidget);
 
-    await tester.tap(find.byKey(const ValueKey('my_projects_filter_game')));
-    await tester.pumpAndSettle();
-
     expect(find.text('Mon jeu'), findsOneWidget);
-    expect(find.text('Mon outil'), findsNothing);
+    expect(find.text('Mon outil'), findsOneWidget);
+    expect(find.byKey(const ValueKey('my_projects_filter_game')), findsNothing);
   });
 
   testWidgets('tapping "Nouveau projet" opens the template catalog', (tester) async {

@@ -11,6 +11,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/mascot_byte.dart';
 import '../../../../core/widgets/speech_bubble.dart';
 import '../../../../l10n/gen/app_localizations.dart';
+import '../../../auth/data/auth_repository.dart';
 import '../../application/onboarding_controller.dart';
 
 /// Plays a short fake-progress animation while the profile created from the
@@ -23,7 +24,8 @@ class OnboardingLoadingScreen extends ConsumerStatefulWidget {
       _OnboardingLoadingScreenState();
 }
 
-class _OnboardingLoadingScreenState extends ConsumerState<OnboardingLoadingScreen>
+class _OnboardingLoadingScreenState
+    extends ConsumerState<OnboardingLoadingScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   bool _hasError = false;
@@ -56,7 +58,9 @@ class _OnboardingLoadingScreenState extends ConsumerState<OnboardingLoadingScree
         return;
       }
 
-      if (ref.read(localPreferencesProvider).hasCompletedOnboarding) {
+      final uid = ref.read(authRepositoryProvider).currentUser?.uid;
+      if (uid != null &&
+          ref.read(localPreferencesProvider).hasCompletedOnboarding(uid)) {
         context.go(AppRoutes.home);
         return;
       }
@@ -107,7 +111,9 @@ class _OnboardingLoadingScreenState extends ConsumerState<OnboardingLoadingScree
                           value: _controller.value,
                           strokeWidth: 10,
                           backgroundColor: AppColors.cardBlue.surface,
-                          valueColor: const AlwaysStoppedAnimation(AppColors.brandBlue),
+                          valueColor: const AlwaysStoppedAnimation(
+                            AppColors.brandBlue,
+                          ),
                         ),
                         Text(
                           '${(_controller.value * 100).round()}%',
@@ -133,7 +139,9 @@ class _OnboardingLoadingScreenState extends ConsumerState<OnboardingLoadingScree
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
-                      child: SpeechBubble(message: l10n.onboardingLoadingMessage),
+                      child: SpeechBubble(
+                        message: l10n.onboardingLoadingMessage,
+                      ),
                     ),
                     const SizedBox(width: AppSpacing.sm),
                     const MascotByte(size: 90),

@@ -19,7 +19,8 @@ class OnboardingController extends Notifier<OnboardingAnswers> {
   @override
   OnboardingAnswers build() => const OnboardingAnswers();
 
-  void acceptConsent() => state = state.copyWith(consentGivenAt: DateTime.now());
+  void acceptConsent() =>
+      state = state.copyWith(consentGivenAt: DateTime.now());
 
   void setName(String name) => state = state.copyWith(name: name);
 
@@ -51,8 +52,10 @@ class OnboardingController extends Notifier<OnboardingAnswers> {
       throw StateError('Cannot submit onboarding answers while signed out.');
     }
 
-    final recommendedPath =
-        resolveRecommendedPath(answers.codingLevel!, answers.goals);
+    final recommendedPath = resolveRecommendedPath(
+      answers.codingLevel!,
+      answers.goals,
+    );
 
     final profile = UserProfile(
       uid: uid,
@@ -65,7 +68,7 @@ class OnboardingController extends Notifier<OnboardingAnswers> {
       consentGivenAt: answers.consentGivenAt!,
     );
 
-    await ref.read(localPreferencesProvider).setOnboardingCompleted(true);
+    await ref.read(localPreferencesProvider).setOnboardingCompleted(uid, true);
     await ref.read(profileRepositoryProvider).createInitialProfile(profile);
     await ref
         .read(learningProgressRepositoryProvider)
@@ -75,5 +78,5 @@ class OnboardingController extends Notifier<OnboardingAnswers> {
 
 final onboardingControllerProvider =
     NotifierProvider<OnboardingController, OnboardingAnswers>(
-  OnboardingController.new,
-);
+      OnboardingController.new,
+    );

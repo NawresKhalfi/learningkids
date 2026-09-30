@@ -44,13 +44,14 @@ class ScreenTimeController extends AsyncNotifier<ScreenTimeSnapshot> {
   Future<void> _tick() async {
     if (!_isForeground) return;
     final uid = ref.read(authRepositoryProvider).currentUser?.uid;
-    final hasOnboarded = ref.read(localPreferencesProvider).hasCompletedOnboarding;
+    final hasOnboarded =
+        uid != null &&
+        ref.read(localPreferencesProvider).hasCompletedOnboarding(uid);
     if (uid == null || !hasOnboarded) return;
 
-    final newTotal = await ref.read(parentalControlRepositoryProvider).incrementTodayMinutes(
-          uid,
-          1,
-        );
+    final newTotal = await ref
+        .read(parentalControlRepositoryProvider)
+        .incrementTodayMinutes(uid, 1);
     final current = state.valueOrNull ?? const ScreenTimeSnapshot();
     state = AsyncData(current.copyWith(todayMinutes: newTotal));
   }
@@ -74,5 +75,5 @@ class ScreenTimeController extends AsyncNotifier<ScreenTimeSnapshot> {
 
 final screenTimeControllerProvider =
     AsyncNotifierProvider<ScreenTimeController, ScreenTimeSnapshot>(
-  ScreenTimeController.new,
-);
+      ScreenTimeController.new,
+    );

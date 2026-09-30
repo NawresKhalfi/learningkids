@@ -19,45 +19,57 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// End-to-end proof of EP12/US63's blocking behaviour through the real
 /// router redirect, not just the pure domain check.
 void main() {
-  testWidgets('a suspended, onboarded user is sent straight to the blocking screen', (tester) async {
-    SharedPreferences.setMockInitialValues({});
-    final prefs = LocalPreferences(await SharedPreferences.getInstance());
-    await prefs.setOnboardingCompleted(true);
+  testWidgets(
+    'a suspended, onboarded user is sent straight to the blocking screen',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = LocalPreferences(await SharedPreferences.getInstance());
+      const uid = 'kid-1';
+      await prefs.setOnboardingCompleted(uid, true);
+      final firestore = FakeFirebaseFirestore();
+      await firestore
+          .collection('users')
+          .doc(uid)
+          .set(
+            UserProfile(
+              uid: uid,
+              pseudo: 'Léo',
+              avatar: Avatar.fox,
+              ageRange: AgeRange.sevenToNine,
+              codingLevel: CodingLevel.beginner,
+              goals: const {},
+              recommendedPath: RecommendedPath.discovery,
+              consentGivenAt: DateTime.utc(2026, 1, 1),
+            ).toMap(),
+          );
 
-    const uid = 'kid-1';
-    final firestore = FakeFirebaseFirestore();
-    await firestore.collection('users').doc(uid).set(
-      UserProfile(
-        uid: uid,
-        pseudo: 'Léo',
-        avatar: Avatar.fox,
-        ageRange: AgeRange.sevenToNine,
-        codingLevel: CodingLevel.beginner,
-        goals: const {},
-        recommendedPath: RecommendedPath.discovery,
-        consentGivenAt: DateTime.utc(2026, 1, 1),
-      ).toMap(),
-    );
+      final adminRepository = AdminRepository(firestore: firestore);
+      await adminRepository.setAccountSuspended(uid, true);
 
-    final adminRepository = AdminRepository(firestore: firestore);
-    await adminRepository.setAccountSuspended(uid, true);
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authRepositoryProvider.overrideWithValue(
+              AuthRepository(
+                firebaseAuth: MockFirebaseAuth(
+                  signedIn: true,
+                  mockUser: MockUser(uid: uid, email: 'kid@example.com'),
+                ),
+              ),
+            ),
+            localPreferencesProvider.overrideWithValue(prefs),
+            profileRepositoryProvider.overrideWithValue(
+              ProfileRepository(firestore: firestore),
+            ),
+            adminRepositoryProvider.overrideWithValue(adminRepository),
+          ],
+          child: const LearningKidsApp(),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    await tester.pumpWidget(
-      ProviderScope(
-        overrides: [
-          authRepositoryProvider.overrideWithValue(
-            AuthRepository(firebaseAuth: MockFirebaseAuth(signedIn: true, mockUser: MockUser(uid: uid, email: 'kid@example.com'))),
-          ),
-          localPreferencesProvider.overrideWithValue(prefs),
-          profileRepositoryProvider.overrideWithValue(ProfileRepository(firestore: firestore)),
-          adminRepositoryProvider.overrideWithValue(adminRepository),
-        ],
-        child: const LearningKidsApp(),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    expect(find.byType(AccountSuspendedScreen), findsOneWidget);
-    expect(find.byType(HomeScreen), findsNothing);
-  });
+      expect(find.byType(AccountSuspendedScreen), findsOneWidget);
+      expect(find.byType(HomeScreen), findsNothing);
+    },
+  );
 }

@@ -11,13 +11,15 @@ class LocalPreferences {
 
   final SharedPreferences _prefs;
 
-  static const _kOnboardingCompleteKey = 'onboarding_complete';
+  static const _kOnboardingCompleteKeyPrefix = 'onboarding_complete_';
 
-  bool get hasCompletedOnboarding =>
-      _prefs.getBool(_kOnboardingCompleteKey) ?? false;
+  /// Onboarding is learner-specific: more than one child can use the same
+  /// device, and completing it for one account must not skip it for another.
+  bool hasCompletedOnboarding(String uid) =>
+      _prefs.getBool('$_kOnboardingCompleteKeyPrefix$uid') ?? false;
 
-  Future<void> setOnboardingCompleted(bool value) =>
-      _prefs.setBool(_kOnboardingCompleteKey, value);
+  Future<void> setOnboardingCompleted(String uid, bool value) =>
+      _prefs.setBool('$_kOnboardingCompleteKeyPrefix$uid', value);
 
   // Notification preferences (EP11/US57/US59). Kept device-local rather
   // than in the Firestore profile: notifications are inherently scheduled

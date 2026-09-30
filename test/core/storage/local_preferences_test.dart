@@ -7,7 +7,24 @@ void main() {
     SharedPreferences.setMockInitialValues({});
   });
 
-  Future<LocalPreferences> load() async => LocalPreferences(await SharedPreferences.getInstance());
+  Future<LocalPreferences> load() async =>
+      LocalPreferences(await SharedPreferences.getInstance());
+
+  test(
+    'onboarding completion belongs only to the account that completed it',
+    () async {
+      final prefs = await load();
+
+      await prefs.setOnboardingCompleted('first-child', true);
+
+      expect(prefs.hasCompletedOnboarding('first-child'), isTrue);
+      expect(
+        prefs.hasCompletedOnboarding('second-child'),
+        isFalse,
+        reason: 'A new account on the same device must still see onboarding.',
+      );
+    },
+  );
 
   test('daily reminder is enabled by default at 18:00 (US57)', () async {
     final prefs = await load();
@@ -29,30 +46,39 @@ void main() {
     expect(prefs.dailyReminderMinute, 30);
   });
 
-  test('reward notifications are enabled by default and can be disabled (US58/US59)', () async {
-    final prefs = await load();
-    expect(prefs.rewardNotificationsEnabled, isTrue);
+  test(
+    'reward notifications are enabled by default and can be disabled (US58/US59)',
+    () async {
+      final prefs = await load();
+      expect(prefs.rewardNotificationsEnabled, isTrue);
 
-    await prefs.setRewardNotificationsEnabled(false);
+      await prefs.setRewardNotificationsEnabled(false);
 
-    expect(prefs.rewardNotificationsEnabled, isFalse);
-  });
+      expect(prefs.rewardNotificationsEnabled, isFalse);
+    },
+  );
 
-  test('app language defaults to "system" and can be changed (EP13/US64)', () async {
-    final prefs = await load();
-    expect(prefs.appLanguage, 'system');
+  test(
+    'app language defaults to "system" and can be changed (EP13/US64)',
+    () async {
+      final prefs = await load();
+      expect(prefs.appLanguage, 'system');
 
-    await prefs.setAppLanguage('en');
+      await prefs.setAppLanguage('en');
 
-    expect(prefs.appLanguage, 'en');
-  });
+      expect(prefs.appLanguage, 'en');
+    },
+  );
 
-  test('text scale option defaults to "normal" and can be changed (EP13/US66)', () async {
-    final prefs = await load();
-    expect(prefs.textScaleOption, 'normal');
+  test(
+    'text scale option defaults to "normal" and can be changed (EP13/US66)',
+    () async {
+      final prefs = await load();
+      expect(prefs.textScaleOption, 'normal');
 
-    await prefs.setTextScaleOption('large');
+      await prefs.setTextScaleOption('large');
 
-    expect(prefs.textScaleOption, 'large');
-  });
+      expect(prefs.textScaleOption, 'large');
+    },
+  );
 }

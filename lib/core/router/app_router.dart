@@ -280,17 +280,17 @@ String? _redirect(Ref ref, String location) {
     return location == AppRoutes.splash ? null : AppRoutes.splash;
   }
 
-  final isLoggedIn = authState.valueOrNull != null;
+  final user = authState.valueOrNull;
   final isAuthRoute = _authRoutes.contains(location);
   final isOnboardingRoute = location.startsWith('/onboarding');
 
-  if (!isLoggedIn) {
+  if (user == null) {
     return isAuthRoute ? null : AppRoutes.welcome;
   }
 
   final hasOnboarded = ref
       .read(localPreferencesProvider)
-      .hasCompletedOnboarding;
+      .hasCompletedOnboarding(user.uid);
   if (!hasOnboarded) {
     return isOnboardingRoute ? null : AppRoutes.onboardingConsent;
   }

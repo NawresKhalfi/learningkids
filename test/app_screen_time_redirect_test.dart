@@ -25,22 +25,24 @@ void main() {
     (tester) async {
       SharedPreferences.setMockInitialValues({});
       final prefs = LocalPreferences(await SharedPreferences.getInstance());
-      await prefs.setOnboardingCompleted(true);
-
       const uid = 'kid-1';
+      await prefs.setOnboardingCompleted(uid, true);
       final profileFirestore = FakeFirebaseFirestore();
-      await profileFirestore.collection('users').doc(uid).set(
-        UserProfile(
-          uid: uid,
-          pseudo: 'Léo',
-          avatar: Avatar.fox,
-          ageRange: AgeRange.sevenToNine,
-          codingLevel: CodingLevel.beginner,
-          goals: const {},
-          recommendedPath: RecommendedPath.discovery,
-          consentGivenAt: DateTime.utc(2026, 1, 1),
-        ).toMap(),
-      );
+      await profileFirestore
+          .collection('users')
+          .doc(uid)
+          .set(
+            UserProfile(
+              uid: uid,
+              pseudo: 'Léo',
+              avatar: Avatar.fox,
+              ageRange: AgeRange.sevenToNine,
+              codingLevel: CodingLevel.beginner,
+              goals: const {},
+              recommendedPath: RecommendedPath.discovery,
+              consentGivenAt: DateTime.utc(2026, 1, 1),
+            ).toMap(),
+          );
 
       final parentalControlRepository = ParentalControlRepository(
         firestore: FakeFirebaseFirestore(),
@@ -63,7 +65,9 @@ void main() {
             profileRepositoryProvider.overrideWithValue(
               ProfileRepository(firestore: profileFirestore),
             ),
-            parentalControlRepositoryProvider.overrideWithValue(parentalControlRepository),
+            parentalControlRepositoryProvider.overrideWithValue(
+              parentalControlRepository,
+            ),
           ],
           child: const LearningKidsApp(),
         ),

@@ -37,11 +37,15 @@ void main() {
 
     container = ProviderContainer(
       overrides: [
-        authRepositoryProvider.overrideWithValue(AuthRepository(firebaseAuth: mockAuth)),
-        profileRepositoryProvider
-            .overrideWithValue(ProfileRepository(firestore: firestore)),
-        learningProgressRepositoryProvider
-            .overrideWithValue(LearningProgressRepository(firestore: firestore)),
+        authRepositoryProvider.overrideWithValue(
+          AuthRepository(firebaseAuth: mockAuth),
+        ),
+        profileRepositoryProvider.overrideWithValue(
+          ProfileRepository(firestore: firestore),
+        ),
+        learningProgressRepositoryProvider.overrideWithValue(
+          LearningProgressRepository(firestore: firestore),
+        ),
         localPreferencesProvider.overrideWithValue(prefs),
       ],
     );
@@ -55,38 +59,48 @@ void main() {
     );
   });
 
-  test('submit records onboarding as complete even if Firestore fails', () async {
-    final failingRepo = _FailingProfileRepository();
-    final prefs = LocalPreferences(await SharedPreferences.getInstance());
-    final failingContainer = ProviderContainer(
-      overrides: [
-        authRepositoryProvider.overrideWithValue(
-          AuthRepository(
-            firebaseAuth: MockFirebaseAuth(
-              signedIn: true,
-              mockUser: MockUser(uid: 'kid-2'),
+  test(
+    'submit records onboarding as complete even if Firestore fails',
+    () async {
+      final failingRepo = _FailingProfileRepository();
+      final prefs = LocalPreferences(await SharedPreferences.getInstance());
+      final failingContainer = ProviderContainer(
+        overrides: [
+          authRepositoryProvider.overrideWithValue(
+            AuthRepository(
+              firebaseAuth: MockFirebaseAuth(
+                signedIn: true,
+                mockUser: MockUser(uid: 'kid-2'),
+              ),
             ),
           ),
-        ),
-        profileRepositoryProvider.overrideWithValue(failingRepo),
-        learningProgressRepositoryProvider.overrideWithValue(
-          LearningProgressRepository(firestore: firestore),
-        ),
-        localPreferencesProvider.overrideWithValue(prefs),
-      ],
-    );
-    addTearDown(failingContainer.dispose);
+          profileRepositoryProvider.overrideWithValue(failingRepo),
+          learningProgressRepositoryProvider.overrideWithValue(
+            LearningProgressRepository(firestore: firestore),
+          ),
+          localPreferencesProvider.overrideWithValue(prefs),
+        ],
+      );
+      addTearDown(failingContainer.dispose);
 
-    final notifier = failingContainer.read(onboardingControllerProvider.notifier);
-    notifier.acceptConsent();
-    notifier.setName('Léo');
-    notifier.setAgeRange(AgeRange.sevenToNine);
-    notifier.setCodingLevel(CodingLevel.someBasics);
-    notifier.toggleGoal(LearningGoal.website);
+      final notifier = failingContainer.read(
+        onboardingControllerProvider.notifier,
+      );
+      notifier.acceptConsent();
+      notifier.setName('Léo');
+      notifier.setAgeRange(AgeRange.sevenToNine);
+      notifier.setCodingLevel(CodingLevel.someBasics);
+      notifier.toggleGoal(LearningGoal.website);
 
-    await expectLater(notifier.submit(), throwsException);
-    expect(failingContainer.read(localPreferencesProvider).hasCompletedOnboarding, isTrue);
-  });
+      await expectLater(notifier.submit(), throwsException);
+      expect(
+        failingContainer
+            .read(localPreferencesProvider)
+            .hasCompletedOnboarding('kid-2'),
+        isTrue,
+      );
+    },
+  );
 
   test('submit persists the profile and marks onboarding complete', () async {
     final notifier = container.read(onboardingControllerProvider.notifier);
@@ -104,12 +118,16 @@ void main() {
     expect(doc.data()!['recommendedPath'], 'frontEnd');
     expect(doc.data()!['consentGivenAt'], isNotNull);
     expect(
-      container.read(localPreferencesProvider).hasCompletedOnboarding,
+      container.read(localPreferencesProvider).hasCompletedOnboarding('kid-1'),
       isTrue,
     );
 
-    final progressDoc =
-        await firestore.collection('users').doc('kid-1').collection('learning').doc('progress').get();
+    final progressDoc = await firestore
+        .collection('users')
+        .doc('kid-1')
+        .collection('learning')
+        .doc('progress')
+        .get();
     expect(progressDoc.data()!['activePaths'], contains('frontEnd'));
   });
 
@@ -117,7 +135,9 @@ void main() {
     final notifier = container.read(onboardingControllerProvider.notifier);
 
     notifier.toggleGoal(LearningGoal.game);
-    expect(container.read(onboardingControllerProvider).goals, {LearningGoal.game});
+    expect(container.read(onboardingControllerProvider).goals, {
+      LearningGoal.game,
+    });
 
     notifier.toggleGoal(LearningGoal.game);
     expect(container.read(onboardingControllerProvider).goals, isEmpty);

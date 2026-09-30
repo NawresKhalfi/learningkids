@@ -144,7 +144,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingConsentBody =>
-      'LearningKids only keeps the first name, age range, learning goals and daily usage time (for parental controls). No ads, no selling data. The account and all its data can be deleted at any time from the profile.';
+      'LearningKids only keeps the first name, learning goals and daily usage time (for parental controls). No ads, no selling data. The account and all its data can be deleted at any time from the profile.';
 
   @override
   String get onboardingConsentAccept => 'I agree, I am the parent or guardian';
@@ -177,7 +177,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingAge13plus => '13 and up';
 
   @override
-  String get onboardingLevelTitle => 'Have you already tried coding?';
+  String get onboardingLevelTitle => 'Your learning starts here!';
+
+  @override
+  String get onboardingProgramTitle => 'From basics to advanced';
+
+  @override
+  String get onboardingProgramBody =>
+      'Every path starts with the basics, then guides you step by step toward very advanced lessons and projects.';
 
   @override
   String get onboardingLevelBeginner => 'Never, I\'m a beginner';

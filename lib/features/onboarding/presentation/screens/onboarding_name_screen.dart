@@ -14,7 +14,8 @@ class OnboardingNameScreen extends ConsumerStatefulWidget {
   const OnboardingNameScreen({super.key});
 
   @override
-  ConsumerState<OnboardingNameScreen> createState() => _OnboardingNameScreenState();
+  ConsumerState<OnboardingNameScreen> createState() =>
+      _OnboardingNameScreenState();
 }
 
 class _OnboardingNameScreenState extends ConsumerState<OnboardingNameScreen> {
@@ -36,7 +37,7 @@ class _OnboardingNameScreenState extends ConsumerState<OnboardingNameScreen> {
     final name = _nameController.text.trim();
     if (name.isEmpty) return;
     ref.read(onboardingControllerProvider.notifier).setName(name);
-    context.go(AppRoutes.onboardingAge);
+    context.go(AppRoutes.onboardingLevel);
   }
 
   @override

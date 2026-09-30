@@ -146,7 +146,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingConsentBody =>
-      'LearningKids conserve uniquement le prénom, la tranche d\'âge, les objectifs d\'apprentissage et le temps d\'utilisation quotidien (pour le contrôle parental). Aucune publicité, aucune revente de données. Le compte et toutes ses données peuvent être supprimés à tout moment depuis le profil.';
+      'LearningKids conserve uniquement le prénom, les objectifs d\'apprentissage et le temps d\'utilisation quotidien (pour le contrôle parental). Aucune publicité, aucune revente de données. Le compte et toutes ses données peuvent être supprimés à tout moment depuis le profil.';
 
   @override
   String get onboardingConsentAccept =>
@@ -180,7 +180,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingAge13plus => '13 ans et +';
 
   @override
-  String get onboardingLevelTitle => 'As-tu déjà essayé de coder ?';
+  String get onboardingLevelTitle => 'Ton apprentissage commence ici !';
+
+  @override
+  String get onboardingProgramTitle => 'Des bases à l\'avancé';
+
+  @override
+  String get onboardingProgramBody =>
+      'Chaque parcours commence avec les bases, puis te guide pas à pas vers des cours et des projets très avancés.';
 
   @override
   String get onboardingLevelBeginner => 'Jamais, je débute';

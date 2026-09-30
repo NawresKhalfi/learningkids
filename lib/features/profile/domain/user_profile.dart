@@ -86,7 +86,7 @@ class UserProfile {
       avatar: Avatar.fromId(map['avatarId'] as String?),
       ageRange: AgeRange.values.firstWhere(
         (value) => value.name == map['ageRange'],
-        orElse: () => AgeRange.sevenToNine,
+        orElse: () => AgeRange.unspecified,
       ),
       codingLevel: CodingLevel.values.firstWhere(
         (value) => value.name == map['codingLevel'],

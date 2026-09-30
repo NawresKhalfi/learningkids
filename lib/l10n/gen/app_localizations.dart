@@ -353,7 +353,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingConsentBody.
   ///
   /// In fr, this message translates to:
-  /// **'LearningKids conserve uniquement le prénom, la tranche d\'âge, les objectifs d\'apprentissage et le temps d\'utilisation quotidien (pour le contrôle parental). Aucune publicité, aucune revente de données. Le compte et toutes ses données peuvent être supprimés à tout moment depuis le profil.'**
+  /// **'LearningKids conserve uniquement le prénom, les objectifs d\'apprentissage et le temps d\'utilisation quotidien (pour le contrôle parental). Aucune publicité, aucune revente de données. Le compte et toutes ses données peuvent être supprimés à tout moment depuis le profil.'**
   String get onboardingConsentBody;
 
   /// No description provided for @onboardingConsentAccept.
@@ -413,8 +413,20 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingLevelTitle.
   ///
   /// In fr, this message translates to:
-  /// **'As-tu déjà essayé de coder ?'**
+  /// **'Ton apprentissage commence ici !'**
   String get onboardingLevelTitle;
+
+  /// No description provided for @onboardingProgramTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Des bases à l\'avancé'**
+  String get onboardingProgramTitle;
+
+  /// No description provided for @onboardingProgramBody.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chaque parcours commence avec les bases, puis te guide pas à pas vers des cours et des projets très avancés.'**
+  String get onboardingProgramBody;
 
   /// No description provided for @onboardingLevelBeginner.
   ///

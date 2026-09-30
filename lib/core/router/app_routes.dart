@@ -9,7 +9,6 @@ abstract final class AppRoutes {
 
   static const onboardingConsent = '/onboarding/consent';
   static const onboardingName = '/onboarding/name';
-  static const onboardingAge = '/onboarding/age';
   static const onboardingLevel = '/onboarding/level';
   static const onboardingGoals = '/onboarding/goals';
   static const onboardingLoading = '/onboarding/loading';

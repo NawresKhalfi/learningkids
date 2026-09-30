@@ -28,7 +28,6 @@ import '../../features/learning_path/presentation/screens/lesson_player_screen.d
 import '../../features/learning_path/presentation/screens/paths_screen.dart';
 import '../../features/learning_path/presentation/screens/roadmap_screen.dart';
 import '../../features/notifications/presentation/screens/notification_settings_screen.dart';
-import '../../features/onboarding/presentation/screens/onboarding_age_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_consent_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_goals_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_level_screen.dart';
@@ -100,10 +99,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.onboardingName,
         builder: (_, _) => const OnboardingNameScreen(),
-      ),
-      GoRoute(
-        path: AppRoutes.onboardingAge,
-        builder: (_, _) => const OnboardingAgeScreen(),
       ),
       GoRoute(
         path: AppRoutes.onboardingLevel,

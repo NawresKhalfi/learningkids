@@ -61,7 +61,7 @@ class OnboardingController extends Notifier<OnboardingAnswers> {
       uid: uid,
       pseudo: answers.name!,
       avatar: Avatar.fox,
-      ageRange: answers.ageRange!,
+      ageRange: answers.ageRange,
       codingLevel: answers.codingLevel!,
       goals: answers.goals,
       recommendedPath: recommendedPath,

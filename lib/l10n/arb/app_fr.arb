@@ -50,7 +50,7 @@
   "forgotPasswordSuccess": "E-mail envoyé ! Vérifie ta boîte de réception.",
 
   "onboardingConsentMessage": "Avant de commencer, un mot pour le parent ou le tuteur qui accompagne cette inscription !",
-  "onboardingConsentBody": "LearningKids conserve uniquement le prénom, la tranche d'âge, les objectifs d'apprentissage et le temps d'utilisation quotidien (pour le contrôle parental). Aucune publicité, aucune revente de données. Le compte et toutes ses données peuvent être supprimés à tout moment depuis le profil.",
+  "onboardingConsentBody": "LearningKids conserve uniquement le prénom, les objectifs d'apprentissage et le temps d'utilisation quotidien (pour le contrôle parental). Aucune publicité, aucune revente de données. Le compte et toutes ses données peuvent être supprimés à tout moment depuis le profil.",
   "onboardingConsentAccept": "J'accepte, je suis le parent ou le tuteur",
 
   "onboardingMascotName": "Byte",
@@ -65,7 +65,9 @@
   "onboardingAge10to12": "10-12 ans",
   "onboardingAge13plus": "13 ans et +",
 
-  "onboardingLevelTitle": "As-tu déjà essayé de coder ?",
+  "onboardingLevelTitle": "Ton apprentissage commence ici !",
+  "onboardingProgramTitle": "Des bases à l'avancé",
+  "onboardingProgramBody": "Chaque parcours commence avec les bases, puis te guide pas à pas vers des cours et des projets très avancés.",
   "onboardingLevelBeginner": "Jamais, je débute",
   "onboardingLevelSomeBasics": "Un peu, je connais les bases",
   "onboardingLevelComfortable": "Oui, je code déjà des projets",

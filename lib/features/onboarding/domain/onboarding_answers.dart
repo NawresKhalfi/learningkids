@@ -8,7 +8,7 @@ class OnboardingAnswers {
   const OnboardingAnswers({
     this.consentGivenAt,
     this.name,
-    this.ageRange,
+    this.ageRange = AgeRange.unspecified,
     this.codingLevel,
     this.goals = const {},
   });
@@ -18,7 +18,7 @@ class OnboardingAnswers {
   /// assume it is non-null.
   final DateTime? consentGivenAt;
   final String? name;
-  final AgeRange? ageRange;
+  final AgeRange ageRange;
   final CodingLevel? codingLevel;
   final Set<LearningGoal> goals;
 
@@ -26,7 +26,6 @@ class OnboardingAnswers {
       consentGivenAt != null &&
       name != null &&
       name!.isNotEmpty &&
-      ageRange != null &&
       codingLevel != null &&
       goals.isNotEmpty;
 

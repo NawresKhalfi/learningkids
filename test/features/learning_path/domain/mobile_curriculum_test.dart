@@ -6,25 +6,14 @@ import 'package:learningkids/features/learning_path/domain/lesson_language.dart'
 void main() {
   final modules = curriculumFor(LearningPath.mobile);
 
-  test('mobile path contains the complete ten-module Flutter journey', () {
-    expect(modules, hasLength(10));
+  test('mobile path contains the complete 28-module Flutter journey', () {
+    expect(modules, hasLength(28));
     expect(
       modules.map((module) => module.id),
-      orderedEquals([
-        'mobile-1',
-        'mobile-2',
-        'mobile-3',
-        'mobile-4',
-        'mobile-5',
-        'mobile-6',
-        'mobile-7',
-        'mobile-8',
-        'mobile-9',
-        'mobile-10',
-      ]),
+      orderedEquals(List.generate(28, (index) => 'mobile-${index + 1}')),
     );
     expect(modules.first.title, 'Découvrir Dart');
-    expect(modules.last.title, 'Projet : ma liste de défis');
+    expect(modules[9].title, 'Projet : ma liste de défis');
   });
 
   test('mobile modules unlock one after another', () {

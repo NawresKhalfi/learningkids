@@ -6,28 +6,22 @@ import 'package:learningkids/features/learning_path/domain/lesson_language.dart'
 void main() {
   final modules = curriculumFor(LearningPath.backend);
 
-  test('backend and AI path contains ten progressive modules', () {
-    expect(modules, hasLength(10));
-    expect(
-      modules.map((module) => module.id),
-      orderedEquals([
-        'backend-1',
-        'backend-2',
-        'backend-3',
-        'backend-4',
-        'backend-5',
-        'backend-6',
-        'backend-7',
-        'backend-8',
-        'backend-9',
-        'backend-10',
-      ]),
-    );
-    expect(modules.last.title, 'Projet : assistant de défis');
-  });
+  test(
+    'backend and AI path contains 28 progressive modules, including advanced content',
+    () {
+      expect(modules, hasLength(28));
+      expect(
+        modules.map((module) => module.id),
+        orderedEquals(List.generate(28, (index) => 'backend-${index + 1}')),
+      );
+      expect(modules[9].title, 'Projet : assistant de défis');
+    },
+  );
 
-  test('AI extension teaches Python and follows the backend project', () {
-    final aiModules = modules.where((module) => module.order >= 6).toList();
+  test('base AI extension teaches Python and follows the backend project', () {
+    final aiModules = modules
+        .where((module) => module.order >= 6 && module.order <= 10)
+        .toList();
 
     expect(
       aiModules.every(

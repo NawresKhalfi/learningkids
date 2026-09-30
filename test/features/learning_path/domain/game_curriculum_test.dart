@@ -6,25 +6,14 @@ import 'package:learningkids/features/learning_path/domain/lesson_language.dart'
 void main() {
   final modules = curriculumFor(LearningPath.game);
 
-  test('game path contains ten progressive game-development modules', () {
-    expect(modules, hasLength(10));
+  test('game path contains 28 progressive game-development modules', () {
+    expect(modules, hasLength(28));
     expect(
       modules.map((module) => module.id),
-      orderedEquals([
-        'game-1',
-        'game-2',
-        'game-3',
-        'game-4',
-        'game-5',
-        'game-6',
-        'game-7',
-        'game-8',
-        'game-9',
-        'game-10',
-      ]),
+      orderedEquals(List.generate(28, (index) => 'game-${index + 1}')),
     );
     expect(modules.first.title, 'Imaginer un jeu');
-    expect(modules.last.title, 'Projet : aventure à niveaux');
+    expect(modules[9].title, 'Projet : aventure à niveaux');
   });
 
   test('game modules unlock one after another', () {
@@ -35,16 +24,18 @@ void main() {
   });
 
   test(
-    'game curriculum teaches JavaScript and ends with a web-game project',
+    'game curriculum teaches JavaScript and includes a web-game project',
     () {
       expect(
-        modules.where(
-          (module) => module.languages.contains(LessonLanguage.javascript),
-        ),
-        hasLength(9),
+        modules
+            .where(
+              (module) => module.languages.contains(LessonLanguage.javascript),
+            )
+            .length,
+        greaterThanOrEqualTo(9),
       );
       expect(
-        modules.last.languages,
+        modules[9].languages,
         containsAll([LessonLanguage.html, LessonLanguage.css]),
       );
     },

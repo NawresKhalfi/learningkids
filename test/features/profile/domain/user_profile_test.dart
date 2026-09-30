@@ -48,7 +48,7 @@ void main() {
 
     expect(restored.pseudo, '');
     expect(restored.avatar, Avatar.fox);
-    expect(restored.ageRange, AgeRange.sevenToNine);
+    expect(restored.ageRange, AgeRange.unspecified);
     expect(restored.codingLevel, CodingLevel.beginner);
     expect(restored.goals, isEmpty);
     expect(restored.recommendedPath, RecommendedPath.discovery);
